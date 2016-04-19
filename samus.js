@@ -10,8 +10,6 @@ function Laser(game, x, y, direction) {
     this.blastDone = false;
     this.startDone = false;
 
-    //laserLeft = null;
-
     Entity.call(this, game, x, y);
 }
 
@@ -19,16 +17,12 @@ Laser.prototype = new Entity();
 Laser.prototype.constructor = Laser;
 
 Laser.prototype.update = function () {
-    var that = this;
     if (this.blastDone) {
-        if (that.direction === "right") {
-            console.log("helloR");
+        if (this.direction === "right") {
             this.x += this.game.clockTick * this.speed;
             if (this.x > 800) this.removeFromWorld = true;
-        } else if (that.direction === "left") {
-            console.log("hello");
+        } else if (this.direction === "left") {
             this.x -= this.game.clockTick * this.speed;
-            console.log(this.x);
             if (this.x < -100) this.removeFromWorld = true;
         }
     }
@@ -36,6 +30,11 @@ Laser.prototype.update = function () {
 }
 
 Laser.prototype.draw = function (ctx) {
+    if (this.direction === "right") {
+        this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+    } else if (this.direction === "left") {
+        this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+    }
     if (!this.blastDone && !this.startDone) {
         if (this.count < 8) {
             this.laserStart.drawFrame(this.game.clockTick, ctx, this.x, this.y + 4, 3);
@@ -51,10 +50,6 @@ Laser.prototype.draw = function (ctx) {
         } else {
             this.blastDone = true;
         }
-    } else if (this.direction = "right") {
-        this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
-    } else if (this.direction = "left") {
-        this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, -3);
     }
     Entity.prototype.draw.call(this);
 }
@@ -100,7 +95,6 @@ Samus.prototype.update = function () {
                 var laser = new Laser(this.game, this.x + 63, this.y + 10, "right");
                 this.game.addEntity(laser);
             }
-            //this.shoot = false;
         } else if (!this.game.right) {//shoot left
 
             if (this.game.down) {
@@ -110,7 +104,6 @@ Samus.prototype.update = function () {
                 var laser = new Laser(this.game, this.x, this.y + 10, "left");
                 this.game.addEntity(laser);
             }
-            //this.shoot = false;
         }
         this.shoot = false;
     } else {

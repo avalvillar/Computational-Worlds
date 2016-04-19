@@ -7,12 +7,6 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
-    //ctx.save();
-    //ctx.rotate(180);
-
-    
-    //var leftLaser = Entity.prototype.rotateAndCache(ctx, 180);
-
     var gameEngine = new GameEngine();
     var bg = new Background(gameEngine);
     var samus = new Samus(gameEngine);
