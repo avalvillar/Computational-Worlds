@@ -20,7 +20,7 @@ Laser.prototype.update = function () {
     if (this.blastDone) {
         if (this.direction === "right") {
             this.x += this.game.clockTick * this.speed;
-            if (this.x > 800) this.removeFromWorld = true;
+            if (this.x > 1000) this.removeFromWorld = true;
         } else if (this.direction === "left") {
             this.x -= this.game.clockTick * this.speed;
             if (this.x < -100) this.removeFromWorld = true;
@@ -142,10 +142,10 @@ Samus.prototype.update = function () {
         }
         if (this.game.right) {
             this.x += this.game.clockTick * this.speed;
-            if (this.x > 800) this.x = -100;
+            if (this.x > 1000) this.x = -100;
         } else if (!this.game.right) {
             this.x -= this.game.clockTick * this.speed;
-            if (this.x < -100) this.x = 800;
+            if (this.x < -100) this.x = 1000;
         }
     }
     Entity.prototype.update.call(this);
