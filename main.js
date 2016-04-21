@@ -1,21 +1,26 @@
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
+ASSET_MANAGER.queueDownload("./img/forestBG.jpg")
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
-    var gameEngine = new GameEngine();
-    var bg = new Background(gameEngine);
+	var gameEngine = new GameEngine();
+	
+	gameEngine.init(ctx);
+    gameEngine.start();
+	
+    //var bg = new Background(gameEngine);
+	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
     var samus = new Samus(gameEngine);
-
+	
     gameEngine.addEntity(bg);
     gameEngine.addEntity(samus);
 
-    gameEngine.init(ctx);
-    gameEngine.start();
+    
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -72,6 +77,27 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
+// no inheritance
+function Background(game, spritesheet) {
+    this.x = 0;
+    this.y = 0;
+    this.spritesheet = spritesheet;
+    this.game = game;
+    this.ctx = game.ctx;
+};
+
+Background.prototype = new Entity();
+Background.prototype.constructor = Background;
+
+Background.prototype.draw = function () {
+    this.ctx.drawImage(this.spritesheet,
+                   this.x, this.y);
+};
+
+Background.prototype.update = function () {
+};
+
+/*
 function Background(game) {
     Entity.call(this, game, 0, 400);
     //this.radius = 200;
@@ -87,4 +113,4 @@ Background.prototype.draw = function (ctx) {
     ctx.fillStyle = "SaddleBrown";
     ctx.fillRect(0,500,800,300);
     Entity.prototype.draw.call(this);
-}
+} */
