@@ -2,7 +2,8 @@ var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
 ASSET_MANAGER.queueDownload("./img/greySnake.png");
-//ASSET_MANAGER.queueDownload("./img/forestBG.jpg")
+//ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
+ASSET_MANAGER.queueDownload("./img/bat.png");
 ASSET_MANAGER.queueDownload("./img/cave-bg.png")
 
 ASSET_MANAGER.downloadAll(function () {
@@ -21,10 +22,12 @@ ASSET_MANAGER.downloadAll(function () {
 
     var samus = new Samus(gameEngine);
     var snake = new Snake(gameEngine);
+    var bat = new Bat(gameEngine);
 	
     gameEngine.addEntity(bg);
     gameEngine.addEntity(samus);
     gameEngine.addEntity(snake);
+    gameEngine.addEntity(bat);
     
 });
 
