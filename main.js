@@ -1,7 +1,9 @@
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
-ASSET_MANAGER.queueDownload("./img/forestBG.jpg")
+ASSET_MANAGER.queueDownload("./img/greySnake.png");
+//ASSET_MANAGER.queueDownload("./img/forestBG.jpg")
+ASSET_MANAGER.queueDownload("./img/cave-bg.png")
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -14,12 +16,15 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 	
     //var bg = new Background(gameEngine);
-	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+    var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-bg.png"));
+
     var samus = new Samus(gameEngine);
+    var snake = new Snake(gameEngine);
 	
     gameEngine.addEntity(bg);
     gameEngine.addEntity(samus);
-
+    gameEngine.addEntity(snake);
     
 });
 
