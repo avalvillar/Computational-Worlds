@@ -96,6 +96,10 @@ GameEngine.prototype.startInput = function () {
 
     }, false);
 
+    this.ctx.canvas.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+    }, false);
+
     this.ctx.canvas.addEventListener("mouseup", function (e) {
         that.shooting = true;
     }, false);

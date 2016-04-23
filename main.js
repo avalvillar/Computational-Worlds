@@ -9,6 +9,7 @@ ASSET_MANAGER.queueDownload("./img/cave-bg.png")
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
+    canvas.focus();
     var ctx = canvas.getContext('2d');
 
 	var gameEngine = new GameEngine();
