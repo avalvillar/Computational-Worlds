@@ -100,7 +100,7 @@ Background.prototype.constructor = Background;
 
 Background.prototype.draw = function () {
     this.ctx.drawImage(this.spritesheet,
-                   this.x, this.y);
+                   this.x, this.y, 1000, 600);
 };
 
 Background.prototype.update = function () {
