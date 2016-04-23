@@ -17,6 +17,9 @@ Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
     this.x -= this.game.clockTick * this.speed;
+    if (this.x < -50) {
+        this.x = 1000
+    }
     Entity.prototype.update.call(this);
 }
 
@@ -45,6 +48,9 @@ Bat.prototype.constructor = Snake;
 
 Bat.prototype.update = function () {
     this.x -= this.game.clockTick * this.speed;
+    if (this.x < -50) {
+        this.x = 1000
+    }
     Entity.prototype.update.call(this);
 }
 
