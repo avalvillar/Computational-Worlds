@@ -69,23 +69,31 @@ GameEngine.prototype.startInput = function () {
             e.preventDefault();
         }
         if (String.fromCharCode(e.which) === 'D') {
-            if (!that.down) {
+            if (!that.down && !that.up) {
                 that.running = true;
             }
             that.right = true;
         }
+        if (String.fromCharCode(e.which) === 'W') {
+            that.up = true;
+            that.running = false;
+        }
         if (String.fromCharCode(e.which) === 'A') {
-            if (!that.down) {
+            if (!that.down && !that.up) {
                 that.running = true;
             }
             that.right = false;
         }
 
         if (String.fromCharCode(e.which) === 'S') {
+            that.running = false;
             that.down = true;
         }
     }, false);
     this.ctx.canvas.addEventListener("keyup", function (e) {
+        if (String.fromCharCode(e.which) === 'W') {
+            that.up = false;
+        }
         if (String.fromCharCode(e.which) === 'D') {
             that.running = false;
         } else if (String.fromCharCode(e.which) === 'A') {
