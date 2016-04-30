@@ -13,20 +13,17 @@ ASSET_MANAGER.downloadAll(function () {
     var ctx = canvas.getContext('2d');
 
 	var gameEngine = new GameEngine();
-	
-	gameEngine.init(ctx);
+	var samus = new Samus(gameEngine, 200, 400);
+
+    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-bg.png"));
+
+	gameEngine.init(ctx, samus, bg);
     gameEngine.start();
 	
-    //var bg = new Background(gameEngine);
-    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-    var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-bg.png"));
+    var snake = new Snake(gameEngine, 1000, 495);
+    var bat = new Bat(gameEngine, 950, 300);
 
-    var samus = new Samus(gameEngine);
-    var snake = new Snake(gameEngine);
-    var bat = new Bat(gameEngine);
-	
-    gameEngine.addEntity(bg);
-    gameEngine.addEntity(samus);
     gameEngine.addEntity(snake);
     gameEngine.addEntity(bat);
     
@@ -86,40 +83,20 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
-// no inheritance
 function Background(game, spritesheet) {
     this.x = 0;
     this.y = 0;
     this.spritesheet = spritesheet;
     this.game = game;
-    this.ctx = game.ctx;
 };
 
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
-Background.prototype.draw = function () {
-    this.ctx.drawImage(this.spritesheet,
+Background.prototype.draw = function (ctx) {
+    ctx.drawImage(this.spritesheet,
                    this.x, this.y, 1000, 600);
 };
 
 Background.prototype.update = function () {
 };
-
-/*
-function Background(game) {
-    Entity.call(this, game, 0, 400);
-    //this.radius = 200;
-}
-
-Background.prototype = new Entity();
-Background.prototype.constructor = Background;
-
-Background.prototype.update = function () {
-}
-
-Background.prototype.draw = function (ctx) {
-    ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,800,300);
-    Entity.prototype.draw.call(this);
-} */

@@ -1,3 +1,9 @@
+function distance(a, b) {
+    var difX = a.collisionX - b.collisionX;
+    var difY = a.collisionY - b.collisionY;
+    return Math.sqrt(difX * difX + difY * difY);
+};
+
 function Laser(game, x, y, direction) {
     this.laserRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1055, 180, 18, 50, .1, 2, true, false);
     this.laserUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1128, 190, 13, 16, .1, 2, true, false);
@@ -7,16 +13,37 @@ function Laser(game, x, y, direction) {
     this.speed = 1000;
     this.direction = direction;
     this.count = 0;
+    this.radius = 20;
+    this.x = x;
+    this.y = y;
+    this.collisionX = this.x + 50;
+    this.collisionY = this.y + 80;
+
     this.blastDone = false;
     this.startDone = false;
 
-    Entity.call(this, game, x, y);
+    Entity.call(this, game, x, y, this.collisionX, this.collisionY);
 }
 
 Laser.prototype = new Entity();
 Laser.prototype.constructor = Laser;
 
+Laser.prototype.collide = function (other) {
+    return distance(this, other) < this.radius + other.radius;
+};
+
+Laser.prototype.collisionDetection = function (entity) {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (this.collide(ent)) { // kills entities that the laser collides with
+            this.removeFromWorld = true;
+            ent.removeFromWorld = true;
+        }
+    }
+}
+
 Laser.prototype.update = function () {
+    this.collisionDetection();
     if (this.blastDone || this.game.running) {
         if (this.direction === "right") {
             this.x += this.game.clockTick * this.speed;
@@ -29,6 +56,13 @@ Laser.prototype.update = function () {
             if (this.y < -100) this.removeFromWorld = true;
         }
     }
+    if (this.direction === "up") {
+        this.collisionX = this.x + 20;
+        this.collisionY = this.y + 25;
+    } else {
+        this.collisionX = this.x + 40;
+        this.collisionY = this.y + 70;
+    }
     Entity.prototype.update.call(this);
 }
 
@@ -36,7 +70,7 @@ Laser.prototype.draw = function (ctx) {
     
     var downOffset = 0;
     if (this.game.down) {
-        downOffset = 9; //Created to make blast more align when Samus is down
+        downOffset = 9; //Created to make blast aligned when Samus is down
     } else if (this.game.up) {
         downOffset = -9; //aligning when Samus is up
     } else {
@@ -69,7 +103,7 @@ Laser.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
-function Samus(game) {//add count for turns instead of boolean so we can display a few frames with turning....
+function Samus(game, x, y) {//add count for turns instead of boolean so we can display a few frames with turning....
     this.idleRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 387, 55, 40, 50, .8, 2, true, false);
     this.runningRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 431, 300, 43, 50, .1, 10, true, false);
     this.jumpRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 980, 0, 33.8, 55, .07, 8, false, false);
@@ -89,60 +123,63 @@ function Samus(game) {//add count for turns instead of boolean so we can display
 
     this.running = false;
     this.lastDirection = "right";
-    this.radius = 100;
+    this.radius = 58;
     this.ground = 400;
     this.speed = 550;
-    Entity.call(this, game, 300, 400);
+    this.x = x;
+    this.y = y;
+    this.collisionX = this.x + 50;
+    this.collisionY = this.y + 85;
+
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
 
 Samus.prototype = new Entity();
 Samus.prototype.constructor = Samus;
 
-Samus.prototype.update = function () {
-    if (this.game.space) this.jumping = true;
-    if (this.game.shooting) this.shoot = true;
-    if (this.game.up) {
-        this.up = true;
-    } else {
-        this.up = false;
-    }
-    if (this.game.running) this.running = true;
+Samus.prototype.collide = function (other) {
+    return distance(this, other) < this.radius + other.radius;
+};
 
+Samus.prototype.chooseLaser = function() {
     if (this.shoot && !this.jumping) {//spawns laser blasts
         if (this.game.right) {//shoot right
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x + 66, this.y + 34, "right");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x + 80, this.y - 10, "right");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else if (this.game.up) {
                 var laser = new Laser(this.game, this.x + 32, this.y - 44, "up");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else {
                 var laser = new Laser(this.game, this.x + 68, this.y + 11, "right");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             }
         } else if (!this.game.right) {//shoot left
 
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x, this.y + 34, "left");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x, this.y - 10, "left");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else if (this.game.up) {
                 var laser = new Laser(this.game, this.x + 48, this.y - 44, "up");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             } else {
                 var laser = new Laser(this.game, this.x, this.y + 10, "left");
-                this.game.addEntity(laser);
+                this.game.addLaser(laser);
             }
         }
         this.shoot = false;
     } else {
         this.shoot = false;
     }
+}
+
+Samus.prototype.jump = function () {
     if (this.jumping) {
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
@@ -170,6 +207,42 @@ Samus.prototype.update = function () {
         var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
         this.y = this.ground - height;
     }
+}
+
+Samus.prototype.collisionDetection = function () {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (this.collide(ent)) {
+
+            //var dist = distance(this, ent);
+            //var delta = this.radius + ent.radius - dist;
+            //var difX = (this.collisionX - ent.collisionX) / dist;
+            //var difY = (this.collisionY - ent.collisionY) / dist;
+
+            //this.x += difX * delta / 2;
+            //this.y += difY * delta / 2;
+            //ent.x -= difX * delta / 2;
+            //ent.y -= difY * delta / 2;
+        }
+    }
+}
+
+Samus.prototype.update = function () {
+    if (this.game.space) this.jumping = true;
+    if (this.game.shooting) this.shoot = true;
+    if (this.game.up) {
+        this.up = true;
+    } else {
+        this.up = false;
+    }
+    if (this.game.running) this.running = true;
+
+    this.chooseLaser(); // fires laser blasts
+
+    this.jump(); // performs jump logic
+
+    this.collisionDetection(); // performs collision detection and handling.
+
     if (this.running) {
         if (!this.game.running) {
             this.running = false;
@@ -183,6 +256,30 @@ Samus.prototype.update = function () {
             }
         }
     }
+    if (this.game.right) { // move collision box
+        if (this.running) {
+            this.collisionX = this.x + 50;
+            this.collisionY = this.y + 70;
+        } else if (this.jumping) { // collision box while jumping
+            this.collisionX = this.x + 70;
+            this.collisionY = this.y + 60;
+        } else {
+            this.collisionX = this.x + 43;
+            this.collisionY = this.y + 92;
+        }
+    } else {
+        if (this.running) {
+            this.collisionX = this.x + 80;
+            this.collisionY = this.y + 70;
+        } else if (this.jumping) { // collision box while jumping
+            this.collisionX = this.x + 50;
+            this.collisionY = this.y + 60;
+        } else {
+            this.collisionX = this.x + 80;
+            this.collisionY = this.y + 95;
+        }
+    }
+    
     Entity.prototype.update.call(this);
 }
 
