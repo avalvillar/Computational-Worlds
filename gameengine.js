@@ -61,6 +61,7 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     this.right = true;
     this.down = false;
+    this.up = false; 
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
