@@ -21,9 +21,11 @@ ASSET_MANAGER.downloadAll(function () {
 	gameEngine.init(ctx, samus, bg);
     gameEngine.start();
 	
+    //var tester = new test(gameEngine, 100, 100);
     var snake = new Snake(gameEngine, 1000, 495);
     var bat = new Bat(gameEngine, 950, 300);
 
+    //gameEngine.addEntity(tester);
     gameEngine.addEntity(snake);
     gameEngine.addEntity(bat);
     

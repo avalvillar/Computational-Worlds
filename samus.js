@@ -7,17 +7,29 @@ function distance(a, b) {
 function Laser(game, x, y, direction) {
     this.laserRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1055, 180, 18, 50, .1, 2, true, false);
     this.laserUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1128, 190, 13, 16, .1, 2, true, false);
+    this.laserDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1160, 190, 18, 16, .1, 2, true, false);
     this.laserStart = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 882, 180, 16, 50, 2, 2, true, false);
     this.laserBlast = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 908, 180, 16, 50, 2, 2, true, false);
 
     this.speed = 1000;
     this.direction = direction;
     this.count = 0;
-    this.radius = 20;
+    this.radius = 15;
     this.x = x;
     this.y = y;
-    this.collisionX = this.x + 50;
-    this.collisionY = this.y + 80;
+    if (this.direction === "diagonal-right") { // collision circle
+        this.collisionX = this.x + 25;
+        this.collisionY = this.y + 20;
+    } else if (this.direction === "diagonal-left") {
+        this.collisionX = this.x + 25;
+        this.collisionY = this.y + 20;
+    } else if (this.direction === "up") { 
+        this.collisionX = this.x + 20;
+        this.collisionY = this.y + 25;
+    } else {
+        this.collisionX = this.x + 40;
+        this.collisionY = this.y + 70;
+    }
 
     this.blastDone = false;
     this.startDone = false;
@@ -54,9 +66,23 @@ Laser.prototype.update = function () {
         } else if (this.direction === "up") {
             this.y -= this.game.clockTick * this.speed;
             if (this.y < -100) this.removeFromWorld = true;
+        } else if (this.direction === "diagonal-right") {
+            if (this.y < -100) this.removeFromWorld = true;
+            this.y -= this.game.clockTick * (this.speed);
+            this.x += this.game.clockTick * (this.speed);
+        } else if (this.direction === "diagonal-left") {
+            if (this.y < -100) this.removeFromWorld = true;
+            this.y -= this.game.clockTick * (this.speed);
+            this.x -= this.game.clockTick * (this.speed);
         }
     }
-    if (this.direction === "up") {
+    if (this.direction === "diagonal-right") {
+        this.collisionX = this.x + 25;
+        this.collisionY = this.y + 20;
+    } else if (this.direction === "diagonal-left") {
+        this.collisionX = this.x + 25;
+        this.collisionY = this.y + 20;
+    } else if (this.direction === "up") { // collision circle
         this.collisionX = this.x + 20;
         this.collisionY = this.y + 25;
     } else {
@@ -71,6 +97,8 @@ Laser.prototype.draw = function (ctx) {
     var downOffset = 0;
     if (this.game.down) {
         downOffset = 9; //Created to make blast aligned when Samus is down
+    } else if (this.game.running && this.game.up) {
+        downOffset = -20;
     } else if (this.game.up) {
         downOffset = -9; //aligning when Samus is up
     } else {
@@ -98,8 +126,33 @@ Laser.prototype.draw = function (ctx) {
             this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         } else if (this.direction === "up") {
             this.laserUp.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+        } else if (this.direction === "diagonal-right") {
+            this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+        } else if (this.direction === "diagonal-left") {
+            this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         }
     }
+    Entity.prototype.draw.call(this);
+}
+
+function test(game, x, y) {
+    this.laserDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1160, 190, 18, 16, .1, 2, true, false);
+    this.x = x;
+    this.y = y;
+    this.collisionX = this.x + 50;
+    this.collisionY = this.y + 85;
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
+}
+
+test.prototype = new Entity();
+test.prototype.constructor = test;
+
+test.prototype.update = function () {
+    Entity.prototype.update.call(this);
+}
+
+test.prototype.draw = function (ctx) {
+    this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
     Entity.prototype.draw.call(this);
 }
 
@@ -111,6 +164,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.downRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 120, 180, 40, 55, 1, 1, true, false);
     this.downRightTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 80, 180, 40, 55, 1, 1, false, false);
     this.upRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 725, 170, 32, 70, .8, 2, true, false);
+    this.runningRightUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 425, 360, 43.5, 50, 0.1, 10, true, false);
 
 
     this.idleLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 142, 55, 39, 50, .8, 2, true, true);
@@ -120,6 +174,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.downLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 0, 180, 40, 55, 1, 1, true, false);
     this.downLeftTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 40, 180, 40, 55, 1, 1, false, false);
     this.upLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 484, 170, 41, 70, 1, 2, true, false);
+    this.runningLeftUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1, 360, 42.5, 50, .1, 10, true, false);
 
     this.running = false;
     this.lastDirection = "right";
@@ -147,6 +202,9 @@ Samus.prototype.chooseLaser = function() {
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x + 66, this.y + 34, "right");
                 this.game.addLaser(laser);
+            } else if (this.game.running && this.game.up) {
+                var laser = new Laser(this.game, this.x + 80, this.y + 25, "diagonal-right");
+                this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x + 80, this.y - 10, "right");
                 this.game.addLaser(laser);
@@ -161,6 +219,9 @@ Samus.prototype.chooseLaser = function() {
 
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x, this.y + 34, "left");
+                this.game.addLaser(laser);
+            } else if (this.game.running && this.game.up) {
+                var laser = new Laser(this.game, this.x + 66, this.y + 34, "diagonal-left");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x, this.y - 10, "left");
@@ -294,11 +355,12 @@ Samus.prototype.draw = function (ctx) {
             } else {
                 this.downRight.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
             }
+        } else if (this.up && this.running) { // diagonal right up
+            this.runningRightUp.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         } else if (this.up) { // up right
             this.upRight.drawFrame(this.game.clockTick, ctx, this.x, this.y - 6, 3);
-
-        } else if (this.running) {
-            if (this.lastDirection === "left") {
+        } else if (this.running) { // running right
+            if (this.lastDirection === "left") { // turn animation
                 this.turnRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
                 this.lastDirection = "right";
             } else {
@@ -316,6 +378,8 @@ Samus.prototype.draw = function (ctx) {
                 this.lastDirection = "left";
             }
             this.downLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
+        } else if (this.up && this.running) { // diagonal right up
+            this.runningLeftUp.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         } else if (this.up) { // up left
             this.upLeft.drawFrame(this.game.clockTick, ctx, this.x + 23, this.y - 6, 3);
 

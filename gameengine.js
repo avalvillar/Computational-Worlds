@@ -75,17 +75,17 @@ GameEngine.prototype.startInput = function () {
             e.preventDefault();
         }
         if (String.fromCharCode(e.which) === 'D') {
-            if (!that.down && !that.up) {
+            if (!that.down) {
                 that.running = true;
             }
             that.right = true;
         }
         if (String.fromCharCode(e.which) === 'W') {
             that.up = true;
-            that.running = false;
+            //that.running = false;
         }
         if (String.fromCharCode(e.which) === 'A') {
-            if (!that.down && !that.up) {
+            if (!that.down) {
                 that.running = true;
             }
             that.right = false;
@@ -110,7 +110,7 @@ GameEngine.prototype.startInput = function () {
 
     }, false);
 
-    this.ctx.canvas.addEventListener("mousedown", function (e) {
+    this.ctx.canvas.addEventListener("contextmenu", function (e) {
         e.preventDefault();
     }, false);
 
