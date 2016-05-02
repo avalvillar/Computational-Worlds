@@ -6,13 +6,19 @@ ASSET_MANAGER.queueDownload("./img/greySnake.png");
 ASSET_MANAGER.queueDownload("./img/bat.png");
 ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png")
 
+var samus;
+var gameEngine;
+var canvas;
+
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
-    var canvas = document.getElementById('gameWorld');
+    //var canvas = document.getElementById('gameWorld');
+        canvas = document.getElementById('gameWorld');
     canvas.focus();
     var ctx = canvas.getContext('2d');
 
-	var gameEngine = new GameEngine();
+    //var gameEngine = new GameEngine();
+        gameEngine = new GameEngine();
 	
 	gameEngine.init(ctx);
     gameEngine.start();
@@ -21,7 +27,8 @@ ASSET_MANAGER.downloadAll(function () {
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
     var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
 
-    var samus = new Samus(gameEngine);
+    //var samus = new Samus(gameEngine);
+        samus = new Samus(gameEngine);
     var snake = new Snake(gameEngine);
     var bat = new Bat(gameEngine);
 	
@@ -99,27 +106,28 @@ Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
 Background.prototype.draw = function () {
-    this.ctx.drawImage(this.spritesheet,
-                   this.x, this.y, 2000, 600);
+    //this.ctx.drawImage(this.spritesheet,
+    //             this.x, this.y, 2000, 600);
+
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+    this.ctx.drawImage(this.spritesheet, this.x, this.y, 2000, 600);
+
+    //Clamp the camera position to the world bounds while centering the camera around the player                                             
+    var camX = clamp(-samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
+    var camY = clamp(-samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+
+
+    this.ctx.translate(camX, camY);
 };
 
 Background.prototype.update = function () {
 };
 
-/*
-function Background(game) {
-    Entity.call(this, game, 0, 400);
-    //this.radius = 200;
-}
 
-Background.prototype = new Entity();
-Background.prototype.constructor = Background;
+function clamp(value, min, max) {
+    if (value < min) return min;
+    else if (value > max) return max;
+    return value;
+} 
 
-Background.prototype.update = function () {
-}
-
-Background.prototype.draw = function (ctx) {
-    ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,800,300);
-    Entity.prototype.draw.call(this);
-} */
