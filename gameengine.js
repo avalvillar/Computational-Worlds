@@ -30,7 +30,10 @@ Timer.prototype.tick = function () {
 
 function GameEngine() {
     this.entities = [];
-    this.showOutlines = false;
+    this.lasers = [];
+    this.samus = null;
+    this.background = null;
+    this.showOutlines = true;
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -39,8 +42,10 @@ function GameEngine() {
     this.surfaceHeight = null;
 }
 
-GameEngine.prototype.init = function (ctx) {
+GameEngine.prototype.init = function (ctx, samus, background) {
     this.ctx = ctx;
+    this.samus = samus;
+    this.background = background;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
@@ -70,17 +75,17 @@ GameEngine.prototype.startInput = function () {
             e.preventDefault();
         }
         if (String.fromCharCode(e.which) === 'D') {
-            if (!that.down && !that.up) {
+            if (!that.down) {
                 that.running = true;
             }
             that.right = true;
         }
         if (String.fromCharCode(e.which) === 'W') {
             that.up = true;
-            that.running = false;
+            //that.running = false;
         }
         if (String.fromCharCode(e.which) === 'A') {
-            if (!that.down && !that.up) {
+            if (!that.down) {
                 that.running = true;
             }
             that.right = false;
@@ -105,7 +110,7 @@ GameEngine.prototype.startInput = function () {
 
     }, false);
 
-    this.ctx.canvas.addEventListener("mousedown", function (e) {
+    this.ctx.canvas.addEventListener("contextmenu", function (e) {
         e.preventDefault();
     }, false);
 
@@ -120,17 +125,31 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+GameEngine.prototype.addLaser = function (entity) {
+    this.lasers.push(entity);
+}
+
+GameEngine.prototype.setBackground = function (entity) {
+    this.background = entity;
+}
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
+    this.background.draw(this.ctx);
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
+    for (var i = 0; i < this.lasers.length; i++) {
+        this.lasers[i].draw(this.ctx);
+    }
+    this.samus.draw(this.ctx);
     this.ctx.restore();
 }
 
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;
+    var laserCount = this.lasers.length;
 
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
@@ -140,9 +159,28 @@ GameEngine.prototype.update = function () {
         }
     }
 
+    for (var i = 0; i < laserCount; i++) {
+        var entity = this.lasers[i];
+
+        if (!entity.removeFromWorld) {
+            entity.update();
+        }
+    }
+
+    this.background.update();
+
+    if (!this.samus.removeFromWorld) {
+        this.samus.update();
+    }
+
     for (var i = this.entities.length - 1; i >= 0; --i) {
         if (this.entities[i].removeFromWorld) {
             this.entities.splice(i, 1);
+        }
+    }
+    for (var i = this.lasers.length - 1; i >= 0; --i) {
+        if (this.lasers[i].removeFromWorld) {
+            this.lasers.splice(i, 1);
         }
     }
 }
@@ -155,10 +193,12 @@ GameEngine.prototype.loop = function () {
     this.shooting = false;
 }
 
-function Entity(game, x, y) {
+function Entity(game, x, y, CX, CY) {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.collisionX = CX;
+    this.collisionY = CY;
     this.removeFromWorld = false;
 }
 
@@ -168,8 +208,8 @@ Entity.prototype.update = function () {
 Entity.prototype.draw = function (ctx) {
     if (this.game.showOutlines && this.radius) {
         this.game.ctx.beginPath();
-        this.game.ctx.strokeStyle = "green";
-        this.game.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        this.game.ctx.strokeStyle = "red";
+        this.game.ctx.arc(this.collisionX, this.collisionY, this.radius, 0, Math.PI * 2, false);
         this.game.ctx.stroke();
         this.game.ctx.closePath();
     }
