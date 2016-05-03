@@ -121,27 +121,27 @@ Background.prototype.draw = function (ctx) {
     this.game.ctx.drawImage(this.spritesheet,
                  this.x, this.y, 2000, 600);
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
-    ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-    ctx.drawImage(this.spritesheet, this.x, this.y, 2000, 600);
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+    //ctx.drawImage(this.spritesheet, this.x, this.y, 2000, 600);
 
-    //Clamp the camera position to the world bounds while centering the camera around the player                                             
-    var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
-    var camY = clamp(-this.game.samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+    ////Clamp the camera position to the world bounds while centering the camera around the player                                             
+    //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
+    //var camY = clamp(-this.game.samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
 
 
-    ctx.translate(camX, camY);
+    //ctx.translate(camX, camY);
 };
 
 Background.prototype.update = function () {
 };
 
 
-function clamp(value, min, max) {
-    if (value < min) return min;
-    else if (value > max) return max;
-    return value;
-} 
+//function clamp(value, min, max) {
+//    if (value < min) return min;
+//    else if (value > max) return max;
+//    return value;
+//} 
 
 /*=======
 Background.prototype.draw = function (ctx) {
