@@ -5,6 +5,7 @@ ASSET_MANAGER.queueDownload("./img/greySnake.png");
 //ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
 ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png")
+ASSET_MANAGER.queueDownload("./img/leftLaser.png")
 
 //var samus;
 //var gameEngine;
