@@ -33,7 +33,7 @@ function GameEngine() {
     this.lasers = [];
     this.samus = null;
     this.background = null;
-    this.showOutlines = true;
+    this.showOutlines = true; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -82,7 +82,6 @@ GameEngine.prototype.startInput = function () {
         }
         if (String.fromCharCode(e.which) === 'W') {
             that.up = true;
-            //that.running = false;
         }
         if (String.fromCharCode(e.which) === 'A') {
             if (!that.down) {
@@ -94,6 +93,9 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'S') {
             that.running = false;
             that.down = true;
+        }
+        if (String.fromCharCode(e.which) === "\r") {
+            that.shooting = true;
         }
     }, false);
     this.ctx.canvas.addEventListener("keyup", function (e) {
@@ -114,9 +116,9 @@ GameEngine.prototype.startInput = function () {
         e.preventDefault();
     }, false);
 
-    this.ctx.canvas.addEventListener("mouseup", function (e) {
-        that.shooting = true;
-    }, false);
+    //this.ctx.canvas.addEventListener("mouseup", function (e) {
+    //    that.shooting = true;
+    //}, false);
 
     console.log('Input started');
 }
