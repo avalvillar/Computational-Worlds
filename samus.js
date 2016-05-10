@@ -12,7 +12,7 @@ function Laser(game, x, y, direction) {
     this.laserBlast = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 908, 180, 16, 50, 2, 2, true, false);
 
     this.laserLeft = new Animation(ASSET_MANAGER.getAsset("./img/leftLaser.png"), 166, 0, 18, 50, .1, 2, true, false);
-    this.laserDiagonalLeft = new Animation(ASSET_MANAGER.getAsset("./img/leftLaser.png"), 40, 0, 18, 16, .1, 2, true, false);
+    this.laserDiagonalLeft = new Animation(ASSET_MANAGER.getAsset("./img/leftLaser.png"), 68, 0, 18, 50, .1, 2, true, false);
 
     this.speed = 1000;
     this.direction = direction;
@@ -132,7 +132,7 @@ Laser.prototype.draw = function (ctx) {
         } else if (this.direction === "diagonal-right") {
             this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         } else if (this.direction === "diagonal-left") {
-            this.laserDiagonalLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);//////
+            this.laserDiagonalLeft.drawFrame(this.game.clockTick, ctx, this.x+2, this.y-87, 3);//////
         }
     }
     Entity.prototype.draw.call(this);
