@@ -4,8 +4,9 @@ ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
 ASSET_MANAGER.queueDownload("./img/greySnake.png");
 //ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
-ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png")
-ASSET_MANAGER.queueDownload("./img/leftLaser.png")
+ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+ASSET_MANAGER.queueDownload("./img/leftLaser.png");
+ASSET_MANAGER.queueDownload("./img/cave_rock.png");
 
 //var samus;
 //var gameEngine;
@@ -41,7 +42,9 @@ ASSET_MANAGER.downloadAll(function () {
 	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
 
 	gameEngine.init(ctx, samus, bg);
-    gameEngine.start();
+	gameEngine.start();
+
+	setupWorld(gameEngine);
 	
     //var tester = new test(gameEngine, 100, 100);
     var snake = new Snake(gameEngine, 1000, 495);

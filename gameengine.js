@@ -11,6 +11,11 @@ window.requestAnimFrame = (function () {
             };
 })();
 
+// This function can be used by all entities to see if they are colliding with a platform.
+// Circle to rectangle collision.
+var platformCollide = function (ent, other) {
+
+}
 
 function Timer() {
     this.gameTime = 0;
@@ -31,6 +36,7 @@ Timer.prototype.tick = function () {
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
+    this.platforms = [];
     this.samus = null;
     this.background = null;
     this.showOutlines = true; // make false to hide collision boxes
@@ -135,10 +141,18 @@ GameEngine.prototype.setBackground = function (entity) {
     this.background = entity;
 }
 
+GameEngine.prototype.addPlatform = function (entity) {
+    this.platforms.push(entity);
+}
+
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
     this.background.draw(this.ctx);
+    for (var i = 0; i < this.platforms.length; i++) {
+        this.platforms[i].draw(this.ctx);
+    }
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
@@ -214,6 +228,16 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.arc(this.collisionX, this.collisionY, this.radius, 0, Math.PI * 2, false);
         this.game.ctx.stroke();
         this.game.ctx.closePath();
+    }
+    console.log("size:" + this.collisionSize);
+
+    if (this.game.showOutlines && this.collisionSize) {
+        this.game.ctx.beginPath();
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "red";
+        this.game.ctx.rect(this.x, this.y, this.collisionSize, this.collisionSize);
+        this.game.ctx.stroke();
+
     }
 }
 
