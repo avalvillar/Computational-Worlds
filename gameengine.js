@@ -12,9 +12,29 @@ window.requestAnimFrame = (function () {
 })();
 
 // This function can be used by all entities to see if they are colliding with a platform.
-// Circle to rectangle collision.
-var platformCollide = function (ent, other) {
+// Circle to rectangle collision. Must pass the entity first and then the platform.
+var platformCollide = function (ent, platform) {
+    //var result;
+    var xDistance = Math.abs(ent.collisionX - platform.collisionX);
+    var yDistance = Math.abs(ent.collisionY - platform.collisionY);
 
+    if (xDistance > (platform.collisionSize / 2 + ent.radius)) {
+        return false;
+    }
+    if (yDistance > (platform.collisionSize / 2 + ent.radius)) {
+        return false;
+    }
+    if (xDistance <= (platform.collisionSize / 2)) {
+        return true;
+    }
+    if (yDistance <= (platform.collisionSize / 2)) {
+        return true;
+    }
+
+    var cornerDistance = Math.pow((xDistance - platform.collisionSize / 2), 2) +
+                           Math.pow((yDistance - platform.collisionSize / 2), 2)
+
+    return (cornerDistance <= Math.pow(ent.radius, 2));
 }
 
 function Timer() {
@@ -46,6 +66,7 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.gravity = 400;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
@@ -121,10 +142,6 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("contextmenu", function (e) {
         e.preventDefault();
     }, false);
-
-    //this.ctx.canvas.addEventListener("mouseup", function (e) {
-    //    that.shooting = true;
-    //}, false);
 
     console.log('Input started');
 }
@@ -229,7 +246,6 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.stroke();
         this.game.ctx.closePath();
     }
-    console.log("size:" + this.collisionSize);
 
     if (this.game.showOutlines && this.collisionSize) {
         this.game.ctx.beginPath();

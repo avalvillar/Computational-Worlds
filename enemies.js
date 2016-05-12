@@ -6,7 +6,6 @@
 
 function Snake(game, x, y) {
     this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/greySnake.png"), 0, 48, 48, 48, .1, 4, true, false);
-
     this.speed = 150;
     this.radius = 25;
     this.x = x;
@@ -22,8 +21,22 @@ Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
     this.x -= this.game.clockTick * this.speed;
+    this.y += this.game.clockTick * this.game.gravity;
+
+    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+        var plat = this.game.platforms[i];
+        if (platformCollide(this, plat)) {
+            this.y -= this.game.clockTick * this.game.gravity;
+            break;
+        }
+    }
+
     if (this.x < -50) {
         this.x = 1000
+    }
+    if (this.y > 700) {
+        this.x = 1000;
+        this.y = 300;
     }
 
     this.collisionX = this.x + 23;

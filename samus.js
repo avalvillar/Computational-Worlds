@@ -182,10 +182,11 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.running = false;
     this.lastDirection = "right";
     this.radius = 58;
-    this.ground = 400;
     this.speed = 550;
     this.x = x;
     this.y = y;
+    this.ground = this.y;
+    this.grounded = true;
     this.collisionX = this.x + 50;
     this.collisionY = this.y + 85;
 
@@ -198,6 +199,32 @@ Samus.prototype.constructor = Samus;
 Samus.prototype.collide = function (other) {
     return distance(this, other) < this.radius + other.radius;
 };
+
+Samus.prototype.platformCollision = function () {
+    var isColliding = false;
+    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+        var plat = this.game.platforms[i];
+        if (this.x - plat.collisionX < 200 && platformCollide(this, plat)){// && !this.grounded) {
+            if (this.y < plat.y && this.y - plat.y < 70 + this.radius * 2) {
+                //var dist = distance(this, plat);
+                //var delta = this.radius + plat.collisionSize / 2 - dist;
+                //var difX = (this.x - plat.collisionX) / dist;
+                //var difY = (this.y - plat.collisionY) / dist;
+                //this.y += difY * delta;
+                this.grounded = true;
+                isColliding = true;
+                //this.y -= /*plat.collisionY -*/ (plat.collisionSize) - this.radius;
+            }
+            //this.y -= this.game.clockTick * this.game.gravity;
+            break;
+        }
+    }
+
+    if (!isColliding) {
+        this.grounded = false;
+        this.y += this.game.clockTick * this.game.gravity;
+    }
+}
 
 Samus.prototype.chooseLaser = function() {
     if (this.shoot && !this.jumping) {//spawns laser blasts
@@ -245,6 +272,10 @@ Samus.prototype.chooseLaser = function() {
 
 Samus.prototype.jump = function () {
     if (this.jumping) {
+        this.grounded = false;
+        if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
+            this.ground = this.y;
+        }
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
             this.jumpLeft.elapsedTime = 0;
@@ -306,6 +337,8 @@ Samus.prototype.update = function () {
     this.jump(); // performs jump logic
 
     this.collisionDetection(); // performs collision detection and handling.
+
+    this.platformCollision(); // performs platform collision
 
     if (this.running) {
         if (!this.game.running) {
