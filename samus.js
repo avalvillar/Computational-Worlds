@@ -183,6 +183,8 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.speed = 550;
     this.x = x;
     this.y = y;
+    this.dx = 0;
+    this.dy = 0;
     this.collisionX = this.x + 50;
     this.collisionY = this.y + 85;
 
@@ -309,11 +311,13 @@ Samus.prototype.update = function () {
             this.running = false;
         } else {
             if (this.game.right) {
-                this.x += this.game.clockTick * this.speed;
-                if (this.x > 1000) this.x = -100;
+                this.dx = this.game.clockTick * this.speed;
+                this.x += this.dx;
+               //if (this.x > 1000) this.x = -100;
             } else if (!this.game.right) {
-                this.x -= this.game.clockTick * this.speed;
-                if (this.x < -100) this.x = 1000;
+                this.dx = this.game.clockTick * this.speed;
+                this.x -= this.dx;
+                //if (this.x < -100) this.x = 1000;
             }
         }
     }
