@@ -1,9 +1,17 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
+    <style>
+        .noSelect {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
     <meta charset="utf-8">
-    <title>Game Project Shell</title>
+    <title>I'M NOT FROM HERE</title>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./main.js"></script>
@@ -11,7 +19,7 @@
     <script type="text/javascript" src="./enemies.js"></script>
 </head>
 <body>
-	<h4>'A' to walk left, 'S' to crouch, 'D' to walk right, 'SPACE' to jump, 'CLICK' to shoot</h4>
-    <canvas id="gameWorld" tabindex="1" width="1000" height="600" style="border: 1px solid brown; background: lightskyblue"></canvas>
+	<h4 class="noSelect">'A' to walk left, 'D' to walk right, 'S' to crouch, 'W' to look up, 'SPACE' to jump, 'ENTER' to shoot</h4>
+    <canvas id="gameWorld" tabindex="1" width="2000" height="600" style="border: 1px solid brown; background: slategrey"></canvas>
 </body>
 </html>
