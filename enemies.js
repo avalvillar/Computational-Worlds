@@ -6,13 +6,13 @@
 
 function Snake(game, x, y) {
     this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/greySnake.png"), 0, 48, 48, 48, .1, 4, true, false);
-
     this.speed = 150;
-    this.radius = 25;
     this.x = x;
     this.y = y;
-    this.collisionX = this.x + 50;
-    this.collisionY = this.y + 50;
+    this.collisionWidth = 40;
+    this.collisionHeight = 33;
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 12;
  
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -22,12 +22,26 @@ Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
     this.x -= this.game.clockTick * this.speed;
+    this.y += this.game.clockTick * this.game.gravity;
+
+    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+        var plat = this.game.platforms[i];
+        if (detectCollision(this, plat)) {
+            this.y -= this.game.clockTick * this.game.gravity;
+            break;
+        }
+    }
+
     if (this.x < -50) {
         this.x = 1000
     }
+    if (this.y > 700) {
+        this.x = 1000;
+        this.y = 300;
+    }
 
-    this.collisionX = this.x + 23;
-    this.collisionY = this.y + 30;
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 12;
     Entity.prototype.update.call(this);
 }
 
@@ -48,11 +62,12 @@ function Bat(game, x, y) {
     this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/bat.png"), 0, 47, 33, 42, .3, 3, true, false);
     this.goRight = new Animation(ASSET_MANAGER.getAsset("./img/bat.png"), 0, 96, 33, 42, .3, 3, true, false);
     this.speed = 150;
-    this.radius = 30;
     this.x = x;
     this.y = y;
-    this.collisionX = this.x + 50;
-    this.collisionY = this.y + 50;
+    this.collisionHeight = 40;
+    this.collisionWidth = 40;
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 20;
     this.flip = true;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
@@ -77,8 +92,8 @@ Bat.prototype.update = function () {
         this.x += this.game.clockTick * this.speed;
     }
 
-    this.collisionX = this.x + 30;
-    this.collisionY = this.y + 35;
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 20;
     Entity.prototype.update.call(this);
 }
 
