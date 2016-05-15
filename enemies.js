@@ -10,6 +10,8 @@ function Snake(game, x, y) {
     this.radius = 25;
     this.x = x;
     this.y = y;
+    //this.collisionWidth = 25;
+    //this.collisionHeight = 20;
     this.collisionX = this.x + 50;
     this.collisionY = this.y + 50;
  

@@ -47,12 +47,12 @@ ASSET_MANAGER.downloadAll(function () {
 	setupWorld(gameEngine);
 	
     //var tester = new test(gameEngine, 100, 100);
-    var snake = new Snake(gameEngine, 1000, 300);//y =495
-    var bat = new Bat(gameEngine, 950, 300);
+    //var snake = new Snake(gameEngine, 1000, 300);//y =495
+    //var bat = new Bat(gameEngine, 950, 300);
 
     //gameEngine.addEntity(tester);
-    gameEngine.addEntity(snake);
-    gameEngine.addEntity(bat);
+    //gameEngine.addEntity(snake);
+    //gameEngine.addEntity(bat);
     
 });
 

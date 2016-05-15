@@ -3,8 +3,10 @@ function Platform(game, x, y) {
     this.x = x;
     this.y = y;
     this.collisionSize = 70;
-    this.collisionX = x + (this.collisionSize / 2);
-    this.collisionY = y + (this.collisionSize / 2);
+    this.collisionWidth = 70;
+    this.collisionHeight = 70;
+    this.collisionX = x;
+    this.collisionY = y;
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
 
