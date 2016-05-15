@@ -29,8 +29,8 @@ var setupWorld = function (game) {
         game.addPlatform(ground);
     }
 
-    var plat = new Platform(game, 700, 350);
-    game.addPlatform(plat);
+    //var plat = new Platform(game, 700, 350);
+    //game.addPlatform(plat);
 
     for (var i = 800; i < 2000; i += 70) {
         var ground = new Platform(game, i, 530);

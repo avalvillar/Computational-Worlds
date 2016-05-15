@@ -17,22 +17,38 @@ function Laser(game, x, y, direction) {
     this.speed = 1000;
     this.direction = direction;
     this.count = 0;
-    this.radius = 15;
+    this.collisionHeight = 15;
+    this.collisionWidth = 32;
     
     this.x = x;
     this.y = y;
-    if (this.direction === "diagonal-right") { // collision circle
-        this.collisionX = this.x + 25;
-        this.collisionY = this.y + 20;
+    if (this.direction === "diagonal-right") {
+        this.speed = 800;
+        this.collisionHeight = 15;
+        this.collisionWidth = 15;
+        this.collisionX = this.x + 15;
+        this.collisionY = this.y + 15;
     } else if (this.direction === "diagonal-left") {
-        this.collisionX = this.x + 25;
-        this.collisionY = this.y + 20;
-    } else if (this.direction === "up") { 
+        this.speed = 800;
+        this.collisionHeight = 15;
+        this.collisionWidth = 15;
+        this.collisionX = this.x + 15;
+        this.collisionY = this.y + 10;
+    } else if (this.direction === "up") { // collision circle
+        this.collisionX = this.x + 10;
+        this.collisionY = this.y + 10;
+        this.collisionHeight = 32;
+        this.collisionWidth = 15;
+    } else if (this.direction === "right") {
+        this.collisionHeight = 15;
+        this.collisionWidth = 32;
         this.collisionX = this.x + 20;
-        this.collisionY = this.y + 25;
-    } else {
-        this.collisionX = this.x + 40;
-        this.collisionY = this.y + 70;
+        this.collisionY = this.y + 62;
+    } else if (this.direction == "left") {
+        this.collisionHeight = 15;
+        this.collisionWidth = 32;
+        this.collisionX = this.x + 30;
+        this.collisionY = this.y + 62;
     }
 
     this.blastDone = false;
@@ -51,7 +67,7 @@ Laser.prototype.collide = function (other) {
 Laser.prototype.collisionDetection = function (entity) {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (this.collide(ent)) { // kills entities that the laser collides with
+        if (detectCollision(this, ent)) { // kills entities that the laser collides with
             this.removeFromWorld = true;
             ent.removeFromWorld = true;
         }
@@ -81,17 +97,20 @@ Laser.prototype.update = function () {
         }
     }
     if (this.direction === "diagonal-right") {
-        this.collisionX = this.x + 25;
-        this.collisionY = this.y + 20;
+        this.collisionX = this.x + 15;
+        this.collisionY = this.y + 15;
     } else if (this.direction === "diagonal-left") {
-        this.collisionX = this.x + 25;
-        this.collisionY = this.y + 20;
+        this.collisionX = this.x + 15;
+        this.collisionY = this.y + 10;
     } else if (this.direction === "up") { // collision circle
+        this.collisionX = this.x + 10;
+        this.collisionY = this.y + 10;
+    } else if (this.direction === "right") {
         this.collisionX = this.x + 20;
-        this.collisionY = this.y + 25;
-    } else {
-        this.collisionX = this.x + 40;
-        this.collisionY = this.y + 70;
+        this.collisionY = this.y + 62;
+    } else if (this.direction == "left") {
+        this.collisionX = this.x + 30;
+        this.collisionY = this.y + 62;
     }
     Entity.prototype.update.call(this);
 }
@@ -182,10 +201,11 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
 
     this.running = false;
     this.lastDirection = "right";
-    //this.radius = 58;
     this.speed = 550;
     this.x = x;
     this.y = y;
+    this.laserCooldown = 20;
+    this.laserTimer = 0;
     //this.velocity = { x: 550, y: 0 };
     this.collisionHeight = 105;
     this.collisionWidth = 85;
@@ -215,7 +235,7 @@ Samus.prototype.platformCollision = function () {
                 //var difX = (this.x - plat.collisionX) / dist;
                 //var difY = (this.y - plat.collisionY) / dist;
             //this.y += difY * delta;
-            if (this.jumping) {
+            if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
                 this.jumpRight.elapsedTime = 0;
                 this.jumpLeft.elapsedTime = 0;
                 this.jumping = false;
@@ -236,7 +256,8 @@ Samus.prototype.platformCollision = function () {
 }
 
 Samus.prototype.chooseLaser = function() {
-    if (this.shoot && !this.jumping) {//spawns laser blasts
+    if (this.shoot && !this.jumping && this.laserTimer >= this.laserCooldown) {//spawns laser blasts
+        this.laserTimer = 0;
         if (this.game.right) {//shoot right
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x + 66, this.y + 34, "right");
@@ -332,6 +353,7 @@ Samus.prototype.collisionDetection = function () {
 }
 
 Samus.prototype.update = function () {
+    this.laserTimer++;
     if (this.game.space) this.jumping = true;
     if (this.game.shooting) this.shoot = true;
     if (this.game.up) {
