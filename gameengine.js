@@ -11,32 +11,6 @@ window.requestAnimFrame = (function () {
             };
 })();
 
-// This function can be used by all entities to see if they are colliding with a platform.
-// Circle to rectangle collision. Must pass the entity first and then the platform.
-var platformCollide = function (ent, platform) {
-    //var result;
-    var xDistance = Math.abs(ent.collisionX - platform.collisionX);
-    var yDistance = Math.abs(ent.collisionY - platform.collisionY);
-
-    if (xDistance > (platform.collisionWidth / 2 + ent.radius)) {
-        return false;
-    }
-    if (yDistance > (platform.collisionHeight / 2 + ent.radius)) {
-        return false;
-    }
-    if (xDistance <= (platform.collisionWidth / 2)) {
-        return true;
-    }
-    if (yDistance <= (platform.collisionHeight / 2)) {
-        return true;
-    }
-
-    var cornerDistance = Math.pow((xDistance - platform.collisionWidth / 2), 2) +
-                           Math.pow((yDistance - platform.collisionHeight / 2), 2)
-
-    return (cornerDistance <= Math.pow(ent.radius, 2));
-}
-
 var detectCollision = function(ent1, ent2) {
     if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
         ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
@@ -46,6 +20,15 @@ var detectCollision = function(ent1, ent2) {
     }
     return false;
 }
+
+// This method is for detecting if an entity is colliding on the top of a platform.
+// Can be used for any two rectangle collision boxes though.
+var collideTop = function (ent, plat) {
+    if (ent.collisionY + ent.collisionHeight < plat.y) {
+        return true;
+    }
+}
+
 function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
