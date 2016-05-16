@@ -114,9 +114,9 @@ Bat.prototype.draw = function (ctx) {
 function Alien(game, x, y) {
     // spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse
     this.goLeft = 
-    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 57, 25, 142, 93, 0.2, 4, true, false);
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 594, 25, 142, 93, 0.18, 4, true, true);
     this.goRight = 
-    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 57, 25, 142, 93, 0.2, 4, true, false);
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 581, 25, 142, 93, 0.18, 4, true, true);
     this.speed = 250;
     // this.radius = 88;
     this.x = x;
