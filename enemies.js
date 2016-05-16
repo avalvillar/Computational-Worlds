@@ -118,11 +118,14 @@ function Alien(game, x, y) {
     this.goRight = 
     new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 57, 25, 142, 93, 0.2, 4, true, false);
     this.speed = 250;
-    this.radius = 88;
+    // this.radius = 88;
     this.x = x;
     this.y = y;
     this.collisionX = this.x;
     this.collisionY = this.y;
+
+    this.collisionWidth = 163;
+    this.collisionHeight = 94;
     this.flip = true;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
@@ -132,19 +135,38 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
-    if (this.x < 0) {
-        this.flip = !this.flip;
-    } else if (this.x > 950) {
-        this.flip = !this.flip;
-    }
-    if (this.flip) {
-        this.x -= this.game.clockTick * this.speed;
-    } else {
-        this.x += this.game.clockTick * this.speed;
+    // if (this.x < 0) {
+    //     this.flip = !this.flip;
+    // } else if (this.x > 950) {
+    //     this.flip = !this.flip;
+    // }
+    // if (this.flip) {
+    //     this.x -= this.game.clockTick * this.speed;
+    // } else {
+    //     this.x += this.game.clockTick * this.speed;
+    // }
+
+    this.collisionX = this.x;
+    this.collisionY = this.y;
+
+    this.x -= this.game.clockTick * this.speed;
+    this.y += this.game.clockTick * this.game.gravity;
+
+    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+        var plat = this.game.platforms[i];
+        if (detectCollision(this, plat)) {
+            this.y -= this.game.clockTick * this.game.gravity;
+            break;
+        }
     }
 
-    this.collisionX = this.x + 80;
-    this.collisionY = this.y + 35;
+    if (this.x < -50) {
+        this.x = 1000
+    }
+    if (this.y > 700) {
+        this.x = 1000;
+        this.y = 300;
+    }
 
     Entity.prototype.update.call(this);
 }
