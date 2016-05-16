@@ -11,7 +11,41 @@ window.requestAnimFrame = (function () {
             };
 })();
 
+// This function can be used by all entities to see if they are colliding with a platform.
+// Circle to rectangle collision. Must pass the entity first and then the platform.
+var platformCollide = function (ent, platform) {
+    //var result;
+    var xDistance = Math.abs(ent.collisionX - platform.collisionX);
+    var yDistance = Math.abs(ent.collisionY - platform.collisionY);
 
+    if (xDistance > (platform.collisionWidth / 2 + ent.radius)) {
+        return false;
+    }
+    if (yDistance > (platform.collisionHeight / 2 + ent.radius)) {
+        return false;
+    }
+    if (xDistance <= (platform.collisionWidth / 2)) {
+        return true;
+    }
+    if (yDistance <= (platform.collisionHeight / 2)) {
+        return true;
+    }
+
+    var cornerDistance = Math.pow((xDistance - platform.collisionWidth / 2), 2) +
+                           Math.pow((yDistance - platform.collisionHeight / 2), 2)
+
+    return (cornerDistance <= Math.pow(ent.radius, 2));
+}
+
+var detectCollision = function(ent1, ent2) {
+    if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
+        ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
+        ent1.collisionY < ent2.collisionY + ent2.collisionHeight &&
+        ent1.collisionHeight + ent1.collisionY > ent2.collisionY) {
+        return true;
+    }
+    return false;
+}
 function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -31,6 +65,7 @@ Timer.prototype.tick = function () {
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
+    this.platforms = [];
     this.samus = null;
     this.background = null;
     this.showOutlines = true; // make false to hide collision boxes
@@ -40,6 +75,7 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.gravity = 600;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
@@ -116,10 +152,6 @@ GameEngine.prototype.startInput = function () {
         e.preventDefault();
     }, false);
 
-    //this.ctx.canvas.addEventListener("mouseup", function (e) {
-    //    that.shooting = true;
-    //}, false);
-
     console.log('Input started');
 }
 
@@ -135,10 +167,18 @@ GameEngine.prototype.setBackground = function (entity) {
     this.background = entity;
 }
 
+GameEngine.prototype.addPlatform = function (entity) {
+    this.platforms.push(entity);
+}
+
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
     this.background.draw(this.ctx);
+    for (var i = 0; i < this.platforms.length; i++) {
+        this.platforms[i].draw(this.ctx);
+    }
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
@@ -214,6 +254,15 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.arc(this.collisionX, this.collisionY, this.radius, 0, Math.PI * 2, false);
         this.game.ctx.stroke();
         this.game.ctx.closePath();
+    }
+
+    if (this.game.showOutlines && this.collisionWidth && this.collisionHeight) {
+        this.game.ctx.beginPath();
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "red";
+        this.game.ctx.rect(this.collisionX, this.collisionY, this.collisionWidth, this.collisionHeight);
+        this.game.ctx.stroke();
+
     }
 }
 
