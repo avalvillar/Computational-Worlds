@@ -1,5 +1,6 @@
 function Platform(game, x, y) {
     this.spritesheet = ASSET_MANAGER.getAsset("./img/cave_rock.png");
+    this.isPlatform = true;
     this.x = x;
     this.y = y;
     this.collisionSize = 70;
@@ -28,9 +29,18 @@ var setupWorld = function (game) {
         var ground = new Platform(game, i, 530);
         game.addPlatform(ground);
     }
+    
+    for (var i = 600; i > 0; i -= 70) {
+        var wall = new Platform(game, 0, i);
+        game.addPlatform(wall);
+    }
+    for (var i = 600; i > 0; i -= 70) {
+        var wall = new Platform(game, 1000, i);
+        game.addPlatform(wall);
+    }
 
-    //var plat = new Platform(game, 700, 350);
-    //game.addPlatform(plat);
+    var plat = new Platform(game, 700, 350);
+    game.addPlatform(plat);
 
     for (var i = 800; i < 2000; i += 70) {
         var ground = new Platform(game, i, 530);

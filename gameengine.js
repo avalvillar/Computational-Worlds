@@ -11,33 +11,23 @@ window.requestAnimFrame = (function () {
             };
 })();
 
-// This function can be used by all entities to see if they are colliding with a platform.
-// Circle to rectangle collision. Must pass the entity first and then the platform.
-var platformCollide = function (ent, platform) {
-    //var result;
-    var xDistance = Math.abs(ent.collisionX - platform.collisionX);
-    var yDistance = Math.abs(ent.collisionY - platform.collisionY);
+window.addEventListener("gamepadconnected", function (e) {
+    //For connecting a gamepad
+    console.log("gamepad connected", e.gamepad);
+});
 
-    if (xDistance > (platform.collisionWidth / 2 + ent.radius)) {
-        return false;
-    }
-    if (yDistance > (platform.collisionHeight / 2 + ent.radius)) {
-        return false;
-    }
-    if (xDistance <= (platform.collisionWidth / 2)) {
-        return true;
-    }
-    if (yDistance <= (platform.collisionHeight / 2)) {
-        return true;
-    }
+window.addEventListener("gamepaddisconnected", function (e) {
+    //disconnected gamepad
+    console.log("Gamepad " + e.gamepad.index + " disconnected.", e.gamepad);
+});
 
-    var cornerDistance = Math.pow((xDistance - platform.collisionWidth / 2), 2) +
-                           Math.pow((yDistance - platform.collisionHeight / 2), 2)
-
-    return (cornerDistance <= Math.pow(ent.radius, 2));
+function buttonPressed(b) {
+    if (typeof (b) === "object") {
+        return b.pressed;
+    }
 }
 
-var detectCollision = function(ent1, ent2) {
+var detectCollision = function (ent1, ent2) {
     if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
         ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
         ent1.collisionY < ent2.collisionY + ent2.collisionHeight &&
@@ -46,6 +36,54 @@ var detectCollision = function(ent1, ent2) {
     }
     return false;
 }
+
+// These methods are for detecting where an entity is colliding with a platform.
+// Detects if ent is colliding with small boxes lining platform
+var collideTop = function (ent, plat) {
+    if (detectCollision(ent,
+        { collisionWidth: plat.collisionWidth, collisionHeight: 5,
+            collisionX: plat.collisionX, collisionY: plat.collisionY - 5
+        })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideLeft = function (ent, plat) {
+    var right = ent.collisionX + ent.collisionWidth;
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX - 5, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideBottom = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: plat.collisionWidth, collisionHeight: 5,
+        collisionX: plat.collisionX, collisionY: plat.collisionY + plat.collisionHeight
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideRight = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX + plat.collisionWidth, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -62,17 +100,33 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
+function Camera(ctx, samus) {
+    this.x = 0;
+    this.y = 0;
+    this.width = ctx.canvas.width;
+    this.height = ctx.canvas.height;
+    this.samus = samus;
+}
+
+Camera.prototype.update = function () {
+    this.x += this.samus.velocity.x;
+    this.y += this.samus.velocity.y;
+}
+
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
     this.platforms = [];
     this.samus = null;
     this.background = null;
+    this.camera = null;
     this.showOutlines = true; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
     this.wheel = null;
+    this.button0Held = false; //Added to prevent holding of buttons and siliness. 
+    this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.gravity = 600;
@@ -102,7 +156,8 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     this.right = true;
     this.down = false;
-    this.up = false; 
+    this.up = false;
+    this.shooting = false;
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
@@ -190,6 +245,50 @@ GameEngine.prototype.draw = function () {
 }
 
 GameEngine.prototype.update = function () {
+    //poll gamepad
+    var that = this;
+    var gp = navigator.getGamepads()[0]; //only need gamnepad 0, single player game
+    if (gp) {
+        
+        if (buttonPressed(gp.buttons[0])) {
+            if (!that.button0Held) {
+                that.space = true;
+                that.button0Held = true;
+            }
+        } else {
+            that.button0Held = false;
+        }
+        if (buttonPressed(gp.buttons[1])) {
+            if (!that.button1Held) {
+                that.shooting = true;
+                that.button1Held = true;
+            }
+        } else {
+            that.button1Held = false;
+        }
+        if (gp.axes[0] > 0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = true;
+        } else if (gp.axes[0] < -0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = false;
+        } else {
+            that.running = false;
+        }
+        if (gp.axes[1] > 0.5) {
+            that.down = true;
+            that.running = false;
+        } else if (gp.axes[1] < -0.5) {
+            that.up = true;
+        } else {
+            that.up = false;
+            that.down = false;
+        }
+    }
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
 
@@ -209,6 +308,7 @@ GameEngine.prototype.update = function () {
         }
     }
 
+    //this.camera.update();
     this.background.update();
 
     if (!this.samus.removeFromWorld) {
@@ -225,13 +325,14 @@ GameEngine.prototype.update = function () {
             this.lasers.splice(i, 1);
         }
     }
+    
 }
 
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    this.space = null;
+    this.space = false;
     this.shooting = false;
 }
 
@@ -261,8 +362,17 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.lineWidth = "1";
         this.game.ctx.strokeStyle = "red";
         this.game.ctx.rect(this.collisionX, this.collisionY, this.collisionWidth, this.collisionHeight);
+        this.game.ctx.stroke(); 
+    }
+    if (this.game.showOutlines && this.isPlatform) {
+        this.game.ctx.beginPath(); //collide top boxes
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "orange";
+        this.game.ctx.rect(this.collisionX, this.collisionY - 5, this.collisionWidth, 5);
+        this.game.ctx.rect(this.collisionX + this.collisionWidth, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX - 5, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX, this.collisionY + this.collisionHeight, this.collisionWidth, 5);
         this.game.ctx.stroke();
-
     }
 }
 
