@@ -27,6 +27,63 @@ function buttonPressed(b) {
     }
 }
 
+var detectCollision = function (ent1, ent2) {
+    if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
+        ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
+        ent1.collisionY < ent2.collisionY + ent2.collisionHeight &&
+        ent1.collisionHeight + ent1.collisionY > ent2.collisionY) {
+        return true;
+    }
+    return false;
+}
+
+// These methods are for detecting where an entity is colliding with a platform.
+// Detects if ent is colliding with small boxes lining platform
+var collideTop = function (ent, plat) {
+    if (detectCollision(ent,
+        { collisionWidth: plat.collisionWidth, collisionHeight: 5,
+            collisionX: plat.collisionX, collisionY: plat.collisionY - 5
+        })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideLeft = function (ent, plat) {
+    var right = ent.collisionX + ent.collisionWidth;
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX - 5, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideBottom = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: plat.collisionWidth, collisionHeight: 5,
+        collisionX: plat.collisionX, collisionY: plat.collisionY + plat.collisionHeight
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideRight = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX + plat.collisionWidth, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -52,17 +109,18 @@ function Camera(ctx, samus) {
 }
 
 Camera.prototype.update = function () {
-    this.x += this.samus.dx;
-    this.y += this.samus.dy;
+    this.x += this.samus.velocity.x;
+    this.y += this.samus.velocity.y;
 }
 
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
+    this.platforms = [];
     this.samus = null;
     this.background = null;
     this.camera = null;
-    this.showOutlines = true;
+    this.showOutlines = true; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -71,6 +129,7 @@ function GameEngine() {
     this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.gravity = 600;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
@@ -114,7 +173,6 @@ GameEngine.prototype.startInput = function () {
         }
         if (String.fromCharCode(e.which) === 'W') {
             that.up = true;
-            //that.running = false;
         }
         if (String.fromCharCode(e.which) === 'A') {
             if (!that.down) {
@@ -126,6 +184,9 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'S') {
             that.running = false;
             that.down = true;
+        }
+        if (String.fromCharCode(e.which) === "\r") {
+            that.shooting = true;
         }
     }, false);
     this.ctx.canvas.addEventListener("keyup", function (e) {
@@ -150,8 +211,6 @@ GameEngine.prototype.startInput = function () {
         that.shooting = true;
     }, false);
 
-
-    
     console.log('Input started');
 }
 
@@ -167,10 +226,18 @@ GameEngine.prototype.setBackground = function (entity) {
     this.background = entity;
 }
 
+GameEngine.prototype.addPlatform = function (entity) {
+    this.platforms.push(entity);
+}
+
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
     this.background.draw(this.ctx);
+    for (var i = 0; i < this.platforms.length; i++) {
+        this.platforms[i].draw(this.ctx);
+    }
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
@@ -269,7 +336,7 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    this.space = null;
+    this.space = false;
     this.shooting = false;
 }
 
@@ -292,6 +359,24 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.arc(this.collisionX, this.collisionY, this.radius, 0, Math.PI * 2, false);
         this.game.ctx.stroke();
         this.game.ctx.closePath();
+    }
+
+    if (this.game.showOutlines && this.collisionWidth && this.collisionHeight) {
+        this.game.ctx.beginPath();
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "red";
+        this.game.ctx.rect(this.collisionX, this.collisionY, this.collisionWidth, this.collisionHeight);
+        this.game.ctx.stroke(); 
+    }
+    if (this.game.showOutlines && this.isPlatform) {
+        this.game.ctx.beginPath(); //collide top boxes
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "orange";
+        this.game.ctx.rect(this.collisionX, this.collisionY - 5, this.collisionWidth, 5);
+        this.game.ctx.rect(this.collisionX + this.collisionWidth, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX - 5, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX, this.collisionY + this.collisionHeight, this.collisionWidth, 5);
+        this.game.ctx.stroke();
     }
 }
 
