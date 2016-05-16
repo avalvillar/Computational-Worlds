@@ -83,8 +83,10 @@ Bat.prototype.update = function () {
     }  */
     if (this.x < 0) {
         this.flip = !this.flip;
+        this.x = 0;
     } else if (this.x > 950) {
         this.flip = !this.flip;
+        this.x = this.x - (this.x - 950);
     }
     if (this.flip) {
         this.x -= this.game.clockTick * this.speed;

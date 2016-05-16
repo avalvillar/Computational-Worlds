@@ -56,7 +56,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.collisionHeight = 105;
     this.collisionWidth = 85;
     this.ground = this.y;
-    this.grounded = true;
+    this.grounded = false;
     this.collisionX = this.x + 150;
     this.collisionY = this.y + 150;
 
@@ -172,20 +172,25 @@ Samus.prototype.platformCollision = function () {
     for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
         var plat = this.game.platforms[i];
         if (detectCollision(this, plat)) {
+            if (collideTop) {
+                this.ground = this.y;
+                this.grounded = true;
+            } else {
+                this.grounded = false;
+            }
 
             if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
                 this.jumpRight.elapsedTime = 0;
                 this.jumpLeft.elapsedTime = 0;
                 this.jumping = false;
             }
-            this.grounded = true;
             isColliding = true; 
             break;
         }
     }
 
-    if (!isColliding) {
-        this.grounded = false;
+    if (!this.grounded) {
+        //this.grounded = false;
         //this.y += this.game.clockTick * this.game.gravity;
         this.velocity.x = this.velocity.x / 10;
         this.velocity.y = this.game.clockTick * this.game.gravity;
