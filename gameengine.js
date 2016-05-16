@@ -11,7 +11,7 @@ window.requestAnimFrame = (function () {
             };
 })();
 
-var detectCollision = function(ent1, ent2) {
+var detectCollision = function (ent1, ent2) {
     if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
         ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
         ent1.collisionY < ent2.collisionY + ent2.collisionHeight &&
@@ -21,11 +21,50 @@ var detectCollision = function(ent1, ent2) {
     return false;
 }
 
-// This method is for detecting if an entity is colliding on the top of a platform.
-// Can be used for any two rectangle collision boxes though.
+// These methods are for detecting where an entity is colliding with a platform.
+// Detects if ent is colliding with small boxes lining platform
 var collideTop = function (ent, plat) {
-    if (ent.collisionY + ent.collisionHeight < plat.y) {
+    if (detectCollision(ent,
+        { collisionWidth: plat.collisionWidth, collisionHeight: 5,
+            collisionX: plat.collisionX, collisionY: plat.collisionY - 5
+        })) {
         return true;
+    } else {
+        return false;
+    }
+}
+
+var collideLeft = function (ent, plat) {
+    var right = ent.collisionX + ent.collisionWidth;
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX - 5, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideBottom = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: plat.collisionWidth, collisionHeight: 5,
+        collisionX: plat.collisionX, collisionY: plat.collisionY + plat.collisionHeight
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var collideRight = function (ent, plat) {
+    if (detectCollision(ent, {
+        collisionWidth: 5, collisionHeight: plat.collisionHeight,
+        collisionX: plat.collisionX + plat.collisionWidth, collisionY: plat.collisionY
+    })) {
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -214,7 +253,7 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    this.space = null;
+    this.space = false;
     this.shooting = false;
 }
 
@@ -244,8 +283,17 @@ Entity.prototype.draw = function (ctx) {
         this.game.ctx.lineWidth = "1";
         this.game.ctx.strokeStyle = "red";
         this.game.ctx.rect(this.collisionX, this.collisionY, this.collisionWidth, this.collisionHeight);
+        this.game.ctx.stroke(); 
+    }
+    if (this.game.showOutlines && this.isPlatform) {
+        this.game.ctx.beginPath(); //collide top boxes
+        this.game.ctx.lineWidth = "1";
+        this.game.ctx.strokeStyle = "orange";
+        this.game.ctx.rect(this.collisionX, this.collisionY - 5, this.collisionWidth, 5);
+        this.game.ctx.rect(this.collisionX + this.collisionWidth, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX - 5, this.collisionY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX, this.collisionY + this.collisionHeight, this.collisionWidth, 5);
         this.game.ctx.stroke();
-
     }
 }
 

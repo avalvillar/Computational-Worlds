@@ -66,6 +66,12 @@ Laser.prototype.collisionDetection = function (entity) {
             ent.removeFromWorld = true;
         }
     }
+    for (var i = 0; i < this.game.platforms.length; i++) {
+        var plat = this.game.platforms[i];
+        if (detectCollision(this, plat)) {
+            this.removeFromWorld = true;
+        }
+    }
 }
 
 Laser.prototype.update = function () {

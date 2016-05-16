@@ -54,7 +54,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.laserTimer = 0;
     this.velocity = { x: 0, y: 0 };
     this.collisionHeight = 105;
-    this.collisionWidth = 85;
+    this.collisionWidth = 70;
     this.ground = this.y;
     this.grounded = false;
     this.collisionX = this.x + 150;
@@ -71,9 +71,9 @@ Samus.prototype.collide = function (other) {
 };
 
 Samus.prototype.chooseLaser = function() {
-    if (this.shoot && !this.jumping && this.laserTimer >= this.laserCooldown) {//spawns laser blasts
+    if (this.shoot && !this.jumping && this.laserTimer >= this.laserCooldown) { // spawns laser blasts
         this.laserTimer = 0;
-        if (this.game.right) {//shoot right
+        if (this.game.right) { // shoot right
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x + 66, this.y + 34, "right");
                 this.game.addLaser(laser);
@@ -117,10 +117,10 @@ Samus.prototype.chooseLaser = function() {
 
 Samus.prototype.jump = function () {
     if (this.jumping) {
-        this.grounded = false;
         if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
             this.ground = this.y;
         }
+        this.grounded = false;
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
             this.jumpLeft.elapsedTime = 0;
@@ -145,6 +145,7 @@ Samus.prototype.jump = function () {
             jumpDistance = 1 - jumpDistance;
         }
         var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        //this.velocityY = this.ground - totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance)) - 15;
         this.y = this.ground - height - 15;
     }
 }
@@ -169,31 +170,56 @@ Samus.prototype.collisionDetection = function () {
 
 Samus.prototype.platformCollision = function () {
     var isColliding = false;
-    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+    var collideTopDown = false;
+    var collideSide = false;
+    for (var i = 0; i < this.game.platforms.length && (!collideTopDown || !collideSide); i++) { // platform detection
         var plat = this.game.platforms[i];
-        if (detectCollision(this, plat)) {
-            if (collideTop) {
+        if (Math.abs(this.collisionX - plat.collisionX) < 100 && Math.abs(this.collisionY - plat.collisionY) < 150) {
+            if (collideRight(this, plat) && !collideSide && this.velocity.x < 0) {
+                console.log("hit right");
+                this.x = plat.collisionX + plat.collisionWidth - 1;
+                this.velocity.x = 0;
+                collideSide = true;
+            }
+            if (collideLeft(this, plat) && !collideSide && this.velocity.x > 0) {
+                console.log("hit left");
+                this.x = plat.collisionX - this.collisionWidth;
+                this.velocity.x = 0;
+                collideSide = true;
+            }
+            if (collideTop(this, plat) && !collideTopDown) {
+                collideTopDown = true;
+                isColliding = true;
                 this.ground = this.y;
                 this.grounded = true;
-            } else {
+                console.log("hit top");
+                if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
+                    this.jumping = false;
+                    this.y = plat.collisionY - 105;
+                } 
+            }
+            if (collideBottom(this, plat) && !collideTopDown) {
+                console.log("hit bottom");
                 this.grounded = false;
+                collideTopDown = true;
+                this.y = plat.collisionY + plat.collisionHeight;
+                this.ground = this.y;
+                if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
+                    this.jumping = false;
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
+                    //this.y = plat.collisionY + plat.collisionHeight;
+                    this.velocity.y = 0;
+                }
             }
-
-            if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
-                this.jumpRight.elapsedTime = 0;
-                this.jumpLeft.elapsedTime = 0;
-                this.jumping = false;
-            }
-            isColliding = true; 
-            break;
         }
     }
 
-    if (!this.grounded) {
-        //this.grounded = false;
-        //this.y += this.game.clockTick * this.game.gravity;
-        this.velocity.x = this.velocity.x / 10;
+    if ((!this.grounded || !isColliding) && !this.jumping) {
         this.velocity.y = this.game.clockTick * this.game.gravity;
+        //this.ground = this.y + this.velocity;
     } else {
         this.velocity.y = 0;
     }
@@ -201,8 +227,7 @@ Samus.prototype.platformCollision = function () {
 
 Samus.prototype.update = function () {
     this.laserTimer++;
-    this.x += this.velocity.x;
-    this.y += this.velocity.y;
+    
     if (this.game.space) this.jumping = true;
     if (this.game.shooting) this.shoot = true;
     if (this.game.up) {
@@ -212,13 +237,19 @@ Samus.prototype.update = function () {
     }
     if (this.game.running) this.running = true;
 
+    
+    this.platformCollision(); // performs platform collision handling
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+    if (this.velocity.y > 0 && !this.jumping) {
+        this.ground.y = this.y;
+    }
+
     this.chooseLaser(); // fires laser blasts
 
     this.jump(); // performs jump logic
 
     this.collisionDetection(); // performs collision with enemy detection and handling.
-
-    this.platformCollision(); // performs platform collision handling
 
     if (this.running) {
         if (!this.game.running) {
@@ -263,7 +294,7 @@ Samus.prototype.update = function () {
             this.collisionY = this.y + 60;
         } else {
             this.collisionHeight = 105;
-            this.collisionWidth = 85;
+            this.collisionWidth = 60;
             this.collisionX = this.x + 12;
             this.collisionY = this.y + 35;
         }
@@ -285,8 +316,8 @@ Samus.prototype.update = function () {
             this.collisionY = this.y + 60;
         } else {
             this.collisionHeight = 105;
-            this.collisionWidth = 85;
-            this.collisionX = this.x + 30;
+            this.collisionWidth = 60;
+            this.collisionX = this.x + 55;
             this.collisionY = this.y + 35;
         }
     }
