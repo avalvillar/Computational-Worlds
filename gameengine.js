@@ -207,10 +207,6 @@ GameEngine.prototype.startInput = function () {
         e.preventDefault();
     }, false);
 
-    this.ctx.canvas.addEventListener("mouseup", function (e) {
-        that.shooting = true;
-    }, false);
-
     console.log('Input started');
 }
 
