@@ -11,6 +11,22 @@ window.requestAnimFrame = (function () {
             };
 })();
 
+window.addEventListener("gamepadconnected", function (e) {
+    //For connecting a gamepad
+    console.log("gamepad connected", e.gamepad);
+});
+
+window.addEventListener("gamepaddisconnected", function (e) {
+    //disconnected gamepad
+    console.log("Gamepad " + e.gamepad.index + " disconnected.", e.gamepad);
+});
+
+function buttonPressed(b) {
+    if (typeof (b) === "object") {
+        return b.pressed;
+    }
+}
+
 var detectCollision = function (ent1, ent2) {
     if (ent1.collisionX < ent2.collisionX + ent2.collisionWidth &&
         ent1.collisionX + ent1.collisionWidth > ent2.collisionX &&
@@ -84,17 +100,33 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
+function Camera(ctx, samus) {
+    this.x = 0;
+    this.y = 0;
+    this.width = ctx.canvas.width;
+    this.height = ctx.canvas.height;
+    this.samus = samus;
+}
+
+Camera.prototype.update = function () {
+    this.x += this.samus.velocity.x;
+    this.y += this.samus.velocity.y;
+}
+
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
     this.platforms = [];
     this.samus = null;
     this.background = null;
+    this.camera = null;
     this.showOutlines = true; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
     this.wheel = null;
+    this.button0Held = false; //Added to prevent holding of buttons and siliness. 
+    this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.gravity = 600;
@@ -124,7 +156,8 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     this.right = true;
     this.down = false;
-    this.up = false; 
+    this.up = false;
+    this.shooting = false;
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
@@ -174,6 +207,10 @@ GameEngine.prototype.startInput = function () {
         e.preventDefault();
     }, false);
 
+    this.ctx.canvas.addEventListener("mouseup", function (e) {
+        that.shooting = true;
+    }, false);
+
     console.log('Input started');
 }
 
@@ -212,6 +249,50 @@ GameEngine.prototype.draw = function () {
 }
 
 GameEngine.prototype.update = function () {
+    //poll gamepad
+    var that = this;
+    var gp = navigator.getGamepads()[0]; //only need gamnepad 0, single player game
+    if (gp) {
+        
+        if (buttonPressed(gp.buttons[0])) {
+            if (!that.button0Held) {
+                that.space = true;
+                that.button0Held = true;
+            }
+        } else {
+            that.button0Held = false;
+        }
+        if (buttonPressed(gp.buttons[1])) {
+            if (!that.button1Held) {
+                that.shooting = true;
+                that.button1Held = true;
+            }
+        } else {
+            that.button1Held = false;
+        }
+        if (gp.axes[0] > 0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = true;
+        } else if (gp.axes[0] < -0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = false;
+        } else {
+            that.running = false;
+        }
+        if (gp.axes[1] > 0.5) {
+            that.down = true;
+            that.running = false;
+        } else if (gp.axes[1] < -0.5) {
+            that.up = true;
+        } else {
+            that.up = false;
+            that.down = false;
+        }
+    }
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
 
@@ -231,6 +312,7 @@ GameEngine.prototype.update = function () {
         }
     }
 
+    //this.camera.update();
     this.background.update();
 
     if (!this.samus.removeFromWorld) {
@@ -247,6 +329,7 @@ GameEngine.prototype.update = function () {
             this.lasers.splice(i, 1);
         }
     }
+    
 }
 
 GameEngine.prototype.loop = function () {

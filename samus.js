@@ -176,13 +176,13 @@ Samus.prototype.platformCollision = function () {
         var plat = this.game.platforms[i];
         if (Math.abs(this.collisionX - plat.collisionX) < 100 && Math.abs(this.collisionY - plat.collisionY) < 150) {
             if (collideRight(this, plat) && !collideSide && this.velocity.x < 0) {
-                console.log("hit right");
+                //console.log("hit right");
                 this.x = plat.collisionX + plat.collisionWidth - 1;
                 this.velocity.x = 0;
                 collideSide = true;
             }
             if (collideLeft(this, plat) && !collideSide && this.velocity.x > 0) {
-                console.log("hit left");
+                //console.log("hit left");
                 this.x = plat.collisionX - this.collisionWidth;
                 this.velocity.x = 0;
                 collideSide = true;
@@ -192,7 +192,7 @@ Samus.prototype.platformCollision = function () {
                 isColliding = true;
                 this.ground = this.y;
                 this.grounded = true;
-                console.log("hit top");
+                //console.log("hit top");
                 if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
@@ -201,7 +201,7 @@ Samus.prototype.platformCollision = function () {
                 } 
             }
             if (collideBottom(this, plat) && !collideTopDown) {
-                console.log("hit bottom");
+                //console.log("hit bottom");
                 this.grounded = false;
                 collideTopDown = true;
                 this.y = plat.collisionY + plat.collisionHeight;
