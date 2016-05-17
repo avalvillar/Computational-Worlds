@@ -247,6 +247,7 @@ Samus.prototype.platformCollision = function () {
 }
 
 Samus.prototype.update = function () {
+    if (!this.game.startGame) return;
     this.laserTimer++;
     
     if (this.game.space) this.jumping = true;

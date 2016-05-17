@@ -29,6 +29,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
+    gameEngine.addEntity(new Health(gameEngine));
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
@@ -148,6 +149,7 @@ Health.prototype = new Entity();
 Health.prototype.constructor = Health;
 
 Health.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     this.game.ctx.beginPath();
     this.game.ctx.lineWidth = "3";
     this.game.ctx.fillStyle = "black";
@@ -167,6 +169,7 @@ Health.prototype.draw = function (ctx) {
 };
 
 Health.prototype.update = function () {
+    if (!this.game.startGame) return;
     this.currentHealthWidth = samus.health;
     if (samus.health > 0) samus.health -= 0.2;
     // console.log(samus.health);

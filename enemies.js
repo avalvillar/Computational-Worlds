@@ -21,6 +21,7 @@ Snake.prototype = new Entity();
 Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
+    if (!this.game.startGame) return;
     this.x -= this.game.clockTick * this.speed;
     this.y += this.game.clockTick * this.game.gravity;
 
@@ -77,6 +78,7 @@ Bat.prototype = new Entity();
 Bat.prototype.constructor = Snake;
 
 Bat.prototype.update = function () {
+    if (!this.game.startGame) return;
    /* this.x -= this.game.clockTick * this.speed;
     if (this.x < -50) {
         this.x = 1000
@@ -139,6 +141,7 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
+    if (!this.game.startGame) return;
     // if (this.x < 0) {
     //     this.flip = !this.flip;
     // } else if (this.x > 950) {

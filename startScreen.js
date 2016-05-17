@@ -26,8 +26,10 @@ StartScreen.prototype.draw = function(ctx) {
 	} else if (this.titleScreen) {
 		ctx.fillStyle = "black";
 		ctx.font = '50px Courier New';
-		ctx.fillText("Press M To begin", 400 , 200);
-		ctx.fillText("Controls Go Here", 400 , 300);
+		ctx.fillText("I'm Not From Here", 390, 200);
+		ctx.fillText("Press M To begin", 400 , 300);
+		ctx.fillStyle = "red";
+		ctx.fillText("Controls Go Here", 400 , 400);
 	}
 };
 
