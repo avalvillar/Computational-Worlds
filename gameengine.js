@@ -240,6 +240,7 @@ GameEngine.prototype.draw = function () {
     for (var i = 0; i < this.lasers.length; i++) {
         this.lasers[i].draw(this.ctx);
     }
+    // this.
     this.samus.draw(this.ctx);
     this.ctx.restore();
 }
