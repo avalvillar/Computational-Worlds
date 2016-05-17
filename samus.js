@@ -126,13 +126,13 @@ Samus.prototype.jump = function () {
             this.jumpLeft.elapsedTime = 0;
             this.jumping = false;
         }
-        if (this.game.right) {//jump right
-            if (this.jumpLeft.elapsedTime > 0) {//enables player to switch directions while jumping
+        if (this.game.right) { // jump right
+            if (this.jumpLeft.elapsedTime > 0) { // enables player to switch directions while jumping
                 this.jumpRight.elapsedTime += this.jumpLeft.elapsedTime;
                 this.jumpLeft.elapsedTime = 0;
             }
             var jumpDistance = (this.jumpRight.elapsedTime) / this.jumpRight.totalTime;
-        } else {//jump left
+        } else { // jump left
             if (this.jumpRight.elapsedTime > 0) {
                 this.jumpLeft.elapsedTime += this.jumpRight.elapsedTime;
                 this.jumpRight.elapsedTime = 0;
@@ -147,6 +147,8 @@ Samus.prototype.jump = function () {
         var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
         //this.velocityY = this.ground - totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance)) - 15;
         this.y = this.ground - height - 15;
+        //this.velocity.y = this.ground - height - 15;
+
     }
 }
 
@@ -190,23 +192,27 @@ Samus.prototype.platformCollision = function () {
             if (collideTop(this, plat) && !collideTopDown) {
                 collideTopDown = true;
                 isColliding = true;
-                this.ground = this.y;
+                //this.ground = this.y;
+                this.ground = plat.collisionY - 5;
                 this.grounded = true;
+                this.y = this.ground - 105;
                 console.log("hit top");
-                if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
+                if (this.jumping && (this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5)) {
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     this.y = plat.collisionY - 105;
+                    //this.ground = this.y;
                 } 
             }
             if (collideBottom(this, plat) && !collideTopDown) {
                 console.log("hit bottom");
                 this.grounded = false;
                 collideTopDown = true;
-                this.y = plat.collisionY + plat.collisionHeight;
-                this.ground = this.y;
-                if (this.jumping && this.jumpRight.elapsedTime > 5 || this.jumpLeft.elapsedTime > 5) {
+                //this.y = plat.collisionY + plat.collisionHeight;
+                //this.ground = this.y;
+                this.ground = plat.collisionY;
+                if (this.jumping) {
                     this.jumping = false;
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
