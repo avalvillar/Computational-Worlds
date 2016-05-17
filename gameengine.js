@@ -230,6 +230,10 @@ GameEngine.prototype.addPlatform = function (entity) {
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
+    /* This is for translation of the viewpoint. 
+       I need to figure out how to translate the camera offset onto these
+       translations. */
+    //this.ctx.translate(offsetX, offsetY);
     this.background.draw(this.ctx);
     for (var i = 0; i < this.platforms.length; i++) {
         this.platforms[i].draw(this.ctx);
