@@ -1,5 +1,5 @@
 /**************************************************************************
-    Start Screen - allows a user to begin the game and showing them
+    Start Screen - allows a user to begin the game and shows them
     the controls of the game.
  */
 
@@ -11,7 +11,6 @@ function StartScreen(game) {
 
 StartScreen.prototype = new Entity();
 StartScreen.prototype.constructor = StartScreen;
-console.log('making');
 
 StartScreen.prototype.draw = function(ctx) {
 	ctx.fillStyle = "black";
@@ -20,9 +19,7 @@ StartScreen.prototype.draw = function(ctx) {
 		this.titleScreen = false;
 		this.removeFromWorld = true;
 
-		//					//
 		//		START GAME NOW		//
-		//					//
 	} else if (this.titleScreen) {
 		ctx.fillStyle = "darkgrey";
 		ctx.font = '50px Courier New';
