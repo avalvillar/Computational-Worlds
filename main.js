@@ -118,7 +118,7 @@ Background.prototype.draw = function (ctx) {
 
     ////Clamp the camera position to the world bounds while centering the camera around the player                                             
     //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
-    //var camY = clamp(-(this.game.samus.y + 105) + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+    //var camY = clamp(-this.game.samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
 
 
     //ctx.translate(camX, camY);
@@ -127,9 +127,8 @@ Background.prototype.draw = function (ctx) {
 Background.prototype.update = function () {
 };
 
-
-//function clamp(value, min, max) {
-//    if (value < min) return min;
-//    else if (value > max) return max;
-//    return value;
-//} 
+function clamp(value, min, max) {
+    if (value < min) return min;
+    else if (value > max) return max;
+    return value;
+} 
