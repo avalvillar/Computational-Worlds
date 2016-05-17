@@ -20,9 +20,9 @@ StartScreen.prototype.draw = function(ctx) {
 		this.titleScreen = false;
 		this.removeFromWorld = true;
 
-		//							//
+		//					//
 		//		START GAME NOW		//
-		//							//
+		//					//
 	} else if (this.titleScreen) {
 		ctx.fillStyle = "darkgrey";
 		ctx.font = '50px Courier New';
@@ -32,7 +32,7 @@ StartScreen.prototype.draw = function(ctx) {
 		ctx.fillText("Press M To begin", 450 , 300);
 		ctx.fillStyle = "grey";
 		ctx.font = '25px Courier New';
-		ctx.fillText("you crashed your ship landed on a strange alien planet", 270 , 400);
+		ctx.fillText("you crashed your ship on a strange alien planet", 290 , 400);
 		ctx.fillText("you must continue to survive", 430, 450);
 	}
 };
