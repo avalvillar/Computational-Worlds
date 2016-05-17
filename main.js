@@ -34,7 +34,7 @@ ASSET_MANAGER.downloadAll(function () {
 	
     //var tester = new test(gameEngine, 100, 100);
     var snake = new Snake(gameEngine, 1000, 300);//y =495
-    var bat = new Bat(gameEngine, 950, 300);
+    var bat = new Bat(gameEngine, 950, 100);
 
     var alien = new Alien(gameEngine, 900, 438);
     gameEngine.addEntity(alien);
@@ -119,7 +119,7 @@ Background.prototype.draw = function (ctx) {
 
     ////Clamp the camera position to the world bounds while centering the camera around the player                                             
     //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
-    //var camY = clamp(-(this.game.samus.y + 105) + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+    //var camY = clamp(-this.game.samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
 
 
     //ctx.translate(camX, camY);
@@ -169,9 +169,8 @@ Health.prototype.update = function () {
     // console.log(samus.health);
 };
 
-
-//function clamp(value, min, max) {
-//    if (value < min) return min;
-//    else if (value > max) return max;
-//    return value;
-//} 
+function clamp(value, min, max) {
+    if (value < min) return min;
+    else if (value > max) return max;
+    return value;
+} 
