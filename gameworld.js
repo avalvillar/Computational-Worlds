@@ -34,10 +34,10 @@ var setupWorld = function (game) {
         var wall = new Platform(game, 0, i);
         game.addPlatform(wall);
     }
-    for (var i = 600; i > 0; i -= 70) {
+   /* for (var i = 600; i > 0; i -= 70) {
         var wall = new Platform(game, 1000, i);
         game.addPlatform(wall);
-    }
+    }*/
 
     var plat = new Platform(game, 700, 350);
     var plat2 = new Platform(game, 770, 350);

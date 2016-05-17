@@ -100,19 +100,6 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
-function Camera(ctx, samus) {
-    this.x = 0;
-    this.y = 0;
-    this.width = ctx.canvas.width;
-    this.height = ctx.canvas.height;
-    this.samus = samus;
-}
-
-Camera.prototype.update = function () {
-    this.x += this.samus.velocity.x;
-    this.y += this.samus.velocity.y;
-}
-
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
@@ -129,6 +116,8 @@ function GameEngine() {
     this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.offsetX = 0;
+    this.offsetY = 0;
     this.gravity = 900;
 }
 
@@ -140,6 +129,7 @@ GameEngine.prototype.init = function (ctx, samus, background) {
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
+    this.camera = new Camera(this);
     console.log('game initialized');
 }
 
@@ -228,12 +218,14 @@ GameEngine.prototype.addPlatform = function (entity) {
 
 
 GameEngine.prototype.draw = function () {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
+    
+
+    //this.ctx.translate(this.offsetX, this.offsetY);
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     /* This is for translation of the viewpoint. 
        I need to figure out how to translate the camera offset onto these
        translations. */
-    //this.ctx.translate(offsetX, offsetY);
     this.background.draw(this.ctx);
     for (var i = 0; i < this.platforms.length; i++) {
         this.platforms[i].draw(this.ctx);
@@ -293,6 +285,11 @@ GameEngine.prototype.update = function () {
             that.down = false;
         }
     }
+    if (!this.samus.removeFromWorld) {
+        this.samus.update();
+    }
+    this.camera.update();
+    this.background.update();
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
 
@@ -301,6 +298,9 @@ GameEngine.prototype.update = function () {
 
         if (!entity.removeFromWorld) {
             entity.update();
+        } else {
+            this.entities.splice(i, 1);
+            i--;
         }
     }
 
@@ -309,26 +309,27 @@ GameEngine.prototype.update = function () {
 
         if (!entity.removeFromWorld) {
             entity.update();
+        } else {
+            this.lasers.splice(i, 1);
+            i--;
         }
     }
 
-    //this.camera.update();
-    this.background.update();
+    
+    
 
-    if (!this.samus.removeFromWorld) {
-        this.samus.update();
-    }
+    /*
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
         if (this.entities[i].removeFromWorld) {
-            this.entities.splice(i, 1);
+            
         }
     }
     for (var i = this.lasers.length - 1; i >= 0; --i) {
         if (this.lasers[i].removeFromWorld) {
-            this.lasers.splice(i, 1);
+            
         }
-    }
+    }*/
     
 }
 
