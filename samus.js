@@ -349,6 +349,7 @@ Samus.prototype.update = function () {
 }
 
 Samus.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
             this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34, 3);

@@ -21,24 +21,27 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.focus();
     var ctx = canvas.getContext('2d');
 
-	var gameEngine = new GameEngine();
+    var gameEngine = new GameEngine();
     samus = new Samus(gameEngine, 200, 200);
 
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
+    var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
 
-	gameEngine.init(ctx, samus, bg);
-	gameEngine.start();
+    var start = new StartScreen(gameEngine);
+    gameEngine.addEntity(start);
 
-	setupWorld(gameEngine);
-	
+    gameEngine.init(ctx, samus, bg);
+    gameEngine.start();
+
+    setupWorld(gameEngine);
+    
     //var tester = new test(gameEngine, 100, 100);
     var snake = new Snake(gameEngine, 1000, 300);//y =495
     var bat = new Bat(gameEngine, 950, 100);
 
     var alien = new Alien(gameEngine, 900, 438);
     gameEngine.addEntity(alien);
-    gameEngine.addEntity(new Health(gameEngine));
+
     //gameEngine.addEntity(tester);
     gameEngine.addEntity(snake);
     gameEngine.addEntity(bat);

@@ -120,11 +120,7 @@ function GameEngine() {
     this.samus = null;
     this.background = null;
     this.camera = null;
-// <<<<<<< HEAD
-//     this.showOutlines = true; // make false to hide collision boxes
-// =======
     this.showOutlines = false; // make false to hide collision boxes
-// >>>>>>> master
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -134,6 +130,7 @@ function GameEngine() {
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.gravity = 900;
+    this.startGame = false;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
@@ -165,6 +162,10 @@ GameEngine.prototype.startInput = function () {
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
+        if (String.fromCharCode(e.which) === 'M') {
+            that.startGame = true;
+            // e.preventDefault();
+        }
         if (String.fromCharCode(e.which) === ' ') {
             that.space = true;
             e.preventDefault();
@@ -244,7 +245,6 @@ GameEngine.prototype.draw = function () {
     for (var i = 0; i < this.lasers.length; i++) {
         this.lasers[i].draw(this.ctx);
     }
-    // this.
     this.samus.draw(this.ctx);
     this.ctx.restore();
 }

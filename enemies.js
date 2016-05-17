@@ -46,6 +46,7 @@ Snake.prototype.update = function () {
 }
 
 Snake.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     Entity.prototype.draw.call(this);
 }
@@ -99,6 +100,7 @@ Bat.prototype.update = function () {
 }
 
 Bat.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.flip) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     } else {
@@ -174,6 +176,7 @@ Alien.prototype.update = function () {
 }
 
 Alien.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.flip) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     } else {
