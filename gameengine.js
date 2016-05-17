@@ -120,7 +120,7 @@ function GameEngine() {
     this.samus = null;
     this.background = null;
     this.camera = null;
-    this.showOutlines = true; // make false to hide collision boxes
+    this.showOutlines = false; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -129,7 +129,7 @@ function GameEngine() {
     this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
-    this.gravity = 600;
+    this.gravity = 900;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
