@@ -201,6 +201,7 @@ Samus.prototype.platformCollision = function () {
                 }
             }
             if (collideTop(this, plat) && !collideTopDown) {
+                //console.log("hit top");
                 collideTopDown = true;
                 isColliding = true;
 
@@ -209,18 +210,17 @@ Samus.prototype.platformCollision = function () {
 
                 this.grounded = true;
                 this.y = this.ground;
-                console.log("hit top");
                 if (this.jumping && (this.jumpRight.elapsedTime > 1 || this.jumpLeft.elapsedTime > 1)) {
 
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
-                    this.y = plat.collisionY - 105;
+                    //this.y = plat.collisionY - 105;
                     //this.ground = this.y;
                 } 
             }
             if (collideBottom(this, plat) && !collideTopDown) {
-                //console.log("hit bottom");
+                //console.log("hit bottom :( ");
                 this.grounded = false;
                 collideTopDown = true;
                 //this.y = plat.collisionY + plat.collisionHeight;
@@ -281,16 +281,12 @@ Samus.prototype.update = function () {
                 } else {
                     this.velocity.x = this.game.clockTick * this.speed / 2;
                 } 
-                //this.x += this.game.clockTick * this.speed;
-                if (this.x > 1200) this.x = -100;
             } else if (!this.game.right) {
                 if (this.grounded || this.jumping) {
                     this.velocity.x = -(this.game.clockTick * this.speed);
                 } else {
                     this.velocity.x = -(this.game.clockTick * this.speed / 2);
                 }
-                //this.x -= this.game.clockTick * this.speed;
-                if (this.x < -100) this.x = 1000;
             }
         }
     } else {
@@ -346,7 +342,7 @@ Samus.prototype.update = function () {
 }
 
 Samus.prototype.draw = function (ctx) {
-    if (this.game.right) {//draw right facing sprites
+    if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
             this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34, 3);
         } else if (this.game.down) { // down right
@@ -370,7 +366,7 @@ Samus.prototype.draw = function (ctx) {
         } else {
             this.idleRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
         }
-    } else if (!this.game.right) {//draw left facing sprites
+    } else if (!this.game.right) { // draw left facing sprites
         if (this.jumping) { // left jumping
             this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34, 3);
         } else if (this.game.down) { // down left

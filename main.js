@@ -33,7 +33,7 @@ ASSET_MANAGER.downloadAll(function () {
 	
     //var tester = new test(gameEngine, 100, 100);
     var snake = new Snake(gameEngine, 1000, 300);//y =495
-    var bat = new Bat(gameEngine, 950, 300);
+    var bat = new Bat(gameEngine, 950, 100);
 
     var alien = new Alien(gameEngine, 900, 438);
     gameEngine.addEntity(alien);
