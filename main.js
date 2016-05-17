@@ -5,6 +5,7 @@ ASSET_MANAGER.queueDownload("./img/greySnake.png");
 //ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
 ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
@@ -24,7 +25,7 @@ ASSET_MANAGER.downloadAll(function () {
 	var samus = new Samus(gameEngine, 200, 200);
 
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
+	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
 	gameEngine.init(ctx, samus, bg);
 	gameEngine.start();
@@ -36,11 +37,11 @@ ASSET_MANAGER.downloadAll(function () {
     var bat = new Bat(gameEngine, 950, 100);
 
     var alien = new Alien(gameEngine, 900, 438);
-    gameEngine.addEntity(alien);
+    /*gameEngine.addEntity(alien);
 
     //gameEngine.addEntity(tester);
     gameEngine.addEntity(snake);
-    gameEngine.addEntity(bat);
+    gameEngine.addEntity(bat); */
     
 });
 
@@ -110,7 +111,7 @@ Background.prototype.constructor = Background;
 
 Background.prototype.draw = function (ctx) {
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x, this.y, 2000, 600);
+                 this.x, this.y, 9000, 900);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
