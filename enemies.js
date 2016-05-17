@@ -51,7 +51,6 @@ Snake.prototype.draw = function (ctx) {
 }
 
 
-
 /*************************************************************************************
 	BAT
 */
@@ -104,6 +103,81 @@ Bat.prototype.draw = function (ctx) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     } else {
         this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
+    }
+    //this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
+    //this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
+    Entity.prototype.draw.call(this);
+}
+
+
+/*************************************************************************************
+    ALIEN
+*/
+function Alien(game, x, y) {
+    // spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse
+    this.goLeft = 
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 594, 25, 142, 93, 0.18, 4, true, true);
+    this.goRight = 
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 581, 25, 142, 93, 0.18, 4, true, true);
+    this.speed = 250;
+    // this.radius = 88;
+    this.x = x;
+    this.y = y;
+    this.collisionX = this.x;
+    this.collisionY = this.y;
+
+    this.collisionWidth = 163;
+    this.collisionHeight = 94;
+    this.flip = true;
+
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
+}
+
+Alien.prototype = new Entity();
+Alien.prototype.constructor = Alien;
+
+Alien.prototype.update = function () {
+    // if (this.x < 0) {
+    //     this.flip = !this.flip;
+    // } else if (this.x > 950) {
+    //     this.flip = !this.flip;
+    // }
+    // if (this.flip) {
+    //     this.x -= this.game.clockTick * this.speed;
+    // } else {
+    //     this.x += this.game.clockTick * this.speed;
+    // }
+
+    this.collisionX = this.x;
+    this.collisionY = this.y;
+
+    this.x -= this.game.clockTick * this.speed;
+    this.y += this.game.clockTick * this.game.gravity;
+
+    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+        var plat = this.game.platforms[i];
+        if (detectCollision(this, plat)) {
+            this.y -= this.game.clockTick * this.game.gravity;
+            break;
+        }
+    }
+
+    if (this.x < -50) {
+        this.x = 1000
+    }
+    if (this.y > 700) {
+        this.x = 1000;
+        this.y = 300;
+    }
+
+    Entity.prototype.update.call(this);
+}
+
+Alien.prototype.draw = function (ctx) {
+    if (this.flip) {
+        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+    } else {
+        this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     }
     //this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     //this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
