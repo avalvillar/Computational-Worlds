@@ -14,7 +14,7 @@ StartScreen.prototype.constructor = StartScreen;
 console.log('making');
 
 StartScreen.prototype.draw = function(ctx) {
-	ctx.fillStyle = "white";
+	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, 2000, 600);
 	if (this.game.startGame) {
 		this.titleScreen = false;
@@ -24,16 +24,19 @@ StartScreen.prototype.draw = function(ctx) {
 		//		START GAME NOW		//
 		//							//
 	} else if (this.titleScreen) {
-		ctx.fillStyle = "black";
+		ctx.fillStyle = "darkgrey";
 		ctx.font = '50px Courier New';
 		ctx.fillText("I'm Not From Here", 390, 200);
-		ctx.fillText("Press M To begin", 400 , 300);
 		ctx.fillStyle = "red";
-		ctx.fillText("Controls Go Here", 400 , 400);
+		ctx.font = '40px Courier New';
+		ctx.fillText("Press M To begin", 450 , 300);
+		ctx.fillStyle = "grey";
+		ctx.font = '25px Courier New';
+		ctx.fillText("you crashed your ship landed on a strange alien planet", 270 , 400);
+		ctx.fillText("you must continue to survive", 430, 450);
 	}
 };
 
 StartScreen.prototype.update = function() {
-	// if (this.game.buttonPressed == "P") console.log(this.game.buttonPressed);
 };
 
