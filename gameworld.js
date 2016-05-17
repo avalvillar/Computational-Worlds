@@ -42,7 +42,7 @@ var setupWorld = function (game) {
     var plat = new Platform(game, 700, 350);
     var plat2 = new Platform(game, 770, 350);
     game.addPlatform(plat);
-    game.addPlatform(plat2);
+    //game.addPlatform(plat2);
 
     var plat = new Platform(game, 550, 200);
     var plat2 = new Platform(game, 480, 200);

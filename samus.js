@@ -59,6 +59,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.grounded = false;
     this.collisionX = this.x + 150;
     this.collisionY = this.y + 150;
+    this.jumpCount = 0;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -178,6 +179,41 @@ Samus.prototype.platformCollision = function () {
         var plat = this.game.platforms[i];
         if (Math.abs(this.collisionX - plat.collisionX) < 100 && Math.abs(this.collisionY - plat.collisionY) < 150) {
 
+            if (!collideTopDown && collideTop(this, plat)) {
+                console.log("hit top");
+                collideTopDown = true;
+                isColliding = true;
+                this.jumpCount = 0;
+                //this.ground = this.y;
+                this.ground = plat.collisionY - 140; // for some reason 140 just works...
+
+                this.grounded = true;
+                this.y = this.ground;
+                if (this.jumping && (this.jumpRight.elapsedTime > 1 || this.jumpLeft.elapsedTime > 1)) {
+
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
+                    this.jumping = false;
+                    //this.y = plat.collisionY - 105;
+                    //this.ground = this.y;
+                }
+            }
+            if (!collideTopDown && collideBottom(this, plat)) {
+                //console.log("hit bottom :( ");
+                this.grounded = false;
+                collideTopDown = true;
+                //this.y = plat.collisionY + plat.collisionHeight;
+                //this.ground = this.y;
+                this.ground = plat.collisionY;
+                if (this.jumping) {
+                    this.jumping = false;
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
+                    //this.y = plat.collisionY + plat.collisionHeight;
+                    this.velocity.y = 0;
+                }
+            }
+
             if (collideRight(this, plat) && !collideSide && (this.velocity.x < 0 || this.jumping)) {
                 //console.log("hit right");
                 this.x = plat.collisionX + plat.collisionWidth - 30;
@@ -200,40 +236,7 @@ Samus.prototype.platformCollision = function () {
                     this.jumpLeft.elapsedTime = 0;
                 }
             }
-            if (collideTop(this, plat) && !collideTopDown) {
-                //console.log("hit top");
-                collideTopDown = true;
-                isColliding = true;
-
-                //this.ground = this.y;
-                this.ground = plat.collisionY - 140; // for some reason 140 just works...
-
-                this.grounded = true;
-                this.y = this.ground;
-                if (this.jumping && (this.jumpRight.elapsedTime > 1 || this.jumpLeft.elapsedTime > 1)) {
-
-                    this.jumpRight.elapsedTime = 0;
-                    this.jumpLeft.elapsedTime = 0;
-                    this.jumping = false;
-                    //this.y = plat.collisionY - 105;
-                    //this.ground = this.y;
-                } 
-            }
-            if (collideBottom(this, plat) && !collideTopDown) {
-                //console.log("hit bottom :( ");
-                this.grounded = false;
-                collideTopDown = true;
-                //this.y = plat.collisionY + plat.collisionHeight;
-                //this.ground = this.y;
-                this.ground = plat.collisionY;
-                if (this.jumping) {
-                    this.jumping = false;
-                    this.jumpRight.elapsedTime = 0;
-                    this.jumpLeft.elapsedTime = 0;
-                    //this.y = plat.collisionY + plat.collisionHeight;
-                    this.velocity.y = 0;
-                }
-            }
+            
         }
     }
 
@@ -248,7 +251,14 @@ Samus.prototype.platformCollision = function () {
 Samus.prototype.update = function () {
     this.laserTimer++;
     
-    if (this.game.space) this.jumping = true;
+    if (this.game.space && this.jumpCount === 0) {
+        this.jumping = true;
+        console.log("jump is good " + this.jumpCount);
+    }
+    if (this.jumping && !this.grounded) {
+        this.jumpCount = 1;
+        console.log(this.jumpCount);
+    }
     if (this.game.shooting) this.shoot = true;
     if (this.game.up) {
         this.up = true;
