@@ -79,15 +79,15 @@ Laser.prototype.update = function () {
     if (this.blastDone || this.game.running) {
         if (this.direction === "right") {
             this.x += this.game.clockTick * this.speed;
-            if (this.x > 1000) this.removeFromWorld = true;
+            //if (this.x > 1000) this.removeFromWorld = true;
         } else if (this.direction === "left") {
             this.x -= this.game.clockTick * this.speed;
-            if (this.x < -100) this.removeFromWorld = true;
+           // if (this.x < -100) this.removeFromWorld = true;
         } else if (this.direction === "up") {
             this.y -= this.game.clockTick * this.speed;
-            if (this.y < -100) this.removeFromWorld = true;
+            //if (this.y < -100) this.removeFromWorld = true;
         } else if (this.direction === "diagonal-right") {
-            if (this.y < -100) this.removeFromWorld = true;
+            //if (this.y < -100) this.removeFromWorld = true;
             this.y -= this.game.clockTick * (this.speed);
             this.x += this.game.clockTick * (this.speed);
         } else if (this.direction === "diagonal-left") {
