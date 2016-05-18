@@ -27,7 +27,7 @@ Platform.prototype.draw = function (ctx) {
 var setupWorld = function (game) {
 
     ///world creation
-    for (var i = 0; i < 830; i += 70) {
+    for (var i = 0; i < 900; i += 70) {
         var startWall = new Platform(game, -60, i);
         game.addPlatform(startWall);
     }
@@ -37,7 +37,7 @@ var setupWorld = function (game) {
         game.addPlatform(ceiling);
     }
 
-    for (var i = 0; i < 630; i += 70) {
+    for (var i = -30; i < 660; i += 70) {
         var ground1 = new Platform(game, i, 830);
         game.addPlatform(ground1);
     } 
@@ -84,22 +84,13 @@ var setupWorld = function (game) {
         var wallBase = new Platform(game, i, 830);
         game.addPlatform(wallBase);
     }
+    addEnemies(game);
+}
 
-    var bend1 = new Platform(game, 3350, 600);
-    var bend2 = new Platform(game, 3420, 600);
-    game.addPlatform(bend1);
-    game.addPlatform(bend2);
+var addEnemies = function(game) {
+    var snake = new Snake(game, 590, 500, 580, 750);
+    game.addEntity(snake);
 
-    var bendUp = new Platform(game, 3420, 390);
-    var bendUp2 = new Platform(game, 3420, 460);
-    var bendUp3 = new Platform(game, 3420, 530);
-    game.addPlatform(bendUp);
-    game.addPlatform(bendUp2);
-    game.addPlatform(bendUp3);
-
-    for (var i = 3490; i < 3700; i += 70) {
-        var bendLine = new Platform(game, i, 390);
-        game.addPlatform(bendLine);
-    }
-
+    var bat = new Bat(game, 500, 100, 50, 600);
+    game.addEntity(bat);
 }
