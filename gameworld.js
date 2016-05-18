@@ -225,6 +225,34 @@ var addEnemies = function (game) {
     game.addEntity(snake11);
 
 
-    var bat = new Bat(game, 500, 100, 50, 600);
-    game.addEntity(bat);
+    var bat1 = new Bat(game, 600, 450, 500, 1000);
+    game.addEntity(bat1);
+    var bat2 = new Bat(game, 1100, 700, 950, 1400);
+    game.addEntity(bat2);
+    var bat3 = new Bat(game, 1400, 300, 1300, 1850);
+    game.addEntity(bat3);
+    var bat4 = new Bat(game, 1650, 250, 1400, 2200);
+    game.addEntity(bat4);
+    var bat5 = new Bat(game, 1900, 525, 1750, 2400);
+    game.addEntity(bat5);
+    var bat6 = new Bat(game, 2500, 275, 2400, 2750);
+    game.addEntity(bat6);
+    var bat7 = new Bat(game, 3300, 550, 2750, 3300);
+    game.addEntity(bat7);
+    var bat8 = new Bat(game, 37500, 275, 3300, 3800);
+    game.addEntity(bat8);
+    var bat9 = new Bat(game, 4100, 700, 3900, 4500);
+    game.addEntity(bat9);
+    var bat10 = new Bat(game, 6000, 350, 5650, 6300);
+    game.addEntity(bat10);
+    var bat11 = new Bat(game, 5800, 750, 5500, 6200);
+    game.addEntity(bat11);
+    var bat12 = new Bat(game, 6500, 550, 6100, 6650);
+    game.addEntity(bat12);
+    var bat13 = new Bat(game, 6800, 400, 6600, 7000);
+    game.addEntity(bat13);
+    var bat14 = new Bat(game, 7000, 300, 6700, 7200);
+    game.addEntity(bat14);
+    var bat15 = new Bat(game, 7200, 225, 7000, 7900);
+    game.addEntity(bat15);
 }
