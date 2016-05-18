@@ -102,12 +102,128 @@ var setupWorld = function (game) {
         game.addPlatform(bendLine);
     }
 
+    for (var i = 690; i < 830; i += 70) {
+        for (var j = 3550; j < 3900; j += 70) {
+            var groundBlock = new Platform(game, j, i);
+            game.addPlatform(groundBlock);
+        }
+    }
+
+    for (var i = 3550; i < 4200; i += 70) {
+        var groundLine = new Platform(game, i, 830);
+        game.addPlatform(groundLine);
+    }
+
+    var smallBlock = new Platform(game, 4200, 500);
+    var smallBlock2 = new Platform(game, 4270, 500);
+    game.addPlatform(smallBlock);
+    game.addPlatform(smallBlock2);
+
+    for (var i = 4600; i < 5100; i += 70) {
+        var freeLine = new Platform(game, i, 600);
+        game.addPlatform(freeLine);
+    }
+
+    var connectBlock = new Platform(game, 5090, 530);
+    game.addPlatform(connectBlock);
+
+    for (var i = 5090; i < 5600; i += 70) {
+        var freeLine2 = new Platform(game, i, 460);
+        game.addPlatform(freeLine2);
+    }
+
+    var singleBlock = new Platform(game, 5900, 830);
+    game.addPlatform(singleBlock);
+
+    for (var i = 6300; i < 6580; i += 70) {
+        var bigGap = new Platform(game, i, 830);
+        game.addPlatform(bigGap);
+    }
+
+    for (var i = 690; i < 830; i += 70) {
+        var gapWall = new Platform(game, 6510, i);
+        game.addPlatform(gapWall);
+    }
+
+    for (var i = 530; i < 670; i += 70) {
+        var snakeBridge1 = new Platform(game, 6720, i);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 6720; i < 7000; i += 70) {
+        var snakeBridge1 = new Platform(game, i, 530);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 530; i < 670; i += 70) {
+        var snakeBridge1 = new Platform(game, 7000, i);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 800; i < 870; i += 70) {
+        var underBridge1 = new Platform(game, 6650, i);
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 6650; i < 7150; i += 70) {
+        var underBridge1 = new Platform(game, i, 830);
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 740; i < 860; i += 70) {
+        var underBridge1 = new Platform(game, 7140, i);
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 7300; i < 8000; i += 70) {
+        var highLine = new Platform(game, i, 350);
+        game.addPlatform(highLine);
+    }
+
+    var singleBlock2 = new Platform(game, 7100, 400);
+    game.addPlatform(singleBlock2);
+
+    for (var i = 7350; i < 8000; i += 70) {
+        var groundLine2 = new Platform(game, i, 830);
+        game.addPlatform(groundLine2);
+    }
+
+
     addEnemies(game);
 }
 
-var addEnemies = function(game) {
-    var snake = new Snake(game, 590, 500, 580, 750);
-    game.addEntity(snake);
+var addEnemies = function (game) {
+    var snake1 = new Snake(game, 550, 800, 10, 620);
+    game.addEntity(snake1);
+    var snake2 = new Snake(game, 590, 475, 580, 750);
+    game.addEntity(snake2);
+    var snake3 = new Snake(game, 1530, 490, 1520, 1630);
+    game.addEntity(snake3);
+    var snake4 = new Snake(game, 2000, 570, 1900, 2500);
+    game.addEntity(snake4);
+    var snake5 = new Snake(game, 3000, 650, 2750, 3200);
+    game.addEntity(snake5);
+    var snake6 = new Snake(game, 3500, 300, 3400, 3660);
+    game.addEntity(snake6);
+    var snake7 = new Snake(game, 3700, 570, 3550, 3850);
+    game.addEntity(snake7);
+    var snake8 = new Snake(game, 4300, 320, 4190, 4310);
+    game.addEntity(snake8);
+    var snake9 = new Snake(game, 6400, 800, 6290, 6475);
+    game.addEntity(snake9);
+    var snake10 = new Snake(game, 6750, 380, 6700, 7030);
+    game.addEntity(snake10);
+    var snake10 = new Snake(game, 7020, 380, 6700, 7030);
+    game.addEntity(snake10);
+    var snake11 = new Snake(game, 7600, 200, 7290, 7960);
+    game.addEntity(snake11);
+    var snake11 = new Snake(game, 7850, 200, 7500, 7960);
+    game.addEntity(snake11);
+    var snake11 = new Snake(game, 7400, 200, 7290, 7600);
+    game.addEntity(snake11);
+    var snake11 = new Snake(game, 7500, 200, 7300, 7700);
+    game.addEntity(snake11);
+
 
     var bat = new Bat(game, 500, 100, 50, 600);
     game.addEntity(bat);
