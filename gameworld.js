@@ -84,6 +84,24 @@ var setupWorld = function (game) {
         var wallBase = new Platform(game, i, 830);
         game.addPlatform(wallBase);
     }
+
+    var bend1 = new Platform(game, 3350, 600);
+    var bend2 = new Platform(game, 3420, 600);
+    game.addPlatform(bend1);
+    game.addPlatform(bend2);
+
+    var bendUp = new Platform(game, 3420, 390);
+    var bendUp2 = new Platform(game, 3420, 460);
+    var bendUp3 = new Platform(game, 3420, 530);
+    game.addPlatform(bendUp);
+    game.addPlatform(bendUp2);
+    game.addPlatform(bendUp3);
+
+    for (var i = 3490; i < 3700; i += 70) {
+        var bendLine = new Platform(game, i, 390);
+        game.addPlatform(bendLine);
+    }
+
     addEnemies(game);
 }
 
