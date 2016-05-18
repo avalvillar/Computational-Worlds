@@ -45,9 +45,10 @@ Snake.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Snake.prototype.draw = function (ctx) {
-    this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-    Entity.prototype.draw.call(this);
+Snake.prototype.draw = function (ctx, cameraX, cameraY) {
+
+    Entity.prototype.draw.call(this, cameraX, cameraY);
+    this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
 }
 
 
@@ -98,15 +99,16 @@ Bat.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Bat.prototype.draw = function (ctx) {
+Bat.prototype.draw = function (ctx, cameraX, cameraY) {
+
+    Entity.prototype.draw.call(this, cameraX, cameraY);
     if (this.flip) {
-        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
+        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.8);
     } else {
-        this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
+        this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.8);
     }
     //this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     //this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
-    Entity.prototype.draw.call(this);
 }
 
 
@@ -173,13 +175,14 @@ Alien.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Alien.prototype.draw = function (ctx) {
+Alien.prototype.draw = function (ctx, cameraX, cameraY) {
+
+    Entity.prototype.draw.call(this, cameraX, cameraY);
     if (this.flip) {
-        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.2);
     } else {
-        this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+        this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.2);
     }
     //this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     //this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
-    Entity.prototype.draw.call(this);
 }

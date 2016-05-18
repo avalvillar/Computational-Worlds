@@ -41,7 +41,7 @@ Camera.prototype.update = function () {
     }*/
     this.x = this.dx;
     this.y = this.dy;
-    console.log(this.x);
+    //console.log(this.x);
 }
 
 

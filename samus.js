@@ -81,7 +81,7 @@ Samus.prototype.chooseLaser = function() {
                 var laser = new Laser(this.game, this.x + 80, this.y + 25, "diagonal-right");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
-                var laser = new Laser(this.game, this.x + 80, this.y - 10, "right");
+                var laser = new Laser(this.game, this.x + 80, this.y, "right");
                 this.game.addLaser(laser);
             } else if (this.game.up) {
                 var laser = new Laser(this.game, this.x + 32, this.y - 44, "up");
@@ -96,10 +96,10 @@ Samus.prototype.chooseLaser = function() {
                 var laser = new Laser(this.game, this.x, this.y + 34, "left");
                 this.game.addLaser(laser);
             } else if (this.game.running && this.game.up) {
-                var laser = new Laser(this.game, this.x + 66, this.y + 34, "diagonal-left");
+                var laser = new Laser(this.game, this.x + 23, this.y + 24, "diagonal-left");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
-                var laser = new Laser(this.game, this.x, this.y - 10, "left");
+                var laser = new Laser(this.game, this.x, this.y, "left");
                 this.game.addLaser(laser);
             } else if (this.game.up) {
                 var laser = new Laser(this.game, this.x + 48, this.y - 44, "up");
@@ -341,55 +341,56 @@ Samus.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Samus.prototype.draw = function (ctx) {
+Samus.prototype.draw = function (ctx, cameraX, cameraY) {
+    Entity.prototype.draw.call(this, cameraX, cameraY);
     if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
-            this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34, 3);
+            this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);
         } else if (this.game.down) { // down right
             if (this.lastDirection === "left") {
-                this.downRightTurn.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
+                this.downRightTurn.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
                 this.lastDirection = "right";
             } else {
-                this.downRight.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
+                this.downRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
             }
         } else if (this.up && this.running) { // diagonal right up
-            this.runningRightUp.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+            this.runningRightUp.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
         } else if (this.up) { // up right
-            this.upRight.drawFrame(this.game.clockTick, ctx, this.x, this.y - 6, 3);
+            this.upRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - 6 - cameraY, 3);
         } else if (this.running) { // running right
             if (this.lastDirection === "left") { // turn animation
-                this.turnRight.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+                this.turnRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
                 this.lastDirection = "right";
             } else {
-                this.runningRight.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+                this.runningRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
             }
         } else {
-            this.idleRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+            this.idleRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
         }
     } else if (!this.game.right) { // draw left facing sprites
         if (this.jumping) { // left jumping
-            this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34, 3);
+            this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);
         } else if (this.game.down) { // down left
             if (this.lastDirection === "right") {
-                this.downLeftTurn.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
+                this.downLeftTurn.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
                 this.lastDirection = "left";
             }
-            this.downLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23, 3);
+            this.downLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
         } else if (this.up && this.running) { // diagonal right up
-            this.runningLeftUp.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+            this.runningLeftUp.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
         } else if (this.up) { // up left
-            this.upLeft.drawFrame(this.game.clockTick, ctx, this.x + 23, this.y - 6, 3);
+            this.upLeft.drawFrame(this.game.clockTick, ctx, this.x + 23 + cameraX, this.y - 6 - cameraY, 3);
 
         } else if (this.running) {
             if (this.lastDirection === "right") {
-                this.turnLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+                this.turnLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
                 this.lastDirection = "left";
             } else {
-                this.runningLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y + 15, 3);
+                this.runningLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
             }
         } else {
-            this.idleLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+            this.idleLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
         }
     }
-    Entity.prototype.draw.call(this);
+    
 }
