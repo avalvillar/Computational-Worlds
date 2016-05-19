@@ -30,6 +30,9 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(start);
     gameEngine.addEntity(new Health(gameEngine));
 
+    gameEngine.init(ctx, samus, bg);
+    gameEngine.start();
+
 	setupWorld(gameEngine);
 });
 

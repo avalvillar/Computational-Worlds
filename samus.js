@@ -45,6 +45,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.upLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 484, 170, 41, 70, 1, 2, true, false);
     this.runningLeftUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1, 360, 42.5, 50, .1, 10, true, false);
 
+    this.health = 100; // will be out of 100
     this.running = false;
     this.lastDirection = "right";
     this.speed = 550;
