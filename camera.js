@@ -28,7 +28,7 @@ Camera.prototype.setXandY = function(x, y) {
 
 Camera.prototype.update = function () {
     this.dx = (this.width / 2) - this.samus.x;
-    this.dy = this.samus.y - (this.height / 2);
+    this.dy = /*this.samus.y - (this.height / 2);*/0;
   /*  if (this.samus.x > this.boundLeft) {
         this.dx += this.samus.velocity.x;
     } else if (this.samus.x < this.boundRight) {
@@ -39,6 +39,11 @@ Camera.prototype.update = function () {
     } else if (this.samus.y > this.samus.velocity.y) {
         this.dy -= this.samus.velocity.y;
     }*/
+
+    //TODO: add to this logic, if we get to the end of the world. 
+    if (this.samus.x <= (this.width / 2)) {
+        this.dx = 0;
+    }
     this.x = this.dx;
     this.y = this.dy;
     //console.log(this.x);
