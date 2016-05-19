@@ -100,19 +100,6 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
-function Camera(ctx, samus) {
-    this.x = 0;
-    this.y = 0;
-    this.width = ctx.canvas.width;
-    this.height = ctx.canvas.height;
-    this.samus = samus;
-}
-
-Camera.prototype.update = function () {
-    this.x += this.samus.velocity.x;
-    this.y += this.samus.velocity.y;
-}
-
 function GameEngine() {
     this.entities = [];
     this.lasers = [];
@@ -129,6 +116,8 @@ function GameEngine() {
     this.button1Held = false;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.offsetX = 0;
+    this.offsetY = 0;
     this.gravity = 900;
     this.startGame = false;
 }
@@ -141,6 +130,7 @@ GameEngine.prototype.init = function (ctx, samus, background) {
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
+    this.camera = new Camera(this);
     console.log('game initialized');
 }
 
@@ -233,19 +223,27 @@ GameEngine.prototype.addPlatform = function (entity) {
 
 
 GameEngine.prototype.draw = function () {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
+    var cameraX = this.camera.x;
+    var cameraY = this.camera.y;
+
+    //this.ctx.translate(this.offsetX, this.offsetY);
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    /* This is for translation of the viewpoint. 
+       I need to figure out how to translate the camera offset onto these
+       translations. */
     this.background.draw(this.ctx);
     for (var i = 0; i < this.platforms.length; i++) {
-        this.platforms[i].draw(this.ctx);
+        this.platforms[i].draw(this.ctx, cameraX, cameraY);
     }
+    this.samus.draw(this.ctx, cameraX, cameraY);
     for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx);
+        this.entities[i].draw(this.ctx, cameraX, cameraY);
     }
     for (var i = 0; i < this.lasers.length; i++) {
-        this.lasers[i].draw(this.ctx);
+        this.lasers[i].draw(this.ctx, cameraX, cameraY);
     }
-    this.samus.draw(this.ctx);
+    
     this.ctx.restore();
 }
 
@@ -294,6 +292,11 @@ GameEngine.prototype.update = function () {
             that.down = false;
         }
     }
+    if (!this.samus.removeFromWorld) {
+        this.samus.update();
+    }
+    this.camera.update();
+    this.background.update();
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
 
@@ -313,12 +316,7 @@ GameEngine.prototype.update = function () {
         }
     }
 
-    //this.camera.update();
-    this.background.update();
-
-    if (!this.samus.removeFromWorld) {
-        this.samus.update();
-    }
+    
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
         if (this.entities[i].removeFromWorld) {
@@ -353,7 +351,9 @@ function Entity(game, x, y, CX, CY) {
 Entity.prototype.update = function () {
 }
 
-Entity.prototype.draw = function (ctx) {
+Entity.prototype.draw = function (ctx, cameraX, cameraY) {
+   // this.x -= this.game.camera.x;
+   // this.y += this.game.camera.y;
     if (this.game.showOutlines && this.radius) {
         this.game.ctx.beginPath();
         this.game.ctx.strokeStyle = "red";
