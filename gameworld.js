@@ -193,8 +193,8 @@ var setupWorld = function (game) {
 }
 
 var addEnemies = function (game) {
-    var snake1 = new Snake(game, 550, 800, 10, 620);
-    game.addEntity(snake1);
+    //var snake1 = new Snake(game, 550, 800, 10, 620);
+    //game.addEntity(snake1);
     var snake2 = new Snake(game, 590, 475, 580, 750);
     game.addEntity(snake2);
     var snake3 = new Snake(game, 1530, 490, 1520, 1630);
