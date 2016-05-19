@@ -19,6 +19,7 @@ function Snake(game, x, y, leftBound, rightBound) {
     this.collisionHeight = 33;
     this.collisionX = this.x + 5;
     this.collisionY = this.y + 12;
+    this.game = game;
  
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -27,11 +28,6 @@ Snake.prototype = new Entity();
 Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
-// <<<<<<< HEAD
-//     if (!this.game.startGame) return;
-//     this.x -= this.game.clockTick * this.speed;
-//     this.y += this.game.clockTick * this.game.gravity;
-// =======
     if (this.right) {
         this.x += this.speed * this.game.clockTick;
     } else {
@@ -70,16 +66,12 @@ Snake.prototype.update = function () {
 }
 
 Snake.prototype.draw = function (ctx) {
-<<<<<<< HEAD
     if (!this.game.startGame) return;
-    this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-=======
     if (this.right) {
         this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     } else {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
->>>>>>> master
     Entity.prototype.draw.call(this);
 }
 
@@ -103,6 +95,7 @@ function Bat(game, x, y, leftBound, rightBound) {
     this.collisionX = this.x + 5;
     this.collisionY = this.y + 20;
     this.flip = true;
+    this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -166,6 +159,7 @@ function Alien(game, x, y) {
     this.collisionWidth = 163;
     this.collisionHeight = 94;
     this.flip = true;
+    this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
