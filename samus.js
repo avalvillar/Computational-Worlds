@@ -363,7 +363,7 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
             this.upRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - 6 - cameraY, 3);
         } else if (this.running) { // running right
             if (this.lastDirection === "left") { // turn animation
-                this.turnRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
+                this.turnRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 10 - cameraY, 3);
                 this.lastDirection = "right";
             } else {
                 this.runningRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
@@ -376,7 +376,7 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
             this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);
         } else if (this.game.down) { // down left
             if (this.lastDirection === "right") {
-                this.downLeftTurn.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
+                this.downLeftTurn.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
                 this.lastDirection = "left";
             }
             this.downLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
@@ -387,7 +387,7 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
 
         } else if (this.running) {
             if (this.lastDirection === "right") {
-                this.turnLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
+                this.turnLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
                 this.lastDirection = "left";
             } else {
                 this.runningLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
