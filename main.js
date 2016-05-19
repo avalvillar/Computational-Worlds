@@ -11,6 +11,7 @@ ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
 
 var canvas;
+var samus;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -19,14 +20,18 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.focus();
     var ctx = canvas.getContext('2d');
 
-	var gameEngine = new GameEngine();
-	var samus = new Samus(gameEngine, 200, 200);
+    var gameEngine = new GameEngine();
+    samus = new Samus(gameEngine, 200, 200);
 
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
 	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
-	gameEngine.init(ctx, samus, bg);
-	gameEngine.start();
+    var start = new StartScreen(gameEngine);
+    gameEngine.addEntity(start);
+    gameEngine.addEntity(new Health(gameEngine));
+
+    gameEngine.init(ctx, samus, bg);
+    gameEngine.start();
 
 	setupWorld(gameEngine);
 });
@@ -112,6 +117,49 @@ Background.prototype.draw = function (ctx) {
 };
 
 Background.prototype.update = function () {
+};
+
+/************************************************************
+    Health Bar
+ */
+function Health(game) {
+    this.x = 20;
+    this.y = 20;
+    this.maxHealthWidth = 100;
+    this.currentHealthWidth = 100;
+    this.height = 25;
+    this.isHealthBar = true;
+    this.game = game;
+};
+
+Health.prototype = new Entity();
+Health.prototype.constructor = Health;
+
+Health.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
+    this.game.ctx.beginPath();
+    this.game.ctx.lineWidth = "3";
+    this.game.ctx.fillStyle = "black";
+    this.game.ctx.fillRect(this.x, this.y, this.maxHealthWidth * 1.5, this.height); // max health
+    if (samus.health > 60) {
+        this.game.ctx.fillStyle = "green";
+    } else if (samus.health > 30) {
+        this.game.ctx.fillStyle = "darkorange";
+    } else {
+        this.game.ctx.fillStyle = "red";
+    }
+    this.game.ctx.fillRect(this.x, this.y, this.currentHealthWidth * 1.5, this.height); // samus health
+    this.game.ctx.stroke();
+
+    ctx.font="20px Courier New";
+    ctx.fillText(Math.round(samus.health) + " / 100", 180 , 38);
+};
+
+Health.prototype.update = function () {
+    if (!this.game.startGame) return;
+    this.currentHealthWidth = samus.health;
+    if (samus.health > 0) samus.health -= 0.2;
+    // console.log(samus.health);
 };
 
 function clamp(value, min, max) {

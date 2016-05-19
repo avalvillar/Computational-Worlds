@@ -19,6 +19,7 @@ function Snake(game, x, y, leftBound, rightBound) {
     this.collisionHeight = 33;
     this.collisionX = this.x + 5;
     this.collisionY = this.y + 12;
+    this.game = game;
  
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -65,6 +66,7 @@ Snake.prototype.update = function () {
 }
 
 Snake.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.right) {
         this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     } else {
@@ -93,6 +95,7 @@ function Bat(game, x, y, leftBound, rightBound) {
     this.collisionX = this.x + 5;
     this.collisionY = this.y + 20;
     this.flip = true;
+    this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -101,6 +104,7 @@ Bat.prototype = new Entity();
 Bat.prototype.constructor = Snake;
 
 Bat.prototype.update = function () {
+    if (!this.game.startGame) return;
    /* this.x -= this.game.clockTick * this.speed;
     if (this.x < -50) {
         this.x = 1000
@@ -124,6 +128,7 @@ Bat.prototype.update = function () {
 }
 
 Bat.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.flip) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.8);
     } else {
@@ -154,6 +159,7 @@ function Alien(game, x, y) {
     this.collisionWidth = 163;
     this.collisionHeight = 94;
     this.flip = true;
+    this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -162,6 +168,7 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
+    if (!this.game.startGame) return;
     // if (this.x < 0) {
     //     this.flip = !this.flip;
     // } else if (this.x > 950) {
@@ -199,6 +206,7 @@ Alien.prototype.update = function () {
 }
 
 Alien.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
     if (this.flip) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     } else {

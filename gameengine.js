@@ -130,6 +130,7 @@ function GameEngine() {
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.gravity = 900;
+    this.startGame = false;
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
@@ -161,6 +162,10 @@ GameEngine.prototype.startInput = function () {
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
+        if (String.fromCharCode(e.which) === 'M') {
+            that.startGame = true;
+            // e.preventDefault();
+        }
         if (String.fromCharCode(e.which) === ' ') {
             that.space = true;
             e.preventDefault();
