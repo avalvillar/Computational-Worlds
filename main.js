@@ -4,32 +4,36 @@ ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
 ASSET_MANAGER.queueDownload("./img/greySnake.png");
 //ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
-ASSET_MANAGER.queueDownload("./img/cave-bg.png")
+ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+ASSET_MANAGER.queueDownload("./img/cave-full.png");
+ASSET_MANAGER.queueDownload("./img/leftLaser.png");
+ASSET_MANAGER.queueDownload("./img/alien.png");
+ASSET_MANAGER.queueDownload("./img/cave_rock.png");
+
+var canvas;
+var samus;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
-    var canvas = document.getElementById('gameWorld');
+    //var canvas = document.getElementById('gameWorld');
+    canvas = document.getElementById('gameWorld');
     canvas.focus();
     var ctx = canvas.getContext('2d');
 
-	var gameEngine = new GameEngine();
-	
-	gameEngine.init(ctx);
-    gameEngine.start();
-	
-    //var bg = new Background(gameEngine);
-    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-    var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-bg.png"));
+    var gameEngine = new GameEngine();
+    samus = new Samus(gameEngine, 200, 200);
 
-    var samus = new Samus(gameEngine);
-    var snake = new Snake(gameEngine);
-    var bat = new Bat(gameEngine);
-	
-    gameEngine.addEntity(bg);
-    gameEngine.addEntity(samus);
-    gameEngine.addEntity(snake);
-    gameEngine.addEntity(bat);
-    
+    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+
+    var start = new StartScreen(gameEngine);
+    gameEngine.addEntity(start);
+    gameEngine.addEntity(new Health(gameEngine));
+
+    gameEngine.init(ctx, samus, bg);
+    gameEngine.start();
+
+	setupWorld(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -86,40 +90,80 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
-// no inheritance
 function Background(game, spritesheet) {
     this.x = 0;
     this.y = 0;
     this.spritesheet = spritesheet;
     this.game = game;
-    this.ctx = game.ctx;
 };
 
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
-
-Background.prototype.draw = function () {
-    this.ctx.drawImage(this.spritesheet,
-                   this.x, this.y, 1000, 600);
-};
-
-Background.prototype.update = function () {
-};
-
-/*
-function Background(game) {
-    Entity.call(this, game, 0, 400);
-    //this.radius = 200;
-}
-
-Background.prototype = new Entity();
-Background.prototype.constructor = Background;
-
-Background.prototype.update = function () {
-}
 
 Background.prototype.draw = function (ctx) {
-    ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,800,300);
-    Entity.prototype.draw.call(this);
-} */
+    this.game.ctx.drawImage(this.spritesheet,
+                 this.x, this.y, 9000, 900);
+
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+    //ctx.drawImage(this.spritesheet, this.x, this.y, 9000, 900);
+
+    ////Clamp the camera position to the world bounds while centering the camera around the player                                             
+    //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
+    //var camY = clamp(-(this.game.samus.y + 200) + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+
+
+    //ctx.translate(camX, camY);
+};
+
+Background.prototype.update = function () {
+};
+
+/************************************************************
+    Health Bar
+ */
+function Health(game) {
+    this.x = 20;
+    this.y = 20;
+    this.maxHealthWidth = 100;
+    this.currentHealthWidth = 100;
+    this.height = 25;
+    this.isHealthBar = true;
+    this.game = game;
+};
+
+Health.prototype = new Entity();
+Health.prototype.constructor = Health;
+
+Health.prototype.draw = function (ctx) {
+    if (!this.game.startGame) return;
+    this.game.ctx.beginPath();
+    this.game.ctx.lineWidth = "3";
+    this.game.ctx.fillStyle = "black";
+    this.game.ctx.fillRect(this.x, this.y, this.maxHealthWidth * 1.5, this.height); // max health
+    if (samus.health > 60) {
+        this.game.ctx.fillStyle = "green";
+    } else if (samus.health > 30) {
+        this.game.ctx.fillStyle = "darkorange";
+    } else {
+        this.game.ctx.fillStyle = "red";
+    }
+    this.game.ctx.fillRect(this.x, this.y, this.currentHealthWidth * 1.5, this.height); // samus health
+    this.game.ctx.stroke();
+
+    ctx.font="20px Courier New";
+    ctx.fillText(Math.round(samus.health) + " / 100", 180 , 38);
+};
+
+Health.prototype.update = function () {
+    if (!this.game.startGame) return;
+    this.currentHealthWidth = samus.health;
+    if (samus.health > 0) samus.health -= 0.2;
+    // console.log(samus.health);
+};
+
+function clamp(value, min, max) {
+    if (value < min) return min;
+    else if (value > max) return max;
+    return value;
+} 
