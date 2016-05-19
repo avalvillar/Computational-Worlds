@@ -4,11 +4,17 @@
 	SNAKE
 */
 
-function Snake(game, x, y) {
+function Snake(game, x, y, leftBound, rightBound) {
     this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/greySnake.png"), 0, 48, 48, 48, .1, 4, true, false);
+    this.goRight = new Animation(ASSET_MANAGER.getAsset("./img/greySnake.png"), 0, 96, 48, 48, .1, 4, true, false);
+
     this.speed = 150;
     this.x = x;
-    this.y = y;
+    this.y = y
+    this.right = false;
+    this.grounded = false;
+    this.leftBound = leftBound;
+    this.rightBound = rightBound;
     this.collisionWidth = 40;
     this.collisionHeight = 33;
     this.collisionX = this.x + 5;
@@ -21,24 +27,41 @@ Snake.prototype = new Entity();
 Snake.prototype.constructor = Snake;
 
 Snake.prototype.update = function () {
-    if (!this.game.startGame) return;
-    this.x -= this.game.clockTick * this.speed;
-    this.y += this.game.clockTick * this.game.gravity;
+// <<<<<<< HEAD
+//     if (!this.game.startGame) return;
+//     this.x -= this.game.clockTick * this.speed;
+//     this.y += this.game.clockTick * this.game.gravity;
+// =======
+    if (this.right) {
+        this.x += this.speed * this.game.clockTick;
+    } else {
+        this.x -= this.speed * this.game.clockTick;
+    }
 
-    for (var i = 0; i < this.game.platforms.length; i++) { // platform detection
+    if (!this.grounded) {
+        this.y += this.game.gravity * this.game.clockTick;
+    }
+
+    var collideTopDown = false;
+
+    if (this.x < this.leftBound) {
+        this.right = true;
+    }
+    if (this.x > this.rightBound) {
+        this.right = false;
+    }
+
+    for (var i = 0; i < this.game.platforms.length && !collideTopDown; i++) { // platform detection
         var plat = this.game.platforms[i];
-        if (detectCollision(this, plat)) {
-            this.y -= this.game.clockTick * this.game.gravity;
-            break;
-        }
-    }
 
-    if (this.x < -50) {
-        this.x = 1000
-    }
-    if (this.y > 700) {
-        this.x = 1000;
-        this.y = 300;
+        if (!collideTopDown && collideTop(this, plat)) {
+            collideTopDown = true;
+            this.ground = plat.collisionY - this.collisionHeight - 12;
+            this.grounded = true;
+            this.y = this.ground;
+        } else {
+            this.grounded = false;
+        }
     }
 
     this.collisionX = this.x + 5;
@@ -47,8 +70,16 @@ Snake.prototype.update = function () {
 }
 
 Snake.prototype.draw = function (ctx) {
+<<<<<<< HEAD
     if (!this.game.startGame) return;
     this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+=======
+    if (this.right) {
+        this.goRight.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    } else {
+        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+>>>>>>> master
     Entity.prototype.draw.call(this);
 }
 
@@ -57,7 +88,7 @@ Snake.prototype.draw = function (ctx) {
 	BAT
 */
 
-function Bat(game, x, y) {
+function Bat(game, x, y, leftBound, rightBound) {
     // this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/AlienBatSprites.gif"), 0, 10, 133, 167, .3, 3, true, true);
     // spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse
     this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/bat.png"), 0, 47, 33, 42, .3, 3, true, false);
@@ -65,6 +96,8 @@ function Bat(game, x, y) {
     this.speed = 150;
     this.x = x;
     this.y = y;
+    this.rightBound = rightBound;
+    this.leftBound = leftBound;
     this.collisionHeight = 40;
     this.collisionWidth = 40;
     this.collisionX = this.x + 5;
@@ -83,12 +116,12 @@ Bat.prototype.update = function () {
     if (this.x < -50) {
         this.x = 1000
     }  */
-    if (this.x < 0) {
+    if (this.x < this.leftBound) {
         this.flip = !this.flip;
-        this.x = 0;
-    } else if (this.x > 950) {
+        this.x = this.leftBound;
+    } else if (this.x > this.rightBound) {
         this.flip = !this.flip;
-        this.x = this.x - (this.x - 950);
+        this.x = this.x - (this.x - this.rightBound);
     }
     if (this.flip) {
         this.x -= this.game.clockTick * this.speed;
@@ -167,13 +200,13 @@ Alien.prototype.update = function () {
         }
     }
 
-    if (this.x < -50) {
-        this.x = 1000
-    }
-    if (this.y > 700) {
-        this.x = 1000;
-        this.y = 300;
-    }
+    //if (this.x < -50) {
+    //    this.x = 1000
+    //}
+    //if (this.y > 700) {
+    //    this.x = 1000;
+    //    this.y = 300;
+    //}
 
     Entity.prototype.update.call(this);
 }

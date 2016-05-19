@@ -60,6 +60,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.grounded = false;
     this.collisionX = this.x + 150;
     this.collisionY = this.y + 150;
+    this.jumpCount = 0;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -154,21 +155,13 @@ Samus.prototype.jump = function () {
 }
 
 Samus.prototype.collisionDetection = function () {
-    //for (var i = 0; i < this.game.entities.length; i++) {
-    //    var ent = this.game.entities[i];
-    //    if (this.collide(ent)) {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (Math.abs(this.x - ent.x) < 400 && this.collide(ent)) {
 
-    //        //var dist = distance(this, ent);
-    //        //var delta = this.radius + ent.radius - dist;
-    //        //var difX = (this.collisionX - ent.collisionX) / dist;
-    //        //var difY = (this.collisionY - ent.collisionY) / dist;
+        }
+    }
 
-    //        //this.x += difX * delta / 2;
-    //        //this.y += difY * delta / 2;
-    //        //ent.x -= difX * delta / 2;
-    //        //ent.y -= difY * delta / 2;
-    //    }
-    //}
 }
 
 Samus.prototype.platformCollision = function () {
@@ -179,33 +172,11 @@ Samus.prototype.platformCollision = function () {
         var plat = this.game.platforms[i];
         if (Math.abs(this.collisionX - plat.collisionX) < 100 && Math.abs(this.collisionY - plat.collisionY) < 150) {
 
-            if (collideRight(this, plat) && !collideSide && (this.velocity.x < 0 || this.jumping)) {
-                //console.log("hit right");
-                this.x = plat.collisionX + plat.collisionWidth - 30;
-                this.velocity.x = 0;
-                collideSide = true;
-                if (this.jumping) {
-                    this.jumping = false;
-                    this.jumpRight.elapsedTime = 0;
-                    this.jumpLeft.elapsedTime = 0;
-                }
-            }
-            if (collideLeft(this, plat) && !collideSide && (this.velocity.x > 0 || this.jumping)) {
-                //console.log("hit left");
-                this.x = plat.collisionX - this.collisionWidth - 30;
-                this.velocity.x = 0;
-                collideSide = true;
-                if (this.jumping) {
-                    this.jumping = false;
-                    this.jumpRight.elapsedTime = 0;
-                    this.jumpLeft.elapsedTime = 0;
-                }
-            }
-            if (collideTop(this, plat) && !collideTopDown) {
+            if (!collideTopDown && collideTop(this, plat)) {
                 //console.log("hit top");
                 collideTopDown = true;
                 isColliding = true;
-
+                this.jumpCount = 0;
                 //this.ground = this.y;
                 this.ground = plat.collisionY - 140; // for some reason 140 just works...
 
@@ -216,11 +187,12 @@ Samus.prototype.platformCollision = function () {
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
+                    collidingTopDown = false;
                     //this.y = plat.collisionY - 105;
                     //this.ground = this.y;
-                } 
+                }
             }
-            if (collideBottom(this, plat) && !collideTopDown) {
+            if (!collideTopDown && collideBottom(this, plat)) {
                 //console.log("hit bottom :( ");
                 this.grounded = false;
                 collideTopDown = true;
@@ -233,6 +205,28 @@ Samus.prototype.platformCollision = function () {
                     this.jumpLeft.elapsedTime = 0;
                     //this.y = plat.collisionY + plat.collisionHeight;
                     this.velocity.y = 0;
+                }
+            }
+            if (!collideSide && collideRight(this, plat) && (this.velocity.x < 0 || this.jumping)) {
+                //console.log("hit right");
+                this.x = plat.collisionX + plat.collisionWidth - 30;
+                this.velocity.x = 0;
+                collideSide = true;
+                if (this.jumping) {
+                    this.jumping = false;
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
+                }
+            }
+            if (!collideSide && collideLeft(this, plat) && (this.velocity.x > 0 || this.jumping)) {
+                //console.log("hit left");
+                this.x = plat.collisionX - this.collisionWidth - 30;
+                this.velocity.x = 0;
+                collideSide = true;
+                if (this.jumping) {
+                    this.jumping = false;
+                    this.jumpRight.elapsedTime = 0;
+                    this.jumpLeft.elapsedTime = 0;
                 }
             }
         }
@@ -250,7 +244,12 @@ Samus.prototype.update = function () {
     if (!this.game.startGame) return;
     this.laserTimer++;
     
-    if (this.game.space) this.jumping = true;
+    if (this.game.space && this.jumpCount === 0) {
+        this.jumping = true;
+    }
+    if (this.jumping && !this.grounded) {
+        this.jumpCount = 1;
+    }
     if (this.game.shooting) this.shoot = true;
     if (this.game.up) {
         this.up = true;
@@ -288,13 +287,6 @@ Samus.prototype.update = function () {
                     this.velocity.x = -(this.game.clockTick * this.speed);
                 } else {
                     this.velocity.x = -(this.game.clockTick * this.speed / 2);
-// <<<<<<< HEAD
-//                 }
-//                 //this.x -= this.game.clockTick * this.speed;
-//                 if (this.x < -100) this.x = 1000;
-// =======
-                }
-// >>>>>>> master
             }
         }
     } else {

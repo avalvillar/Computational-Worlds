@@ -5,12 +5,11 @@ ASSET_MANAGER.queueDownload("./img/greySnake.png");
 //ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
 ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
 
-//var samus;
-//var gameEngine;
 var canvas;
 var samus;
 
@@ -25,28 +24,13 @@ ASSET_MANAGER.downloadAll(function () {
     samus = new Samus(gameEngine, 200, 200);
 
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-    var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave_bg_extended.png"));
+	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
     gameEngine.addEntity(new Health(gameEngine));
 
-    gameEngine.init(ctx, samus, bg);
-    gameEngine.start();
-
-    setupWorld(gameEngine);
-    
-    //var tester = new test(gameEngine, 100, 100);
-    var snake = new Snake(gameEngine, 1000, 300);//y =495
-    var bat = new Bat(gameEngine, 950, 100);
-
-    var alien = new Alien(gameEngine, 900, 438);
-    gameEngine.addEntity(alien);
-
-    //gameEngine.addEntity(tester);
-    gameEngine.addEntity(snake);
-    gameEngine.addEntity(bat);
-    
+	setupWorld(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -115,15 +99,15 @@ Background.prototype.constructor = Background;
 
 Background.prototype.draw = function (ctx) {
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x, this.y, 2000, 600);
+                 this.x, this.y, 9000, 900);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-    //ctx.drawImage(this.spritesheet, this.x, this.y, 2000, 600);
+    //ctx.drawImage(this.spritesheet, this.x, this.y, 9000, 900);
 
     ////Clamp the camera position to the world bounds while centering the camera around the player                                             
     //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
-    //var camY = clamp(-this.game.samus.y + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
+    //var camY = clamp(-(this.game.samus.y + 200) + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
 
 
     //ctx.translate(camX, camY);
