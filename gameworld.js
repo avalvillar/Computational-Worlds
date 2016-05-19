@@ -17,11 +17,12 @@ Platform.prototype.constructor = Platform;
 Platform.prototype.update = function() {
 }
 
-Platform.prototype.draw = function (ctx) {
-    this.game.ctx.drawImage(this.spritesheet,
-                 this.x, this.y, 70, 70);
+Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 
-    Entity.prototype.draw.call(this);
+    Entity.prototype.draw.call(this, cameraX, cameraY);
+    this.game.ctx.drawImage(this.spritesheet,
+                 this.x + cameraX, this.y - cameraY, 70, 70);
+    
 }
 
 var setupWorld = function (game) {
@@ -36,7 +37,6 @@ var setupWorld = function (game) {
         var ceiling = new Platform(game, i, 0);
         game.addPlatform(ceiling);
     }
-
     for (var i = -30; i < 660; i += 70) {
         var ground1 = new Platform(game, i, 830);
         game.addPlatform(ground1);

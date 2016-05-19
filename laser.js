@@ -91,7 +91,7 @@ Laser.prototype.update = function () {
             this.y -= this.game.clockTick * (this.speed);
             this.x += this.game.clockTick * (this.speed);
         } else if (this.direction === "diagonal-left") {
-            if (this.y < -100) this.removeFromWorld = true;
+            //if (this.y < -100) this.removeFromWorld = true;
             this.y -= this.game.clockTick * (this.speed);
             this.x -= this.game.clockTick * (this.speed);
         }
@@ -115,8 +115,9 @@ Laser.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Laser.prototype.draw = function (ctx) {
+Laser.prototype.draw = function (ctx, cameraX, cameraY) {
 
+    Entity.prototype.draw.call(this, cameraX, cameraY);
     var downOffset = 0;
     if (this.game.down) {
         downOffset = 9; //Created to make blast aligned when Samus is down
@@ -129,7 +130,7 @@ Laser.prototype.draw = function (ctx) {
     }
     if (!this.blastDone && !this.startDone) {
         if (this.count < 2) {
-            this.laserStart.drawFrame(this.game.clockTick, ctx, this.x, this.y + downOffset, 3);
+            this.laserStart.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + downOffset - cameraY, 3);
             this.count++;
         } else {
             this.count = 0;
@@ -137,23 +138,23 @@ Laser.prototype.draw = function (ctx) {
         }
     } else if (!this.blastDone) {
         if (this.count < 1) {
-            this.laserBlast.drawFrame(this.game.clockTick, ctx, this.x, this.y + downOffset, 3);
+            this.laserBlast.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + downOffset - cameraY, 3);
             this.count++;
         } else {
             this.blastDone = true;
         }
     } else {
         if (this.direction === "right") {
-            this.laserRight.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+            this.laserRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
         } else if (this.direction === "left") {
-            this.laserLeft.drawFrame(this.game.clockTick, ctx, this.x + 16, this.y - 53, 3);/////////
+            this.laserLeft.drawFrame(this.game.clockTick, ctx, this.x + 16 + cameraX, this.y - 53 - cameraY, 3);/////////
         } else if (this.direction === "up") {
-            this.laserUp.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+            this.laserUp.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
         } else if (this.direction === "diagonal-right") {
-            this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+            this.laserDiagonal.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
         } else if (this.direction === "diagonal-left") {
-            this.laserDiagonalLeft.drawFrame(this.game.clockTick, ctx, this.x + 2, this.y - 87, 3);//////
+            this.laserDiagonalLeft.drawFrame(this.game.clockTick, ctx, this.x + 2 + cameraX, this.y - 87 - cameraY, 3);//////
         }
     }
-    Entity.prototype.draw.call(this);
+    
 }
