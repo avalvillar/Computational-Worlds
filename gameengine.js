@@ -112,8 +112,11 @@ function GameEngine() {
     this.click = null;
     this.mouse = null;
     this.wheel = null;
+    this.healthBar = null;
     this.button0Held = false; //Added to prevent holding of buttons and siliness. 
     this.button1Held = false;
+    this.button9Held = false;
+    this.inputInitialized = false; // calling init on reset sets up a new keydown listener, every time
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.offsetX = 0;
@@ -128,7 +131,12 @@ GameEngine.prototype.init = function (ctx, samus, background) {
     this.background = background;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
-    this.startInput();
+    this.healthBar = new Health(this);
+    this.paused = false;
+    if (!this.inputInitialized) {
+        this.startInput();
+        this.inputInitialized = true;
+    }
     this.timer = new Timer();
     this.camera = new Camera(this);
     console.log('game initialized');
@@ -151,8 +159,10 @@ GameEngine.prototype.startInput = function () {
     this.shooting = false;
     this.diagonal = false;
     var that = this;
-
     this.ctx.canvas.addEventListener("keydown", function (e) {
+        if (e.which === 27) {
+            that.pause();
+        }
         if (String.fromCharCode(e.which) === 'M') {
             that.startGame = true;
             // e.preventDefault();
@@ -228,6 +238,14 @@ GameEngine.prototype.addPlatform = function (entity) {
     this.platforms.push(entity);
 }
 
+GameEngine.prototype.pause = function () {
+    if (!this.paused) {
+        this.paused = true;
+    } else {
+        this.paused = false;
+    }
+}
+
 
 GameEngine.prototype.draw = function () {
     this.ctx.save();
@@ -240,75 +258,34 @@ GameEngine.prototype.draw = function () {
        I need to figure out how to translate the camera offset onto these
        translations. */
     this.background.draw(this.ctx, cameraX);
+    
     for (var i = 0; i < this.platforms.length; i++) {
-        this.platforms[i].draw(this.ctx, cameraX, cameraY);
+        if (this.onCamera(this.platforms[i])) {
+            this.platforms[i].draw(this.ctx, cameraX, cameraY);
+        }
     }
     this.samus.draw(this.ctx, cameraX, cameraY);
     for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx, cameraX, cameraY);
+        if (this.onCamera(this.entities[i])) {
+            this.entities[i].draw(this.ctx, cameraX, cameraY);
+        }
     }
     for (var i = 0; i < this.lasers.length; i++) {
-        this.lasers[i].draw(this.ctx, cameraX, cameraY);
+        if (this.onCamera(this.lasers[i])) {
+            this.lasers[i].draw(this.ctx, cameraX, cameraY);
+        }
     }
-    
+    this.healthBar.draw(this.ctx);
     this.ctx.restore();
 }
 
 GameEngine.prototype.update = function () {
-    //poll gamepad
-    var that = this;
-    var gp = navigator.getGamepads()[0]; //only need gamnepad 0, single player game
-    if (gp) {
-        
-        if (buttonPressed(gp.buttons[0])) {
-            if (!that.button0Held) {
-                that.space = true;
-                that.button0Held = true;
-            }
-        } else {
-            that.button0Held = false;
-        }
-        if (buttonPressed(gp.buttons[1])) {
-            if (!that.button1Held) {
-                that.shooting = true;
-                that.button1Held = true;
-            }
-        } else {
-            that.button1Held = false;
-        }
-        if (buttonPressed(gp.buttons[7])) {
-            that.diagonal = true;
-        } else {
-            that.diagonal = false;
-        }
-        if (gp.axes[0] > 0.5) {
-            if (!that.down) {
-                that.running = true;
-            }
-            that.right = true;
-        } else if (gp.axes[0] < -0.5) {
-            if (!that.down) {
-                that.running = true;
-            }
-            that.right = false;
-        } else {
-            that.running = false;
-        }
-        if (gp.axes[1] > 0.5) {
-            that.down = true;
-            that.running = false;
-        } else if (gp.axes[1] < -0.5) {
-            that.up = true;
-        } else {
-            that.up = false;
-            that.down = false;
-        }
-    }
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
     this.camera.update();
     this.background.update();
+    this.healthBar.update();
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
 
@@ -343,12 +320,118 @@ GameEngine.prototype.update = function () {
     
 }
 
+GameEngine.prototype.gamepadInput = function () {
+    //poll gamepad
+    var that = this;
+    var gp = navigator.getGamepads()[0]; //only need gamepad 0, single player game
+    if (gp) {
+
+        if (buttonPressed(gp.buttons[0])) {
+            if (!that.button0Held && that.startGame) {
+                that.space = true;
+                that.button0Held = true;
+            }
+            if (!that.startGame) {
+                that.startGame = true;
+            }
+        } else {
+            that.button0Held = false;
+        }
+        if (buttonPressed(gp.buttons[1])) {
+            if (!that.button1Held) {
+                that.shooting = true;
+                that.button1Held = true;
+            }
+        } else {
+            that.button1Held = false;
+        }
+        if (buttonPressed(gp.buttons[7])) {
+            that.diagonal = true;
+        } else {
+            that.diagonal = false;
+        }
+        if (buttonPressed(gp.buttons[9])) {
+            if (!that.button9Held) {
+                that.pause();
+                that.button9Held = true;
+            }
+        } else {
+            that.button9Held = false;
+        }
+        if (gp.axes[0] > 0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = true;
+        } else if (gp.axes[0] < -0.5) {
+            if (!that.down) {
+                that.running = true;
+            }
+            that.right = false;
+        } else {
+            that.running = false;
+        }
+        if (gp.axes[1] > 0.5) {
+            that.down = true;
+            that.running = false;
+        } else if (gp.axes[1] < -0.5) {
+            that.up = true;
+        } else {
+            that.up = false;
+            that.down = false;
+        }
+    }
+}
+
 GameEngine.prototype.loop = function () {
-    this.clockTick = this.timer.tick();
-    this.update();
-    this.draw();
-    this.space = false;
-    this.shooting = false;
+    this.gamepadInput();
+    if (!this.paused) {
+        this.clockTick = this.timer.tick();
+        this.update();
+        this.draw();
+        this.space = false;
+        this.shooting = false;
+    }
+
+    if (this.paused) {
+        var textX = (this.ctx.canvas.width / 3);
+        var textY = (this.ctx.canvas.height / 2);
+        this.ctx.font = "80pt Impact";
+        this.ctx.lineWidth = 4;
+        this.ctx.fillStyle = "white";
+        this.ctx.strokeStyle = "black";
+        this.ctx.strokeText("PAUSED", textX, textY);
+        this.ctx.fillText("PAUSED", textX, textY);
+        
+
+    }
+}
+
+GameEngine.prototype.onCamera = function (entity) {
+    var visible = true;
+    // shows what is within 200 pixels of the view
+    var viewXRight = this.camera.x - 200;
+    var viewXLeft = this.camera + 200;
+
+    if (this.camera.x === 0 - 100) {
+        if (entity.x < 0) {
+            visible = false;
+        }
+        if (entity.x > this.ctx.canvas.width + 100) {
+            visible = false;
+        }
+    } else {
+        if (entity.x < (-1 * viewXLeft)) {
+            visible = false;
+        }
+        if (entity.x > (-1 * viewXRight) + this.ctx.canvas.width) {
+            visible = false;
+        }
+    }
+    //!!!! No change in y coordinates right now, so no need to check that. 
+    //Will need to be fixed to vertical camera introduced
+    return visible;
+    
 }
 
 function Entity(game, x, y, CX, CY) {

@@ -30,7 +30,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-    gameEngine.addEntity(new Health(gameEngine));
+    //gameEngine.addEntity(new Health(gameEngine)); Moved to Init in Game engine
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
@@ -135,8 +135,8 @@ function Health(game) {
     this.game = game;
 };
 
-Health.prototype = new Entity();
-Health.prototype.constructor = Health;
+//Health.prototype = new Entity();
+//Health.prototype.constructor = Health;
 
 Health.prototype.draw = function (ctx) {
     if (!this.game.startGame) return;
