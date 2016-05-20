@@ -241,8 +241,8 @@ var setupWorld = function (game) {
     }
 
 
-    //addEnemies(game);
-}
+    addEnemies(game);
+}s
 
 var addEnemies = function (game) {
     //var snake1 = new Snake(game, 550, 800, 10, 620);
