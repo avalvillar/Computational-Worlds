@@ -12,19 +12,21 @@ ASSET_MANAGER.queueDownload("./img/cave_rock.png");
 
 var canvas;
 var samus;
+var bg;
+var ctx;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     //var canvas = document.getElementById('gameWorld');
     canvas = document.getElementById('gameWorld');
     canvas.focus();
-    var ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
     samus = new Samus(gameEngine, 200, 200);
 
     //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
@@ -156,10 +158,9 @@ Health.prototype.draw = function (ctx) {
 };
 
 Health.prototype.update = function () {
+    // console.log(samus.y);
     if (!this.game.startGame) return;
     this.currentHealthWidth = samus.health;
-    if (samus.health > 0) samus.health -= 0.2;
-    // console.log(samus.health);
 };
 
 function clamp(value, min, max) {
@@ -167,3 +168,23 @@ function clamp(value, min, max) {
     else if (value > max) return max;
     return value;
 } 
+
+/************************************************************
+    Reset world - if samus dies, set samus back at the
+    beginning of the game
+ */
+
+var resetWorld = function(game) {
+// set camera back at beginning
+    samus.removeFromWorld = true;
+    samus = new Samus(game, 205, 200);
+    game.entities = [];
+    game.addEntity(new Health(game));
+
+// remove current enemies & respawn
+    addEnemies(game);
+
+// put samus back at beginning
+    game.init(ctx, samus, bg);
+};
+

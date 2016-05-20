@@ -243,6 +243,11 @@ Samus.prototype.platformCollision = function () {
 }
 
 Samus.prototype.update = function () {
+    if (samus.y > 800) samus.health = 0;
+    if (this.health <= 0) {
+        resetWorld(this.game);
+        return;
+    }
     if (!this.game.startGame) return;
     this.laserTimer++;
     
