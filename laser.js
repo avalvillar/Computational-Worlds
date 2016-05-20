@@ -117,7 +117,7 @@ Laser.prototype.update = function () {
 
 Laser.prototype.draw = function (ctx, cameraX, cameraY) {
 
-    Entity.prototype.draw.call(this, cameraX, cameraY);
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     var downOffset = 0;
     if (this.game.down) {
         downOffset = 9; //Created to make blast aligned when Samus is down
