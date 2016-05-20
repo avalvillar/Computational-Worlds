@@ -239,7 +239,7 @@ GameEngine.prototype.draw = function () {
     /* This is for translation of the viewpoint. 
        I need to figure out how to translate the camera offset onto these
        translations. */
-    this.background.draw(this.ctx);
+    this.background.draw(this.ctx, cameraX);
     for (var i = 0; i < this.platforms.length; i++) {
         this.platforms[i].draw(this.ctx, cameraX, cameraY);
     }
@@ -275,6 +275,11 @@ GameEngine.prototype.update = function () {
             }
         } else {
             that.button1Held = false;
+        }
+        if (buttonPressed(gp.buttons[7])) {
+            that.diagonal = true;
+        } else {
+            that.diagonal = false;
         }
         if (gp.axes[0] > 0.5) {
             if (!that.down) {

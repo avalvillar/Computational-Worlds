@@ -102,9 +102,10 @@ function Background(game, spritesheet) {
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
-Background.prototype.draw = function (ctx) {
+Background.prototype.draw = function (ctx, cameraX) {
+    this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x, this.y, 9000, 900);
+                 this.x + this.cameraX, this.y, 9000, 900);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
