@@ -19,7 +19,7 @@ Platform.prototype.update = function() {
 
 Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 
-    Entity.prototype.draw.call(this, cameraX, cameraY);
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     this.game.ctx.drawImage(this.spritesheet,
                  this.x + cameraX, this.y - cameraY, 70, 70);
     

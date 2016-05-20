@@ -34,6 +34,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.downRightTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 80, 180, 40, 55, 1, 1, false, false);
     this.upRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 725, 170, 32, 70, .8, 2, true, false);
     this.runningRightUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 425, 360, 43.5, 50, 0.1, 10, true, false);
+    this.rightAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 202, 116, 40, 55, 1, 3, true, false);
 
 
     this.idleLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 142, 55, 39, 50, .8, 2, true, true);
@@ -44,6 +45,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.downLeftTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 40, 180, 40, 55, 1, 1, false, false);
     this.upLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 484, 170, 41, 70, 1, 2, true, false);
     this.runningLeftUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1, 360, 42.5, 50, .1, 10, true, false);
+    this.leftAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 0, 116, 40, 55, 1, 3, true, false);
 
     this.health = 100; // will be out of 100
     this.running = false;
@@ -79,7 +81,7 @@ Samus.prototype.chooseLaser = function() {
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x + 66, this.y + 34, "right");
                 this.game.addLaser(laser);
-            } else if (this.game.running && this.game.up) {
+            } else if (this.game.running && (this.diagonal ||this.game.up)) {
                 var laser = new Laser(this.game, this.x + 80, this.y + 25, "diagonal-right");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
@@ -97,7 +99,7 @@ Samus.prototype.chooseLaser = function() {
             if (this.game.down) {
                 var laser = new Laser(this.game, this.x, this.y + 34, "left");
                 this.game.addLaser(laser);
-            } else if (this.game.running && this.game.up) {
+            } else if (this.game.running && (this.diagonal || this.game.up)) {
                 var laser = new Laser(this.game, this.x + 23, this.y + 24, "diagonal-left");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
@@ -258,7 +260,11 @@ Samus.prototype.update = function () {
     }
     if (this.game.running) this.running = true;
 
-    
+    if (this.game.diagonal) {
+        this.diagonal = true;
+    } else {
+        this.diagonal = false;
+    }
     this.platformCollision(); // performs platform collision handling
     this.x += this.velocity.x;
     this.y += this.velocity.y;
@@ -346,7 +352,7 @@ Samus.prototype.update = function () {
 Samus.prototype.draw = function (ctx, cameraX, cameraY) {
     if (!this.game.startGame) return;
 
-    Entity.prototype.draw.call(this, cameraX, cameraY);
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
             this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);
@@ -357,7 +363,9 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
             } else {
                 this.downRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
             }
-        } else if (this.up && this.running) { // diagonal right up
+        } else if (this.diagonal && !this.running) {
+            this.rightAimDiagonal.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
+        } else if ((this.up || this.diagonal) && this.running) { // diagonal right up
             this.runningRightUp.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
         } else if (this.up) { // up right
             this.upRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - 6 - cameraY, 3);
@@ -380,7 +388,9 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
                 this.lastDirection = "left";
             }
             this.downLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 23 - cameraY, 3);
-        } else if (this.up && this.running) { // diagonal right up
+        } else if (this.diagonal && !this.running) {
+            this.leftAimDiagonal.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
+        } else if ((this.up || this.diagonal) && this.running) { // diagonal right up
             this.runningLeftUp.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + 15 - cameraY, 3);
         } else if (this.up) { // up left
             this.upLeft.drawFrame(this.game.clockTick, ctx, this.x + 23 + cameraX, this.y - 6 - cameraY, 3);
