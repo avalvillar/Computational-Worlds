@@ -158,7 +158,7 @@ Health.prototype.draw = function (ctx) {
 };
 
 Health.prototype.update = function () {
-    console.log(samus.y);
+    // console.log(samus.y);
     if (!this.game.startGame) return;
     this.currentHealthWidth = samus.health;
 };
