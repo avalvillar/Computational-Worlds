@@ -61,6 +61,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.collisionX = this.x + 150;
     this.collisionY = this.y + 150;
     this.jumpCount = 0;
+    this.damageTimer = 0;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
@@ -157,11 +158,18 @@ Samus.prototype.jump = function () {
 Samus.prototype.collisionDetection = function () {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (Math.abs(this.x - ent.x) < 400 && this.collide(ent)) {
-
+        if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent)) {
+            if (ent.x > this.x) {
+                this.x -= 100;
+                ent.x += 50;
+            } else {
+                this.x += 100;
+                ent.x -= 50;
+            }
+            
+            this.health = -30;
         }
     }
-
 }
 
 Samus.prototype.platformCollision = function () {
