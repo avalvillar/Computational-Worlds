@@ -149,12 +149,16 @@ GameEngine.prototype.startInput = function () {
     this.down = false;
     this.up = false;
     this.shooting = false;
+    this.diagonal = false;
     var that = this;
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === 'M') {
             that.startGame = true;
             // e.preventDefault();
+        }
+        if (String.fromCharCode(e.which) === 'E') {
+            that.diagonal = true;
         }
         if (String.fromCharCode(e.which) === ' ') {
             that.space = true;
@@ -187,6 +191,9 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keyup", function (e) {
         if (String.fromCharCode(e.which) === 'W') {
             that.up = false;
+        }
+        if (String.fromCharCode(e.which) === 'E') {
+            that.diagonal = false;
         }
         if (String.fromCharCode(e.which) === 'D') {
             that.running = false;
@@ -353,11 +360,11 @@ Entity.prototype.update = function () {
 
 Entity.prototype.draw = function (ctx, cameraX, cameraY) {
    // this.x -= this.game.camera.x;
-   // this.y += this.game.camera.y;
+    // this.y += this.game.camera.y;
     if (this.game.showOutlines && this.radius) {
         this.game.ctx.beginPath();
         this.game.ctx.strokeStyle = "red";
-        this.game.ctx.arc(this.collisionX, this.collisionY, this.radius, 0, Math.PI * 2, false);
+        this.game.ctx.arc(this.collisionX + cameraX, this.collisionY - cameraY, this.radius, 0, Math.PI * 2, false);
         this.game.ctx.stroke();
         this.game.ctx.closePath();
     }
@@ -366,18 +373,20 @@ Entity.prototype.draw = function (ctx, cameraX, cameraY) {
         this.game.ctx.beginPath();
         this.game.ctx.lineWidth = "1";
         this.game.ctx.strokeStyle = "red";
-        this.game.ctx.rect(this.collisionX, this.collisionY, this.collisionWidth, this.collisionHeight);
-        this.game.ctx.stroke(); 
+        this.game.ctx.rect(this.collisionX + cameraX, this.collisionY - cameraY, this.collisionWidth, this.collisionHeight);
+        this.game.ctx.stroke();
+        this.game.ctx.closePath();
     }
     if (this.game.showOutlines && this.isPlatform) {
         this.game.ctx.beginPath(); //collide top boxes
         this.game.ctx.lineWidth = "1";
         this.game.ctx.strokeStyle = "orange";
-        this.game.ctx.rect(this.collisionX, this.collisionY - 5, this.collisionWidth, 5);
-        this.game.ctx.rect(this.collisionX + this.collisionWidth, this.collisionY, 5, this.collisionHeight);
-        this.game.ctx.rect(this.collisionX - 5, this.collisionY, 5, this.collisionHeight);
-        this.game.ctx.rect(this.collisionX, this.collisionY + this.collisionHeight, this.collisionWidth, 5);
+        this.game.ctx.rect(this.collisionX + cameraX, this.collisionY - 5 - cameraY, this.collisionWidth, 5);
+        this.game.ctx.rect(this.collisionX + this.collisionWidth + cameraX, this.collisionY - cameraY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX - 5 + cameraX, this.collisionY - cameraY, 5, this.collisionHeight);
+        this.game.ctx.rect(this.collisionX + cameraX, this.collisionY + this.collisionHeight - cameraY, this.collisionWidth, 5);
         this.game.ctx.stroke();
+        this.game.ctx.closePath();
     }
 }
 

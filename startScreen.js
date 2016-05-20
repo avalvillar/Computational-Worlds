@@ -34,14 +34,15 @@ StartScreen.prototype.update = function() {
 var centerText = function (ctx, width, height) {
     ctx.textAlign="center";
     width = width / 2;
+    height = height / 9;
     ctx.fillStyle = "darkgrey";
     ctx.font = '50px Courier New';
-    ctx.fillText("I'm Not From Here", width, 200);
+    ctx.fillText("I'm Not From Here", width, height * 3);
     ctx.fillStyle = "red";
     ctx.font = '40px Courier New';
-    ctx.fillText("Press M To begin", width , 300);
+    ctx.fillText("Press M To begin", width , height * 4);
     ctx.fillStyle = "grey";
     ctx.font = '25px Courier New';
-    ctx.fillText("you crashed your ship on a strange alien planet", width , 400);
-    ctx.fillText("you must continue to survive", width, 450);
+    ctx.fillText("you crashed your ship on a strange alien planet", width , height * 5);
+    ctx.fillText("you must continue to survive", width, height * 5.5);
 };
