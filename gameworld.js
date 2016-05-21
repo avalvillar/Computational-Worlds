@@ -26,11 +26,67 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 }
 
 var setupWorld = function (game) {
-
     ///world creation
+    for (var i = 7350; i < 8200; i += 70) {
+        var groundLine2 = new Platform(game, i, 830);
+        game.addPlatform(groundLine2);
+    }
+
+    for (var i = 760; i < 840; i += 70) {
+        var groundBend = new Platform(game, 8200, i);
+        game.addPlatform(groundBend);
+    }
+
+    for (var i = 9500; i < 10400; i += 70) {
+        var ground3 = new Platform(game, i, 830);
+        game.addPlatform(ground3);
+    }
+
+    for (var i = 6600; i < 7250; i += 70) {
+        var underBridge1 = new Platform(game, i, 830);
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 740; i < 860; i += 70) {
+        var underBridge1 = new Platform(game, 7230, i);
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 6300; i < 6580; i += 70) {
+        var bigGap = new Platform(game, i, 830);
+        game.addPlatform(bigGap);
+    }
+
+    for (var i = 3550; i < 4200; i += 70) {
+        var groundLine = new Platform(game, i, 830);
+        game.addPlatform(groundLine);
+    }
+
+    for (var i = 2740; i < 3200; i += 70) {
+        var wallBase = new Platform(game, i, 830);
+        game.addPlatform(wallBase);
+    }
+
+    for (var i = 1140; i < 1400; i += 70) {
+        var ground2 = new Platform(game, i, 830);
+        game.addPlatform(ground2);
+    }
+
     for (var i = -30; i < 660; i += 70) {
         var ground1 = new Platform(game, i, 830);
         game.addPlatform(ground1);
+    }
+
+    for (var i = 690; i < 830; i += 70) {
+        for (var j = 3550; j < 3900; j += 70) {
+            var groundBlock = new Platform(game, j, i);
+            game.addPlatform(groundBlock);
+        }
+    }
+
+    for (var i = 0; i < 12000; i += 70) {
+        var ceiling = new Platform(game, i, 0);
+        game.addPlatform(ceiling);
     }
 
     for (var i = 0; i < 900; i += 70) {
@@ -38,9 +94,161 @@ var setupWorld = function (game) {
         game.addPlatform(startWall);
     }
 
+    for (var i = 580; i < 790; i += 70) {
+        var mid = new Platform(game, i, 610);
+        game.addPlatform(mid);
+    }
+
+    var mid1 = new Platform(game, 1520, 600);
+    var mid2 = new Platform(game, 1590, 600);
+    game.addPlatform(mid1);
+    game.addPlatform(mid2);
+
+    var mid3 = new Platform(game, 1680, 400);
+    game.addPlatform(mid3);
+
+    for (var i = 2320; i < 2500; i += 70) {
+        var midLong1 = new Platform(game, i, 630);
+        game.addPlatform(midLong1);
+    }
+
+    for (var i = 1900; i < 2500; i += 70) {
+        var midLong2 = new Platform(game, i, 720);
+        game.addPlatform(midLong2);
+    }
+
+    for (var i = 350; i < 860; i += 70) {
+        var wall1 = new Platform(game, 2670, i);
+        game.addPlatform(wall1);
+    }
+
+    var wallMid1 = new Platform(game, 2740, 690);
+    var wallMid2 = new Platform(game, 2810, 690);
+    game.addPlatform(wallMid1);
+    game.addPlatform(wallMid2);
+
+    var bend1 = new Platform(game, 3350, 600);
+    var bend2 = new Platform(game, 3420, 600);
+    game.addPlatform(bend1);
+    game.addPlatform(bend2);
+
+    var bendUp = new Platform(game, 3420, 390);
+    var bendUp2 = new Platform(game, 3420, 460);
+    var bendUp3 = new Platform(game, 3420, 530);
+    game.addPlatform(bendUp);
+    game.addPlatform(bendUp2);
+    game.addPlatform(bendUp3);
+
+    for (var i = 3490; i < 3700; i += 70) {
+        var bendLine = new Platform(game, i, 390);
+        game.addPlatform(bendLine);
+    }
+
+    var smallBlock = new Platform(game, 4200, 500);
+    var smallBlock2 = new Platform(game, 4270, 500);
+    game.addPlatform(smallBlock);
+    game.addPlatform(smallBlock2);
+
+    for (var i = 4600; i < 5100; i += 70) {
+        var freeLine = new Platform(game, i, 600);
+        game.addPlatform(freeLine);
+    }
+
+    var connectBlock = new Platform(game, 5090, 530);
+    game.addPlatform(connectBlock);
+
+    for (var i = 5090; i < 5600; i += 70) {
+        var freeLine2 = new Platform(game, i, 460);
+        game.addPlatform(freeLine2);
+    }
+
+    var singleBlock = new Platform(game, 5900, 830);
+    game.addPlatform(singleBlock);
+
+    for (var i = 690; i < 830; i += 70) {
+        var gapWall = new Platform(game, 6510, i);
+        game.addPlatform(gapWall);
+    }
+
+    for (var i = 530; i < 670; i += 70) {
+        var snakeBridge1 = new Platform(game, 6720, i);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 6720; i < 7000; i += 70) {
+        var snakeBridge1 = new Platform(game, i, 530);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 530; i < 670; i += 70) {
+        var snakeBridge1 = new Platform(game, 7000, i);
+        game.addPlatform(snakeBridge1);
+    }
+
+    for (var i = 7300; i < 8000; i += 70) {
+        var highLine = new Platform(game, i, 350);
+        game.addPlatform(highLine);
+    }
+
+    var singleBlock2 = new Platform(game, 7100, 400);
+    game.addPlatform(singleBlock2);
+
+    var singleBlock3 = new Platform(game, 8200, 760);
+    game.addPlatform(singleBlock3);
+    var singleBlock4 = new Platform(game, 8200, 690);
+    game.addPlatform(singleBlock4);
+
+    for (var i = 8270; i < 8500; i += 70) {
+        var groundUp = new Platform(game, i, 690);
+        game.addPlatform(groundUp);
+    }
+
+    for (var i = 480; i < 760; i += 70) {
+        var deadEnd = new Platform(game, 8700, i);
+        game.addPlatform(deadEnd);
+    }
+
+    for (var i = 8200; i < 8420; i += 70) {
+        var upperLine = new Platform(game, i, 350);
+        game.addPlatform(upperLine);
+    }
+
+    for (var i = 8700; i < 9000; i += 70) {
+        var upperLine2 = new Platform(game, i, 400);
+        game.addPlatform(upperLine2);
+    }
+
+    for (var i = 9300; i < 9800; i += 70) {
+        var blockJump = new Platform(game, i, 300);
+        game.addPlatform(blockJump);
+    }
+
+    for (var i = 9300; i < 9600; i += 70) {
+        var blockJump2 = new Platform(game, i, 370);
+        game.addPlatform(blockJump2);
+    }
+
+    for (var i = 70; i < 600; i += 70) {
+        var bigWall = new Platform(game, 10000, i);
+        game.addPlatform(bigWall);
+    }
+
+    addEnemies(game);
+    /*    
+    ///world creation
+    for (var i = -30; i < 660; i += 70) {
+        var ground1 = new Platform(game, i, 830);
+        game.addPlatform(ground1);
+    }
+
     for (var i = 0; i < 12000; i += 70) {
         var ceiling = new Platform(game, i, 0);
         game.addPlatform(ceiling);
+    }
+
+    for (var i = 0; i < 900; i += 70) {
+        var startWall = new Platform(game, -60, i);
+        game.addPlatform(startWall);
     }
 
     for (var i = 580; i < 790; i += 70) {
@@ -165,7 +373,7 @@ var setupWorld = function (game) {
     for (var i = 800; i < 870; i += 70) {
         var underBridge1 = new Platform(game, 6600, i);
         game.addPlatform(underBridge1);
-    } */
+    } 
 
     for (var i = 6600; i < 7250; i += 70) {
         var underBridge1 = new Platform(game, i, 830);
@@ -239,9 +447,7 @@ var setupWorld = function (game) {
         var ground3 = new Platform(game, i, 830);
         game.addPlatform(ground3);
     }
-
-
-    addEnemies(game);
+    */
 }
 
 var addEnemies = function (game) {
@@ -279,7 +485,7 @@ var addEnemies = function (game) {
 
     var bat1 = new Bat(game, 600, 450, 500, 1000);
     game.addEntity(bat1);
-    var bat2 = new Bat(game, 1100, 700, 950, 1400);
+    var bat2 = new Bat(game, 1100, 675, 950, 1400);
     game.addEntity(bat2);
     var bat3 = new Bat(game, 1400, 300, 1300, 1850);
     game.addEntity(bat3);
