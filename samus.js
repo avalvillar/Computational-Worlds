@@ -34,18 +34,18 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.downRightTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 80, 180, 40, 55, 1, 1, false, false);
     this.upRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 725, 170, 32, 70, .8, 2, true, false);
     this.runningRightUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 425, 360, 43.5, 50, 0.1, 10, true, false);
-    this.rightAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 202, 116, 40, 55, 1, 3, true, false);
+    this.rightAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 240, 116, 39, 55, .8, 2, true, false);
 
 
     this.idleLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 142, 55, 39, 50, .8, 2, true, true);
     this.runningLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 0, 300, 42.1, 50, .1, 10, true, false);
-    this.jumpLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 733.1, 0, 31.5, 55, .07, 8, false, false);
+    this.jumpLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 733.1, 0, 31.8, 55, .07, 8, false, false);
     this.turnLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 260, 55, 40, 55, 1, 1, false, false);
     this.downLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 0, 180, 40, 55, 1, 1, true, false);
     this.downLeftTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 40, 180, 40, 55, 1, 1, false, false);
     this.upLeft = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 484, 170, 41, 70, 1, 2, true, false);
     this.runningLeftUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1, 360, 42.5, 50, .1, 10, true, false);
-    this.leftAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 0, 116, 40, 55, 1, 3, true, false);
+    this.leftAimDiagonal = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), -2, 116, 39, 55, .8, 2, true, false); //A negative value works here???? lmao
 
     this.health = 100; // will be out of 100
     this.running = false;
@@ -87,13 +87,16 @@ Samus.prototype.chooseLaser = function() {
             } else if (this.game.running && (this.diagonal ||this.game.up)) {
                 var laser = new Laser(this.game, this.x + 80, this.y + 25, "diagonal-right");
                 this.game.addLaser(laser);
+            } else if (this.game.diagonal) {
+                var laser = new Laser(this.game, this.x + 80, this.y -10, "diagonal-right");
+                this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x + 80, this.y, "right");
                 this.game.addLaser(laser);
             } else if (this.game.up) {
                 var laser = new Laser(this.game, this.x + 32, this.y - 44, "up");
                 this.game.addLaser(laser);
-            } else {
+            }  else {
                 var laser = new Laser(this.game, this.x + 68, this.y + 11, "right");
                 this.game.addLaser(laser);
             }
@@ -104,6 +107,9 @@ Samus.prototype.chooseLaser = function() {
                 this.game.addLaser(laser);
             } else if (this.game.running && (this.diagonal || this.game.up)) {
                 var laser = new Laser(this.game, this.x + 23, this.y + 24, "diagonal-left");
+                this.game.addLaser(laser);
+            } else if (this.game.diagonal) {
+                var laser = new Laser(this.game, this.x - 1, this.y -10, "diagonal-left");
                 this.game.addLaser(laser);
             } else if (this.game.running) {
                 var laser = new Laser(this.game, this.x, this.y, "left");

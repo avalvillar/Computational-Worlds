@@ -119,10 +119,18 @@ Laser.prototype.draw = function (ctx, cameraX, cameraY) {
 
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     var downOffset = 0;
+    var horizOffset = 0;
     if (this.game.down) {
         downOffset = 9; //Created to make blast aligned when Samus is down
-    } else if (this.game.running && this.game.up) {
+    } else if (this.game.running && (this.game.up || this.game.diagonal)) {
         downOffset = -20;
+    } else if (this.game.diagonal) {
+        downOffset = -20;
+        if (this.game.right) {
+            horizOffset = -7;
+        } else {
+            horizOffset = 7;
+        }
     } else if (this.game.up) {
         downOffset = -9; //aligning when Samus is up
     } else {
@@ -130,7 +138,7 @@ Laser.prototype.draw = function (ctx, cameraX, cameraY) {
     }
     if (!this.blastDone && !this.startDone) {
         if (this.count < 2) {
-            this.laserStart.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + downOffset - cameraY, 3);
+            this.laserStart.drawFrame(this.game.clockTick, ctx, this.x + horizOffset+ cameraX, this.y + downOffset - cameraY, 3);
             this.count++;
         } else {
             this.count = 0;
@@ -138,7 +146,7 @@ Laser.prototype.draw = function (ctx, cameraX, cameraY) {
         }
     } else if (!this.blastDone) {
         if (this.count < 1) {
-            this.laserBlast.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y + downOffset - cameraY, 3);
+            this.laserBlast.drawFrame(this.game.clockTick, ctx, this.x + horizOffset + cameraX, this.y + downOffset - cameraY, 3);
             this.count++;
         } else {
             this.blastDone = true;
