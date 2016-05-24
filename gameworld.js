@@ -33,30 +33,76 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 }
 
 var setupWorld = function (game) {
-
-    ///world creation
-    for (var i = 0; i < 900; i += 70) {
-        var startWall = new Platform(game, -60, i, "cave");
-        game.addPlatform(startWall);
+    for (var i = 7350; i < 8200; i += 70) {
+        var groundLine2 = new Platform(game, i, 830, "cave");
+        game.addPlatform(groundLine2);
     }
 
-    for (var i = 0; i < 8830; i += 70) {
-        var ceiling = new Platform(game, i, 0, "cave");
-        game.addPlatform(ceiling);
+    for (var i = 760; i < 840; i += 70) {
+        var groundBend = new Platform(game, 8200, i, "cave");
+        game.addPlatform(groundBend);
     }
-    for (var i = -30; i < 660; i += 70) {
-        var ground1 = new Platform(game, i, 830, "cave");
-        game.addPlatform(ground1);
-    } 
 
-    for (var i = 580; i < 790; i += 70) {
-        var mid = new Platform(game, i, 610, "cave");
-        game.addPlatform(mid);
+    for (var i = 9500; i < 10400; i += 70) {
+        var ground3 = new Platform(game, i, 830, "cave");
+        game.addPlatform(ground3);
+    }
+
+    for (var i = 6600; i < 7250; i += 70) {
+        var underBridge1 = new Platform(game, i, 830, "cave");
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 740; i < 860; i += 70) {
+        var underBridge1 = new Platform(game, 7230, i, "cave");
+        game.addPlatform(underBridge1);
+    }
+
+    for (var i = 6300; i < 6580; i += 70) {
+        var bigGap = new Platform(game, i, 830, "cave");
+        game.addPlatform(bigGap);
+    }
+
+    for (var i = 3550; i < 4200; i += 70) {
+        var groundLine = new Platform(game, i, 830, "cave");
+        game.addPlatform(groundLine);
+    }
+
+    for (var i = 2740; i < 3200; i += 70) {
+        var wallBase = new Platform(game, i, 830, "cave");
+        game.addPlatform(wallBase);
     }
 
     for (var i = 1140; i < 1400; i += 70) {
         var ground2 = new Platform(game, i, 830, "cave");
         game.addPlatform(ground2);
+    }
+
+    for (var i = -30; i < 660; i += 70) {
+        var ground1 = new Platform(game, i, 830, "cave");
+        game.addPlatform(ground1);
+    }
+
+    for (var i = 690; i < 830; i += 70) {
+        for (var j = 3550; j < 3900; j += 70) {
+            var groundBlock = new Platform(game, j, i, "cave");
+            game.addPlatform(groundBlock);
+        }
+    }
+
+    for (var i = 0; i < 12000; i += 70) {
+        var ceiling = new Platform(game, i, 0, "cave");
+        game.addPlatform(ceiling);
+    }
+
+    for (var i = 0; i < 900; i += 70) {
+        var startWall = new Platform(game, -60, i, "cave");
+        game.addPlatform(startWall);
+    }
+
+    for (var i = 580; i < 790; i += 70) {
+        var mid = new Platform(game, i, 610, "cave");
+        game.addPlatform(mid);
     }
 
     var mid1 = new Platform(game, 1520, 600, "cave");
@@ -87,11 +133,6 @@ var setupWorld = function (game) {
     game.addPlatform(wallMid1);
     game.addPlatform(wallMid2);
 
-    for (var i = 2740; i < 3200; i += 70) {
-        var wallBase = new Platform(game, i, 830, "cave");
-        game.addPlatform(wallBase);
-    }
-
     var bend1 = new Platform(game, 3350, 600, "cave");
     var bend2 = new Platform(game, 3420, 600, "cave");
     game.addPlatform(bend1);
@@ -107,18 +148,6 @@ var setupWorld = function (game) {
     for (var i = 3490; i < 3700; i += 70) {
         var bendLine = new Platform(game, i, 390, "cave");
         game.addPlatform(bendLine);
-    }
-
-    for (var i = 690; i < 830; i += 70) {
-        for (var j = 3550; j < 3900; j += 70) {
-            var groundBlock = new Platform(game, j, i, "cave");
-            game.addPlatform(groundBlock);
-        }
-    }
-
-    for (var i = 3550; i < 4200; i += 70) {
-        var groundLine = new Platform(game, i, 830, "cave");
-        game.addPlatform(groundLine);
     }
 
     var smallBlock = new Platform(game, 4200, 500, "cave");
@@ -142,11 +171,6 @@ var setupWorld = function (game) {
     var singleBlock = new Platform(game, 5900, 830, "cave");
     game.addPlatform(singleBlock);
 
-    for (var i = 6300; i < 6580; i += 70) {
-        var bigGap = new Platform(game, i, 830, "cave");
-        game.addPlatform(bigGap);
-    }
-
     for (var i = 690; i < 830; i += 70) {
         var gapWall = new Platform(game, 6510, i, "cave");
         game.addPlatform(gapWall);
@@ -167,21 +191,6 @@ var setupWorld = function (game) {
         game.addPlatform(snakeBridge1);
     }
 
-    for (var i = 800; i < 870; i += 70) {
-        var underBridge1 = new Platform(game, 6650, i, "cave");
-        game.addPlatform(underBridge1);
-    }
-
-    for (var i = 6650; i < 7150; i += 70) {
-        var underBridge1 = new Platform(game, i, 830, "cave");
-        game.addPlatform(underBridge1);
-    }
-
-    for (var i = 740; i < 860; i += 70) {
-        var underBridge1 = new Platform(game, 7140, i, "cave");
-        game.addPlatform(underBridge1);
-    }
-
     for (var i = 7300; i < 8000; i += 70) {
         var highLine = new Platform(game, i, 350, "cave");
         game.addPlatform(highLine);
@@ -190,11 +199,46 @@ var setupWorld = function (game) {
     var singleBlock2 = new Platform(game, 7100, 400, "cave");
     game.addPlatform(singleBlock2);
 
-    for (var i = 7350; i < 8000; i += 70) {
-        var groundLine2 = new Platform(game, i, 830, "cave");
-        game.addPlatform(groundLine2);
+    var singleBlock3 = new Platform(game, 8200, 760, "cave");
+    game.addPlatform(singleBlock3);
+    var singleBlock4 = new Platform(game, 8200, 690, "cave");
+    game.addPlatform(singleBlock4);
+
+    for (var i = 8270; i < 8500; i += 70) {
+        var groundUp = new Platform(game, i, 690, "cave");
+        game.addPlatform(groundUp);
     }
-    addEnemies(game);
+
+    for (var i = 480; i < 760; i += 70) {
+        var deadEnd = new Platform(game, 8700, i, "cave");
+        game.addPlatform(deadEnd);
+    }
+
+    for (var i = 8200; i < 8420; i += 70) {
+        var upperLine = new Platform(game, i, 350, "cave");
+        game.addPlatform(upperLine);
+    }
+
+    for (var i = 8700; i < 9000; i += 70) {
+        var upperLine2 = new Platform(game, i, 400, "cave");
+        game.addPlatform(upperLine2);
+    }
+
+    for (var i = 9300; i < 9800; i += 70) {
+        var blockJump = new Platform(game, i, 300, "cave");
+        game.addPlatform(blockJump);
+    }
+
+    for (var i = 9300; i < 9600; i += 70) {
+        var blockJump2 = new Platform(game, i, 370, "cave");
+        game.addPlatform(blockJump2);
+    }
+
+    for (var i = 70; i < 600; i += 70) {
+        var bigWall = new Platform(game, 10000, i, "cave");
+        game.addPlatform(bigWall);
+    }
+    //addEnemies(game);
 }
 
 var addEnemies = function (game) {
@@ -232,7 +276,7 @@ var addEnemies = function (game) {
 
     var bat1 = new Bat(game, 600, 450, 500, 1000);
     game.addEntity(bat1);
-    var bat2 = new Bat(game, 1100, 700, 950, 1400);
+    var bat2 = new Bat(game, 1100, 675, 950, 1400);
     game.addEntity(bat2);
     var bat3 = new Bat(game, 1400, 300, 1300, 1850);
     game.addEntity(bat3);

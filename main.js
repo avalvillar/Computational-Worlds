@@ -32,7 +32,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-    gameEngine.addEntity(new Health(gameEngine));
+    //gameEngine.addEntity(new Health(gameEngine)); Moved to Init in Game engine
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
@@ -104,9 +104,10 @@ function Background(game, spritesheet) {
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
-Background.prototype.draw = function (ctx) {
+Background.prototype.draw = function (ctx, cameraX) {
+    this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x, this.y, 9000, 900);
+                 this.x + this.cameraX, this.y, 9000, 900);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
@@ -136,8 +137,8 @@ function Health(game) {
     this.game = game;
 };
 
-Health.prototype = new Entity();
-Health.prototype.constructor = Health;
+//Health.prototype = new Entity();
+//Health.prototype.constructor = Health;
 
 Health.prototype.draw = function (ctx) {
     if (!this.game.startGame) return;
