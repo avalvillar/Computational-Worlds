@@ -167,6 +167,9 @@ GameEngine.prototype.startInput = function () {
             that.startGame = true;
             // e.preventDefault();
         }
+        if (String.fromCharCode(e.which) === 'Q') {
+            that.diagonal = true;
+        }
         if (String.fromCharCode(e.which) === 'E') {
             that.diagonal = true;
         }
@@ -203,6 +206,9 @@ GameEngine.prototype.startInput = function () {
             that.up = false;
         }
         if (String.fromCharCode(e.which) === 'E') {
+            that.diagonal = false;
+        }
+        if (String.fromCharCode(e.which) === 'Q') {
             that.diagonal = false;
         }
         if (String.fromCharCode(e.which) === 'D') {
@@ -344,6 +350,11 @@ GameEngine.prototype.gamepadInput = function () {
             }
         } else {
             that.button1Held = false;
+        }
+        if (buttonPressed(gp.buttons[6])) {
+            that.diagonal = true;
+        } else {
+            that.diagonal = false;
         }
         if (buttonPressed(gp.buttons[7])) {
             that.diagonal = true;
