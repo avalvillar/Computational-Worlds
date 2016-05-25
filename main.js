@@ -9,8 +9,10 @@ ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
-ASSET_MANAGER.queueDownload("./img/mossyBlock.png")
-ASSET_MANAGER.queueDownload("./img/woodBlock.png")
+ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
+ASSET_MANAGER.queueDownload("./img/woodBlock.png");
+ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
+ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 
 var canvas;
 var samus;
@@ -32,7 +34,9 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-    //gameEngine.addEntity(new Health(gameEngine)); Moved to Init in Game engine
+
+    //var testShip = new ship(gameEngine, 100, 100);
+    //gameEngine.addEntity(testShip);
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();

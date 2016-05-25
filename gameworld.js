@@ -238,7 +238,7 @@ var setupWorld = function (game) {
         var bigWall = new Platform(game, 10000, i, "cave");
         game.addPlatform(bigWall);
     }
-    //addEnemies(game);
+    addEnemies(game);
 }
 
 var addEnemies = function (game) {
