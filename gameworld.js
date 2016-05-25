@@ -24,8 +24,20 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
                  this.x + cameraX, this.y - cameraY, 70, 70);
     
 }
+var setupWorldForest = function (game) {
+    ///world creation
+    addForestEnemies(game);
+}
 
-var setupWorld = function (game) {
+var addForestEnemies = function (game) {
+    var spider1 = new Spider(game, 200, 200, 150, 400);
+    game.addEntity(spider1);
+
+    var plant1 = new Plant(game, 400, 400);
+    game.addEntity(plant1);
+}
+
+var setupWorldCave = function (game) {
     ///world creation
     for (var i = 7350; i < 8200; i += 70) {
         var groundLine2 = new Platform(game, i, 830);
@@ -233,7 +245,7 @@ var setupWorld = function (game) {
         game.addPlatform(bigWall);
     }
 
-    addEnemies(game);
+    addCaveEnemies(game);
     /*    
     ///world creation
     for (var i = -30; i < 660; i += 70) {
@@ -450,7 +462,7 @@ var setupWorld = function (game) {
     */
 }
 
-var addEnemies = function (game) {
+var addCaveEnemies = function (game) {
     //var snake1 = new Snake(game, 550, 800, 10, 620);
     //game.addEntity(snake1);
     var snake2 = new Snake(game, 590, 475, 580, 750);
