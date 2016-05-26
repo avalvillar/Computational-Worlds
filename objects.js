@@ -15,11 +15,13 @@ ship.prototype = new Entity();
 ship.prototype.constructor = ship;
 
 ship.prototype.update = function () {
+    if (!this.game.startGame) return;
     Entity.prototype.update.call(this);
 }
 
-ship.prototype.draw = function (ctx) {
-    this.smoking.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3.5);
+ship.prototype.draw = function (ctx,cameraX, cameraY) {
+    if (!this.game.startGame) return;
+    this.smoking.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
     Entity.prototype.draw.call(this);
 }
 

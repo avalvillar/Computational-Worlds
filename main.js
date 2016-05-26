@@ -36,16 +36,13 @@ ASSET_MANAGER.downloadAll(function () {
     ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
-    samus = new Samus(gameEngine, 200, 200);
+    samus = new Samus(gameEngine, 200, 200);//x = 200 // boss testing = 9900
 
     //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
 	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-
-    //var alienTest = new Alien(gameEngine, 180, 200);
-    //gameEngine.addEntity(alienTest);
 
     //var testShip = new ship(gameEngine, 100, 0);
     //gameEngine.addEntity(testShip);
