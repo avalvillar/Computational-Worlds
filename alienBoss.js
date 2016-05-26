@@ -10,7 +10,7 @@ var setupAlienBoss = function (game) {
         game.addPlatform(bigWall);
     }
     game.camera.setBossFight();
-    var boss = new Alien(game, 10750, 700);
+    var boss = new Alien(game, 10750, 580);
     game.addEntity(boss);
 }
 
@@ -32,7 +32,7 @@ function Alien(game, x, y) {
     this.deadRight =
     new Animation(ASSET_MANAGER.getAsset("./img/alienDeath.png"), 1650, 0, 146, 93, 1, 1, true, true);
     this.attackLeft =
-    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 1650, 0, 146, 93, 1, 1, true, true);
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 0, 280, 146, 93, 1, 9, false, false);
 
 
 
@@ -48,8 +48,8 @@ function Alien(game, x, y) {
     this.collisionX = this.x;
     this.collisionY = this.y;
 
-    this.collisionWidth = 163;
-    this.collisionHeight = 94;
+    this.collisionWidth = 280;
+    this.collisionHeight = 155;
     this.flip = true;
     this.game = game;
 
@@ -60,7 +60,7 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
-    if (!this.game.startGame) return;
+    if (!this.game.startGame || this.isDead) return;
     if (!this.isDead && this.health <= 0) {
         this.isDead = true;
         this.dying = true;
@@ -68,6 +68,12 @@ Alien.prototype.update = function () {
     if (!this.grounded) {
         this.y += this.game.gravity * this.game.clockTick;
     }
+
+    if (Math.abs(this.x - this.game.samus.x) < 500) {
+        this.attack = true;
+    } else if (this.attack && this.attackLeft.isDone()) {
+        this.attack = false;
+    } 
 
     if (this.x < this.game.samus.x) {
         this.right = true;
@@ -109,27 +115,31 @@ Alien.prototype.draw = function (ctx, cameraX, cameraY) {
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     if (this.right) {
         if (this.isDead && this.dying) {
-            this.deathRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 20, 1.3);
+            this.deathRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
             this.dyingCount++;
             if (this.deathRight.isDone()) {
                 this.dying = false;
             }
         } else if (this.isDead) {
-            this.deadRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 20, 1.3);
+            this.deadRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+        } else if (this.attack) {
+            //this.
         } else {
-            this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.2);
+            this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
         }
     } else {
         if (this.isDead && this.dying) {
-            this.deathLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 20, 1.3);
+            this.deathLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
             this.dyingCount++;
             if (this.deathLeft.isDone()) {
                 this.dying = false;
             }
         } else if (this.isDead) {
-            this.deadLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 20, 1.3);
+            this.deadLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+        } else if (this.attack) {
+            this.attackLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
         } else {
-            this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.2);
+            this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
         }
     }
 }

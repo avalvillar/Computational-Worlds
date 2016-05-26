@@ -17,6 +17,7 @@ function Laser(game, x, y, direction) {
     this.count = 0;
     this.collisionHeight = 15;
     this.collisionWidth = 32;
+    this.isGone = false;
 
     this.x = x;
     this.y = y;
@@ -65,9 +66,8 @@ Laser.prototype.collide = function (other) {
 Laser.prototype.collisionDetection = function (entity) {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (detectCollision(this, ent) && !ent.isDead) { // kills entities that the laser collides with
-            this.removeFromWorld = true;
-            //ent.removeFromWorld = true;
+        if (detectCollision(this, ent) && !ent.isDead && !this.isGone) { // kills entities that the laser collides with
+            this.isGone = true;
             ent.health -= 1;
         }
     }
@@ -81,6 +81,9 @@ Laser.prototype.collisionDetection = function (entity) {
 
 Laser.prototype.update = function () {
     this.collisionDetection();
+    if (this.isGone && this.blastDone) {
+        this.removeFromWorld = true;
+    }
     if (this.blastDone || this.game.running) {
         if (this.direction === "right") {
             this.x += this.game.clockTick * this.speed;
