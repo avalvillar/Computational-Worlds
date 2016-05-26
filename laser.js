@@ -1,3 +1,7 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 function Laser(game, x, y, direction) {
     this.laserRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1055, 180, 18, 50, .1, 2, true, false);
     this.laserUp = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 1128, 190, 13, 16, .1, 2, true, false);
@@ -61,9 +65,10 @@ Laser.prototype.collide = function (other) {
 Laser.prototype.collisionDetection = function (entity) {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (detectCollision(this, ent)) { // kills entities that the laser collides with
+        if (detectCollision(this, ent) && !ent.isDead) { // kills entities that the laser collides with
             this.removeFromWorld = true;
-            ent.removeFromWorld = true;
+            //ent.removeFromWorld = true;
+            ent.health -= 1;
         }
     }
     for (var i = 0; i < this.game.platforms.length; i++) {

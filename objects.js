@@ -1,3 +1,7 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 function ship(game, x, y) {
     this.smoking = new Animation(ASSET_MANAGER.getAsset("./img/CrashedShip.png"), 0, 0, 194, 200, .5, 2, true, false);
     this.x = x;
@@ -15,7 +19,7 @@ ship.prototype.update = function () {
 }
 
 ship.prototype.draw = function (ctx) {
-    this.smoking.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+    this.smoking.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3.5);
     Entity.prototype.draw.call(this);
 }
 
@@ -35,7 +39,7 @@ shipPart.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-shipPart.prototype.draw = function (ctx) {
-    this.smoking.drawFrame(this.game.clockTick, ctx, this.x, this.y, 3);
+shipPart.prototype.draw = function (ctx, cameraX, cameraY) {
+    this.smoking.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
     Entity.prototype.draw.call(this);
 }

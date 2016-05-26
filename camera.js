@@ -1,4 +1,7 @@
-// Camera object code
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 
 function Camera(game) {
     this.game = game;

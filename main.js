@@ -1,3 +1,7 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
@@ -12,6 +16,7 @@ ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
 ASSET_MANAGER.queueDownload("./img/woodBlock.png");
 ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
+ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -33,20 +38,23 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     samus = new Samus(gameEngine, 200, 200);
 
-    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-//	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    //var testShip = new ship(gameEngine, 100, 100);
+    var alienTest = new Alien(gameEngine, 180, 200);
+    gameEngine.addEntity(alienTest);
+
+    //var testShip = new ship(gameEngine, 100, 0);
     //gameEngine.addEntity(testShip);
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
 
-    //setupWorldCave(gameEngine);
-    setupWorldForest(gameEngine);
+    setupWorldCave(gameEngine);
+    //setupWorldForest(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -188,15 +196,20 @@ function clamp(value, min, max) {
 
 var resetWorld = function(game) {
 // set camera back at beginning
-//    samus.removeFromWorld = true;
-//    samus = new Samus(game, 205, 200);
-//    game.entities = [];
-//    game.addEntity(new Health(game));
+    samus.removeFromWorld = true;
+    samus = new Samus(game, 205, 200);
+    game.entities = [];
+    game.addEntity(new Health(game));
 
-//// remove current enemies & respawn
-//    //addCaveEnemies(game);
+// remove current enemies & respawn
+    addCaveEnemies(game);
+    if (game.alienBossActive) {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 10200, 300);
+        setupAlienBoss(game);
+    }
 
-//// put samus back at beginning
-//    game.init(ctx, samus, bg);
+// put samus back at beginning
+    game.init(ctx, samus, bg);
 };
 
