@@ -36,6 +36,7 @@ ASSET_MANAGER.downloadAll(function () {
     ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
+
     samus = new Samus(gameEngine, 200, 200);//x = 200 // boss testing = 9900
 
     //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
