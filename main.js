@@ -8,6 +8,8 @@ ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
+ASSET_MANAGER.queueDownload("./img/mossyBlock.png")
+ASSET_MANAGER.queueDownload("./img/woodBlock.png")
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
