@@ -1,3 +1,8 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
+
 function Platform(game, x, y, type) {
     if (type === "cave") {
         this.spritesheet = ASSET_MANAGER.getAsset("./img/cave_rock.png");
@@ -56,7 +61,7 @@ var setupWorldCave = function (game) {
         game.addPlatform(groundBend);
     }
 
-    for (var i = 9500; i < 10400; i += 70) {
+    for (var i = 9500; i < 12000; i += 70) {
         var ground3 = new Platform(game, i, 830, "cave");
         game.addPlatform(ground3);
     }
@@ -251,6 +256,14 @@ var setupWorldCave = function (game) {
         var bigWall = new Platform(game, 10000, i, "cave");
         game.addPlatform(bigWall);
     }
+
+    for (var i = 70; i < 900; i += 70) {
+        var endWall = new Platform(game, 11030, i, "cave");
+        game.addPlatform(endWall);
+    }
+
+    var caveShipPart = new shipPart(game, 10500, 660);
+    game.addDeco(caveShipPart);
 
     addCaveEnemies(game);
     /*    

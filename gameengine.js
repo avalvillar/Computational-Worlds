@@ -101,13 +101,18 @@ Timer.prototype.tick = function () {
 }
 
 function GameEngine() {
+    this.currentLevel = null;
     this.entities = [];
     this.lasers = [];
     this.platforms = [];
+    this.decorations = [];
+    this.alienBossActive = false;
+    this.alienBoss = null;
     this.samus = null;
     this.background = null;
     this.camera = null;
-    this.showOutlines = true; // make false to hide collision boxes
+    this.debug = false; // set true to make samus not collide with anything
+    this.showOutlines = false; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -126,6 +131,7 @@ function GameEngine() {
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
+    //this.currentLevel = "forest";
     this.ctx = ctx;
     this.samus = samus;
     this.background = background;
@@ -232,6 +238,10 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+GameEngine.prototype.addDeco = function (entity) {
+    this.decorations.push(entity);
+}
+
 GameEngine.prototype.addLaser = function (entity) {
     this.lasers.push(entity);
 }
@@ -241,6 +251,10 @@ GameEngine.prototype.setBackground = function (entity) {
 }
 
 GameEngine.prototype.addPlatform = function (entity) {
+    this.platforms.push(entity);
+}
+
+GameEngine.prototype.addAlienBoss = function (entity) {
     this.platforms.push(entity);
 }
 
@@ -270,6 +284,13 @@ GameEngine.prototype.draw = function () {
             this.platforms[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+
+    for (var i = 0; i < this.decorations.length; i++) {
+        if (this.onCamera(this.decorations[i])) {
+            this.decorations[i].draw(this.ctx, cameraX, cameraY);
+        }
+    }
+
     this.samus.draw(this.ctx, cameraX, cameraY);
     for (var i = 0; i < this.entities.length; i++) {
         if (this.onCamera(this.entities[i])) {
@@ -281,6 +302,8 @@ GameEngine.prototype.draw = function () {
             this.lasers[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+
+
     this.healthBar.draw(this.ctx);
     this.ctx.restore();
 }
@@ -289,11 +312,22 @@ GameEngine.prototype.update = function () {
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
+    if (this.alienBossActive) {
+        //this.alien.update();
+    }
     this.camera.update();
     this.background.update();
     this.healthBar.update();
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
+
+    if (this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
+        this.alienBossActive = true;
+        setupAlienBoss(this);
+    }
+    //if (this.alienBossActive && ) {
+
+    //}
 
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
@@ -310,8 +344,6 @@ GameEngine.prototype.update = function () {
             entity.update();
         }
     }
-
-    
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
         if (this.entities[i].removeFromWorld) {
