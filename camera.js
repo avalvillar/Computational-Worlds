@@ -13,6 +13,7 @@ function Camera(game) {
     //this.dy = 0;
     this.width = this.ctx.canvas.width;
     this.height = this.ctx.canvas.height;
+    this.bossfight = false;
     this.left = this.x;
     this.top = this.y;
     this.right = this.x + this.width;
@@ -27,6 +28,12 @@ function Camera(game) {
 Camera.prototype.setXandY = function(x, y) {
     this.x = x;
     this.y = y;
+}
+
+Camera.prototype.setBossFight = function () {
+    this.dx =  this.x - 470; //magic value is 470
+    this.x = this.dx;
+    this.bossfight = true;
 }
 
 Camera.prototype.update = function () {
@@ -47,6 +54,10 @@ Camera.prototype.update = function () {
     if (this.samus.x <= (this.width / 2)) {
         this.dx = 0;
     }
+    if (this.bossfight) {
+        this.dx = this.x;
+    }
+    console.log(this.x);
     this.x = this.dx;
     this.y = this.dy;
     //console.log(this.x);
