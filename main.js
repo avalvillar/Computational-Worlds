@@ -31,7 +31,7 @@ ASSET_MANAGER.downloadAll(function () {
     ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
-    samus = new Samus(gameEngine, 200, 200);
+    samus = new Samus(gameEngine, 525, 750);
 
     bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
 //	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
