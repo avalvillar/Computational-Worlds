@@ -2,9 +2,8 @@ var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
 ASSET_MANAGER.queueDownload("./img/greySnake.png");
-//ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
-ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+//ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
 ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
@@ -13,6 +12,11 @@ ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
 ASSET_MANAGER.queueDownload("./img/woodBlock.png");
 ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
+
+//Forest Stuff
+ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
+ASSET_MANAGER.queueDownload("./img/SpiderSpriteB2.png");
+ASSET_MANAGER.queueDownload("./img/podPlant.png");
 
 var canvas;
 var samus;
@@ -29,8 +33,8 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     samus = new Samus(gameEngine, 200, 200);
 
-    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+//	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
@@ -41,7 +45,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
 
-	setupWorld(gameEngine);
+    //setupWorldCave(gameEngine);
+    setupWorldForest(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -111,7 +116,7 @@ Background.prototype.constructor = Background;
 Background.prototype.draw = function (ctx, cameraX) {
     this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x + this.cameraX, this.y, 9000, 900);
+                 this.x + this.cameraX, this.y, 1400, 900);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
@@ -183,15 +188,15 @@ function clamp(value, min, max) {
 
 var resetWorld = function(game) {
 // set camera back at beginning
-    samus.removeFromWorld = true;
-    samus = new Samus(game, 205, 200);
-    game.entities = [];
-    game.addEntity(new Health(game));
+//    samus.removeFromWorld = true;
+//    samus = new Samus(game, 205, 200);
+//    game.entities = [];
+//    game.addEntity(new Health(game));
 
-// remove current enemies & respawn
-    addEnemies(game);
+//// remove current enemies & respawn
+//    //addCaveEnemies(game);
 
-// put samus back at beginning
-    game.init(ctx, samus, bg);
+//// put samus back at beginning
+//    game.init(ctx, samus, bg);
 };
 
