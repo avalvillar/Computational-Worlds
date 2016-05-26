@@ -44,8 +44,8 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    var alienTest = new Alien(gameEngine, 180, 200);
-    gameEngine.addEntity(alienTest);
+    //var alienTest = new Alien(gameEngine, 180, 200);
+    //gameEngine.addEntity(alienTest);
 
     //var testShip = new ship(gameEngine, 100, 0);
     //gameEngine.addEntity(testShip);
