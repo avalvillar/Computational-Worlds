@@ -206,10 +206,13 @@ var resetWorld = function(game) {
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
-        setupAlienBoss(game);
+        //setupAlienBoss(game);
     }
 
 // put samus back at beginning
     game.init(ctx, samus, bg);
+    if (game.alienBossActive) {
+        setupAlienBoss(game);
+    }
 };
 
