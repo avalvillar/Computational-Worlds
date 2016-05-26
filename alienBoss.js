@@ -30,6 +30,10 @@ function Alien(game, x, y) {
     new Animation(ASSET_MANAGER.getAsset("./img/alienDeath.png"), 895, 0, 146, 93, .2, 5, false, false);
     this.deadRight =
     new Animation(ASSET_MANAGER.getAsset("./img/alienDeath.png"), 1650, 0, 146, 93, 1, 1, true, true);
+    this.attackLeft =
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 1650, 0, 146, 93, 1, 1, true, true);
+
+
 
     this.right = false;
     this.speed = 250;
@@ -62,6 +66,12 @@ Alien.prototype.update = function () {
     }
     if (!this.grounded) {
         this.y += this.game.gravity * this.game.clockTick;
+    }
+
+    if (this.x < this.game.samus.x) {
+        this.right = true;
+    } else {
+        this.right = false;
     }
 
     var collideTopDown = false;

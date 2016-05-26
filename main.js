@@ -37,10 +37,10 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 200, 200);//x = 200 // boss testing = 9900
+    samus = new Samus(gameEngine, 9900, 200);//x = 200 // boss testing = 9900
 
     //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
@@ -109,9 +109,11 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
-function Background(game, spritesheet) {
+function Background(game, spritesheet, width, height) {
     this.x = 0;
     this.y = 0;
+    this.width = width;
+    this.height = height;
     this.spritesheet = spritesheet;
     this.game = game;
 };
@@ -122,7 +124,7 @@ Background.prototype.constructor = Background;
 Background.prototype.draw = function (ctx, cameraX) {
     this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x + this.cameraX, this.y, 1400, 900);
+                 this.x + this.cameraX, this.y, this.width, this.height);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
