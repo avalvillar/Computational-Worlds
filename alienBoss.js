@@ -9,6 +9,8 @@ var setupAlienBoss = function (game) {
         var bigWall = new Platform(game, 10000, i, "cave");
         game.addPlatform(bigWall);
     }
+    game.settingUpBoss = true;
+    game.setSamusIdle();
     game.camera.setBossFight();
     var boss = new Alien(game, 10500, 580);
     game.addEntity(boss);
