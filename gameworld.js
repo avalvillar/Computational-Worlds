@@ -305,8 +305,10 @@ var setupWorldCave = function (game) {
 
 var addCaveEnemies = function (game) {
     for (var i = 9000; i < 12000; i += 325) {
-        var caveLava = new Lava(game, i, 840);
-        game.addEntity(caveLava);
+        for (var j = 1300; j >= 840; j-= 150) {
+            var caveLava = new Lava(game, i, j);
+            game.addEntity(caveLava);
+        }
     }
     var snake2 = new Snake(game, 590, 475, 580, 750);
     game.addEntity(snake2);
