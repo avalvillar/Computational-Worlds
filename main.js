@@ -17,6 +17,7 @@ ASSET_MANAGER.queueDownload("./img/woodBlock.png");
 ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
+ASSET_MANAGER.queueDownload("./img/alienAttack.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -44,9 +45,6 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-
-    //var testShip = new ship(gameEngine, 100, 0);
-    //gameEngine.addEntity(testShip);
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();

@@ -10,7 +10,7 @@ var setupAlienBoss = function (game) {
         game.addPlatform(bigWall);
     }
     game.camera.setBossFight();
-    var boss = new Alien(game, 10750, 580);
+    var boss = new Alien(game, 10500, 580);
     game.addEntity(boss);
 }
 
@@ -32,9 +32,7 @@ function Alien(game, x, y) {
     this.deadRight =
     new Animation(ASSET_MANAGER.getAsset("./img/alienDeath.png"), 1650, 0, 146, 93, 1, 1, true, true);
     this.attackLeft =
-    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 0, 280, 146, 93, 1, 9, false, false);
-
-
+    new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 0, 5, 200, 150, .1, 9, true, false);
 
     this.right = false;
     this.speed = 250;
@@ -115,13 +113,13 @@ Alien.prototype.draw = function (ctx, cameraX, cameraY) {
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     if (this.right) {
         if (this.isDead && this.dying) {
-            this.deathRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+            this.deathRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
             this.dyingCount++;
             if (this.deathRight.isDone()) {
                 this.dying = false;
             }
         } else if (this.isDead) {
-            this.deadRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+            this.deadRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
         } else if (this.attack) {
             //this.
         } else {
@@ -129,15 +127,15 @@ Alien.prototype.draw = function (ctx, cameraX, cameraY) {
         }
     } else {
         if (this.isDead && this.dying) {
-            this.deathLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+            this.deathLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
             this.dyingCount++;
             if (this.deathLeft.isDone()) {
                 this.dying = false;
             }
         } else if (this.isDead) {
-            this.deadLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 38, 2);
+            this.deadLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
         } else if (this.attack) {
-            this.attackLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
+            this.attackLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 55, 2);
         } else {
             this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
         }
