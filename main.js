@@ -196,8 +196,7 @@ function clamp(value, min, max) {
 
 var resetWorld = function(game) {
 // set camera back at beginning
-    samus.removeFromWorld = true;
-    samus = new Samus(game, 205, 200);
+    
     game.entities = [];
     game.addEntity(new Health(game));
 
@@ -207,12 +206,16 @@ var resetWorld = function(game) {
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
         //setupAlienBoss(game);
+    } else {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 205, 200);
     }
 
 // put samus back at beginning
     game.init(ctx, samus, bg);
     if (game.alienBossActive) {
         setupAlienBoss(game);
+        game.camera.restartBossFight();
     }
 };
 

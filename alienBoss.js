@@ -9,6 +9,8 @@ var setupAlienBoss = function (game) {
         var bigWall = new Platform(game, 10000, i, "cave");
         game.addPlatform(bigWall);
     }
+    game.settingUpBoss = true;
+    game.setSamusIdle();
     game.camera.setBossFight();
     var boss = new Alien(game, 10750, 700);
     game.addEntity(boss);
@@ -60,7 +62,7 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
-    if (!this.game.startGame) return;
+    if (!this.game.startGame || this.isDead) return;
     if (!this.isDead && this.health <= 0) {
         this.isDead = true;
         this.dying = true;

@@ -107,6 +107,7 @@ function GameEngine() {
     this.platforms = [];
     this.decorations = [];
     this.alienBossActive = false;
+    this.settingUpBoss = false;
     this.alienBoss = null;
     this.samus = null;
     this.background = null;
@@ -255,7 +256,7 @@ GameEngine.prototype.addPlatform = function (entity) {
 }
 
 GameEngine.prototype.addAlienBoss = function (entity) {
-    this.platforms.push(entity);
+    this.entities.push(entity);
 }
 
 GameEngine.prototype.pause = function () {
@@ -430,7 +431,11 @@ GameEngine.prototype.loop = function () {
     this.gamepadInput();
     if (!this.paused) {
         this.clockTick = this.timer.tick();
-        this.update();
+        if (this.settingUpBoss) {
+            this.camera.update();
+        } else {
+            this.update();
+        }
         this.draw();
         this.space = false;
         this.shooting = false;
@@ -448,6 +453,14 @@ GameEngine.prototype.loop = function () {
         
 
     }
+}
+
+GameEngine.prototype.setSamusIdle = function () {
+    this.right = true;
+    this.down = false;
+    this.up = false;
+    this.shooting = false;
+    this.diagonal = false;
 }
 
 GameEngine.prototype.onCamera = function (entity) {

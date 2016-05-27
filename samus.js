@@ -196,6 +196,7 @@ Samus.prototype.collisionDetection = function () {
 
 }
 
+
 Samus.prototype.platformCollision = function () {
     var isColliding = false;
     var collideTopDown = false;
@@ -408,6 +409,10 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
     if (!this.game.startGame) return;
 
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
+    if (this.game.settingUpBoss) {
+        this.idleRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
+        return;
+    }
     if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
             this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);
