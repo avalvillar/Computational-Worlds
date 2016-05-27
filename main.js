@@ -18,6 +18,7 @@ ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 ASSET_MANAGER.queueDownload("./img/alienAttack.png");
+ASSET_MANAGER.queueDownload("./img/Lava.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -212,6 +213,7 @@ var resetWorld = function(game) {
     game.init(ctx, samus, bg);
     if (game.alienBossActive) {
         setupAlienBoss(game);
+        game.bossReset = true;
         game.camera.restartBossFight();
     }
 };

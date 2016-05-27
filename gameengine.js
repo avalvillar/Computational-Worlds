@@ -107,7 +107,10 @@ function GameEngine() {
     this.platforms = [];
     this.decorations = [];
     this.alienBossActive = false;
+    this.alienBossHit = false;
     this.settingUpBoss = false;
+    this.bossReset = false;
+    this.bossHitOver = false;
     this.alienBoss = null;
     this.samus = null;
     this.background = null;
@@ -503,15 +506,6 @@ Entity.prototype.update = function () {
 }
 
 Entity.prototype.draw = function (ctx, cameraX, cameraY) {
-   // this.x -= this.game.camera.x;
-    // this.y += this.game.camera.y;
-    if (this.game.showOutlines && this.radius) {
-        this.game.ctx.beginPath();
-        this.game.ctx.strokeStyle = "red";
-        this.game.ctx.arc(this.collisionX + cameraX, this.collisionY - cameraY, this.radius, 0, Math.PI * 2, false);
-        this.game.ctx.stroke();
-        this.game.ctx.closePath();
-    }
 
     if (this.game.showOutlines && this.collisionWidth && this.collisionHeight) {
         this.game.ctx.beginPath();

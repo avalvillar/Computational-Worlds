@@ -64,6 +64,7 @@ var addForestEnemies = function (game) {
 
 var setupWorldCave = function (game) {
     ///world creation
+
     for (var i = 7350; i < 8200; i += 70) {
         var groundLine2 = new Platform(game, i, 830, "cave");
         game.addPlatform(groundLine2);
@@ -120,6 +121,22 @@ var setupWorldCave = function (game) {
             game.addPlatform(groundBlock);
         }
     }
+
+    for (var i = 10400; i < 10600; i += 70) {
+        var bossPlatform = new Platform(game, i, 600, "cave");
+        game.addPlatform(bossPlatform);
+    }
+
+    for (var i = 10070; i < 10210; i += 70) {
+        var bossPlatform1 = new Platform(game, i, 400, "cave");
+        game.addPlatform(bossPlatform1);
+    }
+
+    for (var i = 10800; i < 11300; i += 70) {
+        var bossPlatform2 = new Platform(game, i, 400, "cave");
+        game.addPlatform(bossPlatform2);
+    }
+
 
     for (var i = 0; i < 12000; i += 70) {
         var ceiling = new Platform(game, i, 0, "cave");
@@ -275,6 +292,11 @@ var setupWorldCave = function (game) {
         game.addPlatform(endWall);
     }
 
+    for (var i = 0; i < 9000; i += 325) {
+        var caveLava = new Lava(game, i, 840);
+        game.addDeco(caveLava);
+    }
+
     var caveShipPart = new shipPart(game, 10500, 660);
     game.addDeco(caveShipPart);
 
@@ -282,6 +304,10 @@ var setupWorldCave = function (game) {
 }
 
 var addCaveEnemies = function (game) {
+    for (var i = 9000; i < 12000; i += 325) {
+        var caveLava = new Lava(game, i, 840);
+        game.addEntity(caveLava);
+    }
     var snake2 = new Snake(game, 590, 475, 580, 750);
     game.addEntity(snake2);
     var snake3 = new Snake(game, 1530, 490, 1520, 1630);
