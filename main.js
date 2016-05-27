@@ -17,6 +17,8 @@ ASSET_MANAGER.queueDownload("./img/woodBlock.png");
 ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
+ASSET_MANAGER.queueDownload("./img/alienAttack.png");
+ASSET_MANAGER.queueDownload("./img/Lava.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -44,9 +46,6 @@ ASSET_MANAGER.downloadAll(function () {
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-
-    //var testShip = new ship(gameEngine, 100, 0);
-    //gameEngine.addEntity(testShip);
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
@@ -205,7 +204,6 @@ var resetWorld = function(game) {
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
-        //setupAlienBoss(game);
     } else {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 200);
@@ -215,6 +213,7 @@ var resetWorld = function(game) {
     game.init(ctx, samus, bg);
     if (game.alienBossActive) {
         setupAlienBoss(game);
+        game.bossReset = true;
         game.camera.restartBossFight();
     }
 };
