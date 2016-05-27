@@ -1,3 +1,7 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 function distance(a, b) {
     var difX = a.collisionX - b.collisionX;
     var difY = a.collisionY - b.collisionY;
@@ -169,15 +173,15 @@ Samus.prototype.collisionDetection = function () {
     if (!this.isDamaged) {
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent)) {
+            if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent) && !ent.isDead) {
                 if (ent.x > this.x) {
-                    this.x -= 100;
-                    ent.x += 50;
+                    this.velocity.x -= 100;
+                    ent.x += 100;
                 } else {
-                    this.x += 100;
-                    ent.x -= 50;
+                    this.velocity.x += 100;
+                    ent.x -= 100;
                 }
-                this.health -= 30;
+                this.health -= ent.damage;
                 this.isDamaged = true;
             }
         }
@@ -191,6 +195,7 @@ Samus.prototype.collisionDetection = function () {
     }
 
 }
+
 
 Samus.prototype.platformCollision = function () {
     var isColliding = false;
@@ -296,18 +301,38 @@ Samus.prototype.update = function () {
     } else {
         this.diagonal = false;
     }
-    this.platformCollision(); // performs platform collision handling
-    this.x += this.velocity.x;
-    this.y += this.velocity.y;
-    if (this.velocity.y > 0 && !this.jumping) {
-        this.ground.y = this.y;
+    if (!this.game.debug) {
+        this.collisionDetection(); // performs collision with enemy detection and handling.
     }
+    if (!this.game.debug) {
+        this.platformCollision(); // performs platform collision handling
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        if (this.velocity.y > 0 && !this.jumping) {
+            this.ground.y = this.y;
+        }
+    } else {
+        if (this.game.down) {
+            this.velocity.y = 10;
+        } else {
+            this.velocity.y = 0;
+        }
+        if (this.game.up) {
+            this.velocity.y = -10;
+        } else if (!this.game.down) {
+            this.velocity.y = 0;
+        }
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.grounded = true;
+    }
+    
 
     this.chooseLaser(); // fires laser blasts
 
     this.jump(); // performs jump logic
 
-    this.collisionDetection(); // performs collision with enemy detection and handling.
+
 
     if (this.running) {
         if (!this.game.running) {
@@ -384,6 +409,10 @@ Samus.prototype.draw = function (ctx, cameraX, cameraY) {
     if (!this.game.startGame) return;
 
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
+    if (this.game.settingUpBoss) {
+        this.idleRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
+        return;
+    }
     if (this.game.right) { // draw right facing sprites
         if (this.jumping) { // right jumping
             this.jumpRight.drawFrame(this.game.clockTick, ctx, this.x + 17 + cameraX, this.y - 34 - cameraY, 3);

@@ -1,3 +1,8 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
+
 function AssetManager() {
     this.successCount = 0;
     this.errorCount = 0;

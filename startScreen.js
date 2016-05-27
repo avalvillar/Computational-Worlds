@@ -1,3 +1,8 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
+
 /**************************************************************************
     Start Screen - allows a user to begin the game and shows them
     the controls of the game.

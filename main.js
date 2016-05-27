@@ -1,14 +1,29 @@
+/*
+ * Red Three - Spring 2016
+ * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ */
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/Fusion-Samus.png");
 ASSET_MANAGER.queueDownload("./img/greySnake.png");
-//ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/bat.png");
-ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
+//ASSET_MANAGER.queueDownload("./img/cave_bg_extended.png");
 ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
+ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
+ASSET_MANAGER.queueDownload("./img/woodBlock.png");
+ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
+ASSET_MANAGER.queueDownload("./img/ShipPart.png");
+ASSET_MANAGER.queueDownload("./img/alienDeath.png");
+ASSET_MANAGER.queueDownload("./img/alienAttack.png");
+ASSET_MANAGER.queueDownload("./img/Lava.png");
+
+//Forest Stuff
+ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
+ASSET_MANAGER.queueDownload("./img/SpiderSpriteB2.png");
+ASSET_MANAGER.queueDownload("./img/podPlant.png");
 
 var canvas;
 var samus;
@@ -23,19 +38,20 @@ ASSET_MANAGER.downloadAll(function () {
     ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
-    samus = new Samus(gameEngine, 200, 200);
 
-    //var bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
+    samus = new Samus(gameEngine, 200, 200);//x = 200 // boss testing = 9900
+
+    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
+	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
-    //gameEngine.addEntity(new Health(gameEngine)); Moved to Init in Game engine
 
     gameEngine.init(ctx, samus, bg);
     gameEngine.start();
 
-	setupWorld(gameEngine);
+    setupWorldCave(gameEngine);
+    //setupWorldForest(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -92,9 +108,11 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
-function Background(game, spritesheet) {
+function Background(game, spritesheet, width, height) {
     this.x = 0;
     this.y = 0;
+    this.width = width;
+    this.height = height;
     this.spritesheet = spritesheet;
     this.game = game;
 };
@@ -105,7 +123,7 @@ Background.prototype.constructor = Background;
 Background.prototype.draw = function (ctx, cameraX) {
     this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
-                 this.x + this.cameraX, this.y, 9000, 900);
+                 this.x + this.cameraX, this.y, this.width, this.height);
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
@@ -177,15 +195,26 @@ function clamp(value, min, max) {
 
 var resetWorld = function(game) {
 // set camera back at beginning
-    samus.removeFromWorld = true;
-    samus = new Samus(game, 205, 200);
+    
     game.entities = [];
     game.addEntity(new Health(game));
 
 // remove current enemies & respawn
-    addEnemies(game);
+    addCaveEnemies(game);
+    if (game.alienBossActive) {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 10200, 300);
+    } else {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 205, 200);
+    }
 
 // put samus back at beginning
     game.init(ctx, samus, bg);
+    if (game.alienBossActive) {
+        setupAlienBoss(game);
+        game.bossReset = true;
+        game.camera.restartBossFight();
+    }
 };
 

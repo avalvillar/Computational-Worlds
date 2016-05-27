@@ -101,12 +101,21 @@ Timer.prototype.tick = function () {
 }
 
 function GameEngine() {
+    this.currentLevel = null;
     this.entities = [];
     this.lasers = [];
     this.platforms = [];
+    this.decorations = [];
+    this.alienBossActive = false;
+    this.alienBossHit = false;
+    this.settingUpBoss = false;
+    this.bossReset = false;
+    this.bossHitOver = false;
+    this.alienBoss = null;
     this.samus = null;
     this.background = null;
     this.camera = null;
+    this.debug = false; // set true to make samus not collide with anything
     this.showOutlines = false; // make false to hide collision boxes
     this.ctx = null;
     this.click = null;
@@ -126,6 +135,7 @@ function GameEngine() {
 }
 
 GameEngine.prototype.init = function (ctx, samus, background) {
+    //this.currentLevel = "forest";
     this.ctx = ctx;
     this.samus = samus;
     this.background = background;
@@ -232,6 +242,10 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+GameEngine.prototype.addDeco = function (entity) {
+    this.decorations.push(entity);
+}
+
 GameEngine.prototype.addLaser = function (entity) {
     this.lasers.push(entity);
 }
@@ -242,6 +256,10 @@ GameEngine.prototype.setBackground = function (entity) {
 
 GameEngine.prototype.addPlatform = function (entity) {
     this.platforms.push(entity);
+}
+
+GameEngine.prototype.addAlienBoss = function (entity) {
+    this.entities.push(entity);
 }
 
 GameEngine.prototype.pause = function () {
@@ -270,6 +288,13 @@ GameEngine.prototype.draw = function () {
             this.platforms[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+
+    for (var i = 0; i < this.decorations.length; i++) {
+        if (this.onCamera(this.decorations[i])) {
+            this.decorations[i].draw(this.ctx, cameraX, cameraY);
+        }
+    }
+
     this.samus.draw(this.ctx, cameraX, cameraY);
     for (var i = 0; i < this.entities.length; i++) {
         if (this.onCamera(this.entities[i])) {
@@ -281,6 +306,8 @@ GameEngine.prototype.draw = function () {
             this.lasers[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+
+
     this.healthBar.draw(this.ctx);
     this.ctx.restore();
 }
@@ -289,11 +316,22 @@ GameEngine.prototype.update = function () {
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
+    if (this.alienBossActive) {
+        //this.alien.update();
+    }
     this.camera.update();
     this.background.update();
     this.healthBar.update();
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
+
+    if (this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
+        this.alienBossActive = true;
+        setupAlienBoss(this);
+    }
+    //if (this.alienBossActive && ) {
+
+    //}
 
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
@@ -310,8 +348,6 @@ GameEngine.prototype.update = function () {
             entity.update();
         }
     }
-
-    
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
         if (this.entities[i].removeFromWorld) {
@@ -398,7 +434,11 @@ GameEngine.prototype.loop = function () {
     this.gamepadInput();
     if (!this.paused) {
         this.clockTick = this.timer.tick();
-        this.update();
+        if (this.settingUpBoss) {
+            this.camera.update();
+        } else {
+            this.update();
+        }
         this.draw();
         this.space = false;
         this.shooting = false;
@@ -416,6 +456,14 @@ GameEngine.prototype.loop = function () {
         
 
     }
+}
+
+GameEngine.prototype.setSamusIdle = function () {
+    this.right = true;
+    this.down = false;
+    this.up = false;
+    this.shooting = false;
+    this.diagonal = false;
 }
 
 GameEngine.prototype.onCamera = function (entity) {
@@ -458,15 +506,6 @@ Entity.prototype.update = function () {
 }
 
 Entity.prototype.draw = function (ctx, cameraX, cameraY) {
-   // this.x -= this.game.camera.x;
-    // this.y += this.game.camera.y;
-    if (this.game.showOutlines && this.radius) {
-        this.game.ctx.beginPath();
-        this.game.ctx.strokeStyle = "red";
-        this.game.ctx.arc(this.collisionX + cameraX, this.collisionY - cameraY, this.radius, 0, Math.PI * 2, false);
-        this.game.ctx.stroke();
-        this.game.ctx.closePath();
-    }
 
     if (this.game.showOutlines && this.collisionWidth && this.collisionHeight) {
         this.game.ctx.beginPath();
