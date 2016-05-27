@@ -30,6 +30,11 @@ Camera.prototype.setXandY = function(x, y) {
     this.y = y;
 }
 
+Camera.prototype.restartBossFight = function () {
+    this.dx = -10046.125000000015; //Value found from original setup, a bit odd
+    this.x = this.dx;
+    this.bossfight = true;
+}
 Camera.prototype.setBossFight = function () {
     this.dx =  this.x - 470; //magic value is 470
     this.x = this.dx;

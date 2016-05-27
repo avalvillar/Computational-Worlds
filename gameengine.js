@@ -255,7 +255,7 @@ GameEngine.prototype.addPlatform = function (entity) {
 }
 
 GameEngine.prototype.addAlienBoss = function (entity) {
-    this.platforms.push(entity);
+    this.entities.push(entity);
 }
 
 GameEngine.prototype.pause = function () {

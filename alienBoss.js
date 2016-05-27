@@ -60,7 +60,7 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.update = function () {
-    if (!this.game.startGame) return;
+    if (!this.game.startGame || this.isDead) return;
     if (!this.isDead && this.health <= 0) {
         this.isDead = true;
         this.dying = true;
