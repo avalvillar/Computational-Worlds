@@ -115,12 +115,24 @@ var setupWorldCave = function (game) {
         game.addPlatform(ground1);
     }
 
+    var wallMid1 = new Platform(game, 2740, 690, "cave");
+    var wallMid2 = new Platform(game, 2810, 690, "cave");
+    var wallMid3 = new Platform(game, 2680, 690, "cave");
+    game.addPlatform(wallMid3);
+    game.addPlatform(wallMid1);
+    game.addPlatform(wallMid2);
+
     for (var i = 690; i < 830; i += 70) {
         for (var j = 3550; j < 3900; j += 70) {
             var groundBlock = new Platform(game, j, i, "cave");
             game.addPlatform(groundBlock);
         }
     }
+
+    var bend1 = new Platform(game, 3350, 600, "cave");
+    var bend2 = new Platform(game, 3420, 600, "cave");
+    game.addPlatform(bend1);
+    game.addPlatform(bend2);
 
     for (var i = 10400; i < 10600; i += 70) {
         var bossPlatform = new Platform(game, i, 600, "cave");
@@ -175,16 +187,6 @@ var setupWorldCave = function (game) {
         var wall1 = new Platform(game, 2670, i, "cave");
         game.addPlatform(wall1);
     }
-
-    var wallMid1 = new Platform(game, 2740, 690, "cave");
-    var wallMid2 = new Platform(game, 2810, 690, "cave");
-    game.addPlatform(wallMid1);
-    game.addPlatform(wallMid2);
-
-    var bend1 = new Platform(game, 3350, 600, "cave");
-    var bend2 = new Platform(game, 3420, 600, "cave");
-    game.addPlatform(bend1);
-    game.addPlatform(bend2);
 
     var bendUp = new Platform(game, 3420, 390, "cave");
     var bendUp2 = new Platform(game, 3420, 460, "cave");

@@ -19,6 +19,7 @@ ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 ASSET_MANAGER.queueDownload("./img/alienAttack.png");
 ASSET_MANAGER.queueDownload("./img/Lava.png");
+ASSET_MANAGER.queueDownload("./img/alienJump.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -39,7 +40,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 9900, 200);//x = 200 // boss testing = 9900
+    samus = new Samus(gameEngine, 200, 200);//x = 200 // boss testing = 9900
 
     //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
 	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
