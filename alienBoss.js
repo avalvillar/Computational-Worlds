@@ -37,6 +37,11 @@ function Alien(game, x, y) {
     new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 0, 5, 200, 150, .1, 9, true, false);
     this.attackRight =
     new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 1900, 5, 200, 150, .1, 9, true, true);
+    this.startAnimation =
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 400, 895, 146, 93, 2, 3, false, true);
+    this.jumpLeft =
+    new Animation(ASSET_MANAGER.getAsset("./img/alienJump.png"), 0, 20, 200, 100, 1, 3, true, true);
+
 
 
     this.right = false;
@@ -147,6 +152,7 @@ Alien.prototype.update = function () {
 Alien.prototype.draw = function (ctx, cameraX, cameraY) {
     if (!this.game.startGame) return;
 
+    //this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 15, 2);
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
     if (this.right) {
         if (this.isDead && this.dying) {

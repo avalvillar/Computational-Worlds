@@ -26,7 +26,7 @@ ship.prototype.draw = function (ctx,cameraX, cameraY) {
 }
 
 function shipPart(game, x, y) {
-    this.smoking = new Animation(ASSET_MANAGER.getAsset("./img/ShipPart.png"), 0, 0, 33.5, 57, .2, 4, true, false);
+    this.GlowyThingy = new Animation(ASSET_MANAGER.getAsset("./img/ShipPart.png"), 0, 0, 33.5, 57, .2, 4, true, false);
     this.x = x;
     this.y = y;
     this.collisionX = this.x + 50;
@@ -42,7 +42,7 @@ shipPart.prototype.update = function () {
 }
 
 shipPart.prototype.draw = function (ctx, cameraX, cameraY) {
-    this.smoking.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
+    this.GlowyThingy.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
     Entity.prototype.draw.call(this);
 }
 
