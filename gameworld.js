@@ -37,21 +37,184 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
     
 }
 var setupWorldForest = function (game) {
-    /// ship
-    var ship1 = new ship(game, 0, 130);
-    game.addEntity(ship1);
+    shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
     ///world creation
-    for (var i = -30; i < 1000; i += 70) {
+    for (var i = -30; i < 1800; i += 70) {
         var initialGround = new Platform(game, i, 860, "forestMoss");
         game.addPlatform(initialGround);
     }
+    for (var i = 1870; i < 2015; i += 70) {
+        var plat1 = new Platform(game, i, 700, "forestMoss");
+        game.addPlatform(plat1);
+    }
+    for (var i = 2150; i < 2300; i += 70) {
+        var plat2 = new Platform(game, i, 650, "forestMoss");
+        game.addPlatform(plat2);
+    }
+    for (var i = 2470; i < 2770; i += 70) {
+        var plat3 = new Platform(game, i, 600, "forestMoss");
+        game.addPlatform(plat3);
+    }
+    for (var i = 2900; i < 4400; i += 70) {
+        var ground = new Platform(game, i, 830, "forestMoss");
+        game.addPlatform(ground);
+    }
+    for (var i = 3500; i < 3800; i += 70) {
+        var step1 = new Platform(game, i, 770, "forestMoss");
+        game.addPlatform(step1);
+    }
+    for (var i = 3750; i < 4000; i += 70) {
+        var step2 = new Platform(game, i, 720, "forestMoss");
+        game.addPlatform(step2);
+    }
+    for (var i = 3750; i < 4000; i += 70) {
+        var underStep2 = new Platform(game, i, 770, "wood");
+        game.addPlatform(underStep2);
+    }
+    for (var i = 4300; i < 4600; i += 70) {
+        var highLedge1 = new Platform(game, i, 550, "forestMoss");
+        game.addPlatform(highLedge1);
+    }
+    var topLedge1 = new Platform(game, 4650, 480, "forestMoss");
+    game.addPlatform(topLedge1);
+    var topLedge2 = new Platform(game, 4720, 480, "forestMoss");
+    game.addPlatform(topLedge2);
+    var rightLedge1 = new Platform(game, 4790, 670, "forestMoss");
+    game.addPlatform(rightLedge1);
+    var rightLedge2 = new Platform(game, 4860, 670, "forestMoss");
+    game.addPlatform(rightLedge2);
+    for (var i = 5300; i < 5800; i += 70) {
+        var jumptestTop = new Platform(game, i, 450, "forestMoss");
+        game.addPlatform(jumptestTop);
+    }
+    for (var i = 5100; i < 5800; i += 70) {
+        var jumptestBottom = new Platform(game, i, 800, "forestMoss");
+        game.addPlatform(jumptestBottom);
+    }
+    //var jumpSpot = new Platform(game, 5160, 500, "forestMoss");
+    //game.addPlatform(jumpSpot);
+    var jumpSpot = new Platform(game, 5230, 500, "forestMoss");
+    game.addPlatform(jumpSpot);
+    for (var i = 5300; i < 5800; i += 70) {
+        var jumptestTop2 = new Platform(game, i, 500, "wood");
+        game.addPlatform(jumptestTop2);
+    }
+    for (var i = 5100; i < 5800; i += 70) {
+        var jumptestBottom2 = new Platform(game, i, 850, "wood");
+        game.addPlatform(jumptestBottom2);
+    }
+    for (var i = 6100; i < 6400; i += 70) {
+        var plat4 = new Platform(game, i, 600, "forestMoss");
+        game.addPlatform(plat4);
+    }
+    for (var i = 6600; i < 6700; i += 70) {
+        var plat5 = new Platform(game, i, 500, "forestMoss");
+        game.addPlatform(plat5);
+    }
+    for (var i = 6900; i < 7300; i += 70) {
+        var plat6 = new Platform(game, i, 400, "forestMoss");
+        game.addPlatform(plat6);
+    }
+    for (var i = 7000; i < 7160; i += 70) {
+        var plat6lower = new Platform(game, i, 710, "forestMoss");
+        game.addPlatform(plat6lower);
+    }
+    var plat6lower = new Platform(game, 7000, 760, "forestMoss");
+    game.addPlatform(plat6lower);
+    var plat6lower = new Platform(game, 7070, 760, "wood");
+    game.addPlatform(plat6lower);
+    var plat6lower = new Platform(game, 7140, 760, "forestMoss");
+    game.addPlatform(plat6lower);
+    var plat6lower = new Platform(game, 7000, 830, "forestMoss");
+    game.addPlatform(plat6lower);
+    var plat6lower = new Platform(game, 7070, 830, "forestMoss");
+    game.addPlatform(plat6lower);
+    var plat6lower = new Platform(game, 7140, 830, "wood");
+    game.addPlatform(plat6lower);
+
+    for (var i = 7600; i < 8100; i += 70) {
+        var ground2 = new Platform(game, i, 710, "forestMoss");
+        game.addPlatform(ground2);
+    }
+    for (var i = 7500; i < 8300; i += 70) {
+        var ground2_2 = new Platform(game, i, 780, "forestMoss");
+        game.addPlatform(ground2_2);
+    }
+    for (var i = 7500; i < 8300; i += 70) {
+        var ground2_3 = new Platform(game, i, 850, "wood");
+        game.addPlatform(ground2_3);
+    }
+
 
     for (var i = 0; i < 850; i += 70) {
         var initialWall = new Platform(game, -69, i, "wood");
         game.addPlatform(initialWall);
     }
+    for (var i = 750; i < 900; i += 70) {
+        var underPlat1 = new Platform(game, 1940, i, "wood");
+        game.addPlatform(underPlat1);
+    }
+    for (var i = 700; i < 900; i += 70) {
+        var underPlat2 = new Platform(game, 2250, i, "wood");
+        game.addPlatform(underPlat2);
+    }
+    for (var i = 700; i < 900; i += 70) {
+        var underPlat2_2 = new Platform(game, 2190, i, "wood");
+        game.addPlatform(underPlat2_2);
+    }
+    for (var i = 670; i < 900; i += 70) {
+        var underPlat3 = new Platform(game, 2535, i, "wood");
+        game.addPlatform(underPlat3);
+    }
+    for (var i = 670; i < 900; i += 70) {
+        var underPlat3_2 = new Platform(game, 2605, i, "wood");
+        game.addPlatform(underPlat3_2);
+    }
+    for (var i = 670; i < 900; i += 70) {
+        var underPlat3_3 = new Platform(game, 2675, i, "wood");
+        game.addPlatform(underPlat3_3);
+    }
+    for (var i = 550; i < 900; i += 70) {
+        var midLedge1 = new Platform(game, 4650, i, "wood");
+        game.addPlatform(midLedge1);
+    }
+    for (var i = 550; i < 900; i += 70) {
+        var midLedge2 = new Platform(game, 4720, i, "wood");
+        game.addPlatform(midLedge2);
+    }
+    for (var i = 500; i < 900; i += 70) {
+        var jumptestConnect = new Platform(game, 5790, i, "wood");
+        game.addPlatform(jumptestConnect);
+    }
+    for (var i = 500; i < 900; i += 70) {
+        var jumptestConnect2 = new Platform(game, 5720, i, "wood");
+        game.addPlatform(jumptestConnect2);
+    }
+    //
+    for (var i = 640; i < 900; i += 70) {
+        var underPlat4 = new Platform(game, 6210, i, "wood");
+        game.addPlatform(underPlat4);
+    }
+    for (var i = 640; i < 900; i += 70) {
+        var underPlat4_2 = new Platform(game, 6280, i, "wood");
+        game.addPlatform(underPlat4_2);
+    }
+    for (var i = 550; i < 900; i += 70) {
+        var underPlat5 = new Platform(game, 6635, i, "wood");
+        game.addPlatform(underPlat5);
+    }
+    for (var i = 450; i < 900; i += 70) {
+        var underPlat6 = new Platform(game, 6950, i, "wood");
+        game.addPlatform(underPlat6);
+    }
+    for (var i = 450; i < 900; i += 70) {
+        var underPlat6_2 = new Platform(game, 7210, i, "wood");
+        game.addPlatform(underPlat6_2);
+    }
 
-    addForestEnemies(game);
+
+
+    //addForestEnemies(game);
 }
 
 var addForestEnemies = function (game) {
@@ -342,4 +505,27 @@ var addCaveEnemies = function (game) {
     game.addEntity(bat14);
     var bat15 = new Bat(game, 7200, 225, 7000, 7900);
     game.addEntity(bat15);
+}
+
+var shipAndPlatforms = function (game) {
+    /// ship
+    var ship1 = new ship(game, 0, 50);
+    game.addDeco(ship1);
+    ///ship platforms
+    for (var i = 45; i < 500; i += 70) {
+        var initialGround = new Platform(game, i, 640, "forestMoss");
+        game.addPlatform(initialGround);
+    }
+    for (var i = 20; i < 525; i += 70) {
+        var initialGround2 = new Platform(game, i, 690, "forestMoss");
+        game.addPlatform(initialGround2);
+    }
+    for (var i = -10; i < 575; i += 70) {
+        var initialGround3 = new Platform(game, i, 750, "forestMoss");
+        game.addPlatform(initialGround3);
+    }
+    for (var i = -10; i < 575; i += 70) {
+        var initialGround4 = new Platform(game, i, 810, "forestMoss");
+        game.addPlatform(initialGround4);
+    }
 }
