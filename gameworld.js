@@ -214,15 +214,39 @@ var setupWorldForest = function (game) {
 
 
 
-    //addForestEnemies(game);
+    addForestEnemies(game);
 }
 
 var addForestEnemies = function (game) {
-    var spider1 = new Spider(game, 200, 200, 150, 400);
+    var spider1 = new Spider(game, 3800, 600, 250, 600);
     game.addEntity(spider1);
+    var spider2 = new Spider(game, 4480, 700, 620, 900);
+    game.addEntity(spider2);
+    var spider3 = new Spider(game, 5250, 575, 570, 725);
+    game.addEntity(spider3);
+    var spider4 = new Spider(game, 5500, 300, 100, 400);
+    game.addEntity(spider4);
+    var spider5 = new Spider(game, 6620, 100, 100, 440);
+    game.addEntity(spider5);
+    var spider6 = new Spider(game, 7400, 500, 100, 700);
+    game.addEntity(spider6);
+    var spider7 = new Spider(game, 8000, 500, 200, 600);
+    game.addEntity(spider7);
 
-    var plant1 = new Plant(game, 400, 400);
+    var plant1 = new Plant(game, 3400, 670);
     game.addEntity(plant1);
+    var plant2 = new Plant(game, 4050, 670);
+    game.addEntity(plant2);
+    var plant3 = new Plant(game, 4665, 320);
+    game.addEntity(plant3);
+    var plant4 = new Plant(game, 5550, 640);
+    game.addEntity(plant4);
+    var plant5 = new Plant(game, 6230, 440);
+    game.addEntity(plant5);
+    var plant6 = new Plant(game, 7070, 550);
+    game.addEntity(plant6);
+    var plant6 = new Plant(game, 7700, 550);
+    game.addEntity(plant6);
 }
 
 var setupWorldCave = function (game) {
