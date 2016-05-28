@@ -32,7 +32,7 @@ test.prototype.draw = function (ctx) {
 function Samus(game, x, y) {//add count for turns instead of boolean so we can display a few frames with turning....
     this.idleRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 387, 55, 40, 50, .8, 2, true, false);
     this.runningRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 431, 300, 43, 50, .1, 10, true, false);
-    this.jumpRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 980, 0, 33.8, 55, .07, 8, false, false);
+    this.jumpRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 980, 0, 33.8, 55, .07, 8, false, false); 
     this.turnRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 300, 55, 40, 55, 1, 1, false, false);
     this.downRight = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 120, 180, 40, 55, 1, 1, true, false);
     this.downRightTurn = new Animation(ASSET_MANAGER.getAsset("./img/Fusion-Samus.png"), 80, 180, 40, 55, 1, 1, false, false);
@@ -134,9 +134,9 @@ Samus.prototype.chooseLaser = function() {
 
 Samus.prototype.jump = function () {
     if (this.jumping) {
-        if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
-            this.ground = this.y;
-        }
+        //if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
+        //    this.ground = this.y;
+        //}
         this.grounded = false;
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
@@ -220,7 +220,7 @@ Samus.prototype.platformCollision = function () {
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
-                    collidingTopDown = false;
+                    //collidingTopDown = false;
                     //this.y = plat.collisionY - 105;
                     //this.ground = this.y;
                 }
@@ -308,7 +308,7 @@ Samus.prototype.update = function () {
         this.platformCollision(); // performs platform collision handling
         this.x += this.velocity.x;
         this.y += this.velocity.y;
-        if (this.velocity.y > 0 && !this.jumping) {
+        if (this.velocity.y >= 0 && !this.jumping) {
             this.ground.y = this.y;
         }
     } else {

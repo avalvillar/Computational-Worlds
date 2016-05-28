@@ -293,7 +293,7 @@ var setupWorldCave = function (game) {
     }
 
     for (var i = 0; i < 9000; i += 325) {
-        var caveLava = new Lava(game, i, 840);
+        var caveLava = new Lava(game, i, 850);
         game.addDeco(caveLava);
     }
 

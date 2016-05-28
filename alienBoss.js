@@ -37,6 +37,8 @@ function Alien(game, x, y) {
     new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 0, 5, 200, 150, .1, 9, true, false);
     this.attackRight =
     new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 1900, 5, 200, 150, .1, 9, true, true);
+    this.startAnimation =
+    new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 400, 895, 146, 93, 2, 3, false, true);
 
 
     this.right = false;
