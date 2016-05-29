@@ -9,12 +9,14 @@
 
 function Plant(game, x, y) {
     this.movement = new Animation(ASSET_MANAGER.getAsset("./img/podPlant.png"), 112, 0, 56, 80, 1, 4, true, false);
+    this.health = 1;
+    this.damage = 30;
     this.x = x;
     this.y = y
-    this.collisionWidth = 75;
+    this.collisionWidth = 65;
     this.collisionHeight = 50;
-    this.collisionX = this.x + 5;
-    this.collisionY = this.y + 12;
+    this.collisionX = this.x + 25;
+    this.collisionY = this.y + 105;
     this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
@@ -24,6 +26,9 @@ Plant.prototype = new Entity();
 Plant.prototype.constructor = Plant;
 
 Plant.prototype.update = function () {
+    if (this.health <= 0) {
+        this.removeFromWorld = true;
+    }
     Entity.prototype.update.call(this);
 }
 
@@ -39,7 +44,8 @@ Plant.prototype.draw = function (ctx, cameraX, cameraY) {
 
 function Spider(game, x, y, topBound, bottomBound) {
     this.movement = new Animation(ASSET_MANAGER.getAsset("./img/SpiderSpriteB2.png"), 0, 0, 40, 30, .1, 3, true, false);
-
+    this.health = 1;
+    this.damage = 30;
     this.speed = 150;
     this.x = x;
     this.y = y
@@ -59,6 +65,9 @@ Spider.prototype = new Entity();
 Spider.prototype.constructor = Spider;
 
 Spider.prototype.update = function () {
+    if (this.health <= 0) {
+        this.removeFromWorld = true;
+    }
     if (this.up) {
         this.y += this.speed * this.game.clockTick;
     } else {
