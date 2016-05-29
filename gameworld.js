@@ -10,6 +10,8 @@ function Platform(game, x, y, type) {
         this.spritesheet = ASSET_MANAGER.getAsset("./img/mossyBlock.png");
     } else if (type === "wood") {
         this.spritesheet = ASSET_MANAGER.getAsset("./img/woodBlock.png");
+    } else if (type === "snow") {
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/snowBlock.png");
     }
     this.type = type;
     this.isPlatform = true;
@@ -36,6 +38,7 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
                  this.x + cameraX, this.y - cameraY, 70, 70);
     
 }
+
 var setupWorldForest = function (game) {
     shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
     ///world creation
@@ -587,4 +590,66 @@ var shipAndPlatforms = function (game) {
         var initialGround4 = new Platform(game, i, 810, "forestMoss");
         game.addPlatform(initialGround4);
     }
+}
+
+var setupWorldCaveSnowTransition = function (game) {
+
+    for (var i = 9500; i < 12000; i += 70) {
+        var ground3 = new Platform(game, i, 830, "cave");
+        game.addPlatform(ground3);
+    }
+    for (var i = 0; i < 12000; i += 70) {
+        var ceiling = new Platform(game, i, 0, "cave");
+        game.addPlatform(ceiling);
+    }
+
+
+    for (var i = 10400; i < 10600; i += 70) {
+        var bossPlatform = new Platform(game, i, 600, "cave");
+        game.addPlatform(bossPlatform);
+    }
+
+    for (var i = 10070; i < 10210; i += 70) {
+        var bossPlatform1 = new Platform(game, i, 400, "cave");
+        game.addPlatform(bossPlatform1);
+    }
+
+    for (var i = 10800; i < 11300; i += 70) {
+        var bossPlatform2 = new Platform(game, i, 400, "cave");
+        game.addPlatform(bossPlatform2);
+    }
+
+    for (var i = 70; i < 900; i += 70) {
+        var bigWall = new Platform(game, 10000, i, "cave");
+        game.addPlatform(bigWall);
+    }
+    for (var i = 70; i < 690; i += 70) {
+        var endWall = new Platform(game, 11030, i, "cave");
+        game.addPlatform(endWall);
+    }
+}
+
+var setupWorldSnow = function (game) {
+    for (var i = 0; i < 900; i += 50) {
+        var initialWall = new Platform(game, -69, i, "snow");
+        game.addPlatform(initialWall);
+    }
+    for (var i = 0; i < 1100; i += 70) {
+        var ground1 = new Platform(game, i, 830, "snow");
+        game.addPlatform(ground1);
+    }
+
+    bg = new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900)
+    game.setBackground(bg);
+
+    addSnowEnemies(game);
+}
+
+var addSnowEnemies = function (game) {
+    var smallYeti1 = new smallYeti(game, 400, 745);
+    game.addEntity(smallYeti1);
+
+    var yeti1 = new Yeti(game, 400, 628, 150, 700);
+    game.addEntity(yeti1);
+
 }
