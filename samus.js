@@ -257,7 +257,7 @@ Samus.prototype.platformCollision = function (hitTest) {
                 collisionWidth: this.collisionWidth, collisionHeight: this.collisionHeight
                 }, plat))) && ((hitTest || this.velocity.x < 0) || this.jumping)) {
 
-                console.log("hit right");
+                //console.log("hit right");
                 this.x = plat.collisionX + plat.collisionWidth - 30;
                 this.velocity.x = 0;
                 collideSide = true;
@@ -272,7 +272,7 @@ Samus.prototype.platformCollision = function (hitTest) {
                 collisionWidth:this.collisionWidth, collisionHeight: this.collisionHeight
             }, plat))) && ((hitTest || this.velocity.x > 0) || this.jumping)) {
 
-                console.log("hit left");
+                //console.log("hit left");
                 this.x = plat.collisionX - this.collisionWidth - 30;
                 this.velocity.x = 0;
                 collideSide = true;

@@ -41,19 +41,16 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 200, 660);//x = 200 // boss testing = 9900
-
-    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
+    samus = new Samus(gameEngine, 625, 660);//x = 200 // boss testing = 9900 //forest = 625
+                                    //y:660
+    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
+	//bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg);
+    gameEngine.init(ctx, samus, bg, "forest");
     gameEngine.start();
-
-    setupWorldCave(gameEngine);
-    //setupWorldForest(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -129,6 +126,9 @@ Background.prototype.draw = function (ctx, cameraX) {
 //=======
 //  this.x + this.cameraX, this.y, 2100, 900);
 //>>>>>>> origin/Antonio
+//=======
+//                 this.x + this.cameraX, this.y, 2100, 900); /// best setting is (2100, 900)
+//>>>>>>> origin/Antonio
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
@@ -203,19 +203,25 @@ var resetWorld = function(game) {
     
     game.entities = [];
     game.addEntity(new Health(game));
+    game.platforms = [];
+    game.decorations = [];
+    game.lasers = [];
 
-// remove current enemies & respawn
-    addCaveEnemies(game);
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
-    } else {
+    } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 200);
+        game.init(ctx, samus, bg = new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
+    } else if (game.currentLevel === "forest") {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 625, 660);
+        game.init(ctx, samus, bg = new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900),"forest")
     }
 
 // put samus back at beginning
-    game.init(ctx, samus, bg);
+    
     if (game.alienBossActive) {
         setupAlienBoss(game);
         game.bossReset = true;
