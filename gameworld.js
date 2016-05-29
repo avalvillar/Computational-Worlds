@@ -10,6 +10,8 @@ function Platform(game, x, y, type) {
         this.spritesheet = ASSET_MANAGER.getAsset("./img/mossyBlock.png");
     } else if (type === "wood") {
         this.spritesheet = ASSET_MANAGER.getAsset("./img/woodBlock.png");
+    } else if (type === "snow") {
+        this.spritesheet = ASSET_MANAGER.getAsset("./img/snowBlock.png");
     }
     this.type = type;
     this.isPlatform = true;
@@ -36,6 +38,7 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
                  this.x + cameraX, this.y - cameraY, 70, 70);
     
 }
+
 var setupWorldForest = function (game) {
     shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
     ///world creation
@@ -552,4 +555,25 @@ var shipAndPlatforms = function (game) {
         var initialGround4 = new Platform(game, i, 810, "forestMoss");
         game.addPlatform(initialGround4);
     }
+}
+
+var setupWorldSnow = function (game) {
+    for (var i = 0; i < 900; i += 50) {
+        var initialWall = new Platform(game, -69, i, "snow");
+        game.addPlatform(initialWall);
+    }
+    for (var i = 0; i < 1100; i += 70) {
+        var ground1 = new Platform(game, i, 830, "snow");
+        game.addPlatform(ground1);
+    }
+
+
+
+    addSnowEnemies(game);
+}
+
+var addSnowEnemies = function (game) {
+    var smallYeti1 = new smallYeti(game, 400, 745);
+    game.addEntity(smallYeti1);
+
 }

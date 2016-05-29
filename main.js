@@ -12,9 +12,6 @@ ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
-ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
-ASSET_MANAGER.queueDownload("./img/woodBlock.png");
-ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 
@@ -23,6 +20,15 @@ ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/forestBG_extended.jpg");
 ASSET_MANAGER.queueDownload("./img/SpiderSpriteB2.png");
 ASSET_MANAGER.queueDownload("./img/podPlant.png");
+ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
+ASSET_MANAGER.queueDownload("./img/woodBlock.png");
+ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
+
+//Snow stuff
+ASSET_MANAGER.queueDownload("./img/snowBG.jpg");
+ASSET_MANAGER.queueDownload("./img/snowBlock.png");
+ASSET_MANAGER.queueDownload("./img/yeti.png");
+ASSET_MANAGER.queueDownload("./img/smallYeti.png");
 
 var canvas;
 var samus;
@@ -38,9 +44,10 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 625, 660);//x = 200 // boss testing = 9900
+    samus = new Samus(gameEngine, 100, 670);//x = 200 // boss testing = 9900
 
-    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG_extended.jpg"));
+    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/snowBG.jpg"));
+    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG_extended.jpg"));
 	//bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
@@ -53,7 +60,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 
     //setupWorldCave(gameEngine);
-    setupWorldForest(gameEngine);
+    //setupWorldForest(gameEngine);
+    setupWorldSnow(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
