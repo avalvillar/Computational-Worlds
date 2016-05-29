@@ -72,8 +72,23 @@ Alien.prototype = new Entity();
 Alien.prototype.constructor = Alien;
 
 Alien.prototype.attack = function () {
-    if (Math.abs(this.x - this.game.samus.x) < 150) {
+    attackDistance = 0;
+    if (this.x > this.game.samus.x + this.game.samus.collisionWidth) {
+        if (this.game.right) {
+            attackDistance = 75;
+        } else {
+            attackDistance = 105;
+        }
+    } else {
+        if (this.game.right) {
+            attackDistance = 200;
+        } else {
+            attackDistance = 160;
+        }
+    }
+    if (Math.abs(this.x - this.game.samus.x) < attackDistance) {
         this.attacking = true;
+        this.jumping = false;
     } else if (this.attack && (this.attackLeft.isDone() || this.attackRight.isDone)) {
         this.attacking = false;
         this.attackLeft.elapsedTime = 0;
@@ -91,11 +106,11 @@ Alien.prototype.move = function () {
     if (!this.attacking && !this.right && !this.jumping) {
         this.x -= this.speed * this.game.clockTick;
     } else if (!this.right && this.jumping && this.jumpCount > 50) {
-        this.x -= (this.speed + 500) * this.game.clockTick;
+        this.x -= (this.speed + 400) * this.game.clockTick;
     } else if (!this.attacking && this.right) {
         this.x += this.speed * this.game.clockTick;
     } else if (this.right && this.jumping && this.jumpCount > 50) {
-        this.x += (this.speed + 500) * this.game.clockTick;
+        this.x += (this.speed + 400) * this.game.clockTick;
     }
 }
 

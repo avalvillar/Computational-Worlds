@@ -59,7 +59,7 @@ function Lava(game, x, y) {
     this.collisionWidth = 325;
     this.collisionHeight = 165;
     this.riseCount = 0;
-    this.riseMax = 400;
+    this.riseMax = 460;
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
 }
 
