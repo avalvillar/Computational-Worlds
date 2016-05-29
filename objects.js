@@ -51,6 +51,7 @@ function Lava(game, x, y) {
     this.lava = new Animation(ASSET_MANAGER.getAsset("./img/Lava.png"), 28, 0, 325, 165, .1, 8, true, false);
     this.x = x;
     this.y = y;
+    this.hitCount = 0;
     this.game = game;
     this.damage = 100;
     this.collisionX = x;
@@ -73,17 +74,28 @@ Lava.prototype.update = function () {
         this.riseCount = 0;
         this.game.alienBossHit = false;
     }
+    if (this.game.alienBossHit && this.riseCount === 0) {
+        this.hitCount++;
+    }
+
     if (this.game.alienBossHit && this.riseCount < this.riseMax) {
-        this.y -= 1;
-        this.riseCount++;
+        if (this.hitCount === 1) {
+            this.y--;
+            this.riseCount++;
+        } else if (this.hitCount >= 2) {
+            this.y -= 2;
+            this.riseCount += 2;
+        } 
+
     } else if (this.game.alienBossHit && this.riseCount >= this.riseMax) {
         this.game.alienBossHit = false;
     } else if (this.riseCount > 0) {
         this.y++;
-        this.riseCount -= 1;
+        this.riseCount--;
     } else if (this.riseCount === 0) {
         this.game.bossHitOver = true;
-    } 
+    }
+
     this.collisionX = this.x;
     this.collisionY = this.y + 30;
     Entity.prototype.update.call(this);
