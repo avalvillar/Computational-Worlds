@@ -250,3 +250,111 @@ Bat.prototype.draw = function (ctx, cameraX, cameraY) {
         this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 1.8);
     }
 }
+
+/*************************************************************************************
+	SMALL YETI
+*/
+
+function smallYeti(game, x, y) {
+    this.up = new Animation(ASSET_MANAGER.getAsset("./img/smallYeti.png"), 20, 30, 118, 115, 1, 4, true, false);
+    this.down = new Animation(ASSET_MANAGER.getAsset("./img/smallYeti.png"), 20, 384, 118, 115, 1, 4, true, false);
+    this.health = 1;
+    this.count = 0;
+    this.flip = false;
+    this.x = x;
+    this.y = y
+    this.collisionWidth = 65;
+    this.collisionHeight = 50;
+    this.collisionX = this.x + 25;
+    this.collisionY = this.y + 105;
+    this.game = game;
+
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
+}
+
+smallYeti.prototype = new Entity();
+smallYeti.prototype.constructor = smallYeti;
+
+smallYeti.prototype.update = function () {
+    if (this.health <= 0) {
+        this.removeFromWorld = true;
+    }
+    Entity.prototype.update.call(this);
+}
+
+smallYeti.prototype.draw = function (ctx, cameraX, cameraY) {
+    if (!this.game.startGame) return;
+    //if (this.count % 4 === 0) {
+    //    this.flip = !this.flip;
+    //} 
+    //if (this.flip) {
+    //    this.up.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
+    //    this.count++;
+    //} else {
+    //    this.down.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
+    //    this.count++;
+    //}
+    this.up.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
+    
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
+}
+
+/*************************************************************************************
+	YETI
+*/
+
+function Yeti(game, x, y, leftBound, rightBound) {
+    this.goLeft = new Animation(ASSET_MANAGER.getAsset("./img/yeti.png"), 0, 76, 75, 76, .3, 4, true, false);
+    this.goRight = new Animation(ASSET_MANAGER.getAsset("./img/yeti.png"), 0, 0, 75, 76, .3, 4, true, false);
+    this.health = 1;
+    this.damage = 50;
+    this.speed = 100;
+    this.x = x;
+    this.y = y;
+    this.rightBound = rightBound;
+    this.leftBound = leftBound;
+    this.collisionHeight = 40;
+    this.collisionWidth = 40;
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 20;
+    this.flip = true;
+    this.game = game;
+
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
+}
+
+Yeti.prototype = new Entity();
+Yeti.prototype.constructor = Yeti;
+
+Yeti.prototype.update = function () {
+    if (!this.game.startGame) return;
+    if (this.health <= 0) {
+        this.removeFromWorld = true;
+    }
+    if (this.x < this.leftBound) {
+        this.flip = !this.flip;
+        this.x = this.leftBound;
+    } else if (this.x > this.rightBound) {
+        this.flip = !this.flip;
+        this.x = this.x - (this.x - this.rightBound);
+    }
+    if (this.flip) {
+        this.x -= this.game.clockTick * this.speed;
+    } else {
+        this.x += this.game.clockTick * this.speed;
+    }
+
+    this.collisionX = this.x + 5;
+    this.collisionY = this.y + 20;
+    Entity.prototype.update.call(this);
+}
+
+Yeti.prototype.draw = function (ctx, cameraX, cameraY) {
+    if (!this.game.startGame) return;
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
+    if (this.flip) {
+        this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3.5);
+    } else {
+        this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3.5);
+    }
+}

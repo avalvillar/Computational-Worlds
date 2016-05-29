@@ -107,6 +107,7 @@ function GameEngine() {
     this.platforms = [];
     this.decorations = [];
     this.alienBossActive = false;
+    this.alienBossDead = false;
     this.alienBossHit = false;
     this.settingUpBoss = false;
     this.bossReset = false;
@@ -153,6 +154,8 @@ GameEngine.prototype.init = function (ctx, samus, background, level) {
         setupWorldForest(this);
     } else if (this.currentLevel === "cave") {
         setupWorldCave(this);
+    } else if (this.currentLevel === "snow") {
+        setupWorldSnow(this);
     }
     console.log('game initialized');
 }
@@ -327,11 +330,10 @@ GameEngine.prototype.update = function () {
     this.camera.update();
     this.background.update();
     this.healthBar.update();
-    var entitiesCount = this.entities.length;
-    var laserCount = this.lasers.length;
+
 
     //console.log(this.currentLevel);
-    if (this.currentLevel === "forest" && this.samus.x >= 8000) {
+    if (this.currentLevel === "forest" && this.samus.x >= 8000) { // transition to cave level
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
@@ -341,18 +343,33 @@ GameEngine.prototype.update = function () {
         this.samus.y = 600;
         setupWorldCave(this);
     }
+    if (this.currentLevel === "cave" && this.alienBossDead) {
+        this.platforms = [];
+        setupWorldCaveSnowTransition(this);
+    }
+    if (this.currentLevel === "cave" && this.samus.x >= 11000) {
+        this.currentLevel = "snow";
+        this.alienBossActive = false;
+        this.platforms = [];
+        this.entities = [];
+        this.decorations = [];
+        this.addEntity(new Health(this));
+        this.samus.x = 100;
+        this.samus.y = 670;
+        this.camera = new Camera(this);
+        setupWorldSnow(this);
+    }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
-    //if (this.alienBossActive && ) {
 
-    //}
-
+    var entitiesCount = this.entities.length;
+    var laserCount = this.lasers.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
-
+        //console.log(entity);
         if (!entity.removeFromWorld) {
             entity.update();
         }

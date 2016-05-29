@@ -117,6 +117,7 @@ Alien.prototype.move = function () {
 Alien.prototype.update = function () {
     if (!this.game.startGame || this.isDead) return;
     if (!this.isDead && this.health <= 0) {
+        this.game.alienBossDead = true;
         this.isDead = true;
         this.dying = true;
     }
