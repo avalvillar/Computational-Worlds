@@ -39,13 +39,14 @@ function Alien(game, x, y) {
     new Animation(ASSET_MANAGER.getAsset("./img/alienAttack.png"), 1900, 5, 200, 150, .1, 9, true, true);
     this.startAnimation =
     new Animation(ASSET_MANAGER.getAsset("./img/alien.png"), 400, 895, 146, 93, 2, 3, false, true);
-    this.jumpLeft =
-    new Animation(ASSET_MANAGER.getAsset("./img/alienJump.png"), 0, 20, 200, 100, 1, 3, true, true);
-
-
+    this.jumpLeft = new Animation(ASSET_MANAGER.getAsset("./img/alienJump.png"), 0, 20, 200, 100, 1, 1, true, true);
+    this.pounceLeft = new Animation(ASSET_MANAGER.getAsset("./img/alienJump.png"), 200, 20, 200, 100, 1, 1, true, true);
+    this.crouchLeft = new Animation(ASSET_MANAGER.getAsset("./img/alienJump.png"), 400, 20, 200, 100, 1, 1, true, true);
 
     this.right = false;
     this.attacking = false;
+    this.jumping = true;
+    this.jumpCount = 0;
     this.speed = 250;
     this.health = 3;
     this.isDead = false;
@@ -87,10 +88,14 @@ Alien.prototype.move = function () {
     } else {
         this.right = false;
     }
-    if (!this.attacking && !this.right) {
+    if (!this.attacking && !this.right && !this.jumping) {
         this.x -= this.speed * this.game.clockTick;
+    } else if (!this.right && this.jumping && this.jumpCount > 50) {
+        this.x -= (this.speed + 500) * this.game.clockTick;
     } else if (!this.attacking && this.right) {
         this.x += this.speed * this.game.clockTick;
+    } else if (this.right && this.jumping && this.jumpCount > 50) {
+        this.x += (this.speed + 500) * this.game.clockTick;
     }
 }
 
@@ -102,6 +107,19 @@ Alien.prototype.update = function () {
     }
     if (!this.grounded) {
         this.y += this.game.gravity * this.game.clockTick;
+    }
+
+    if (this.jumping) {
+        if (this.jumpCount < 100) {
+            this.jumpCount++;
+        } else {
+            this.jumpCount = 0;
+            this.jumping = false;
+        }
+    }
+
+    if (Math.abs(this.x - this.game.samus.x) > 400) {
+        this.jumping = true;
     }
 
     if (this.health !== 0 && this.lastHealth !== this.health) {
@@ -127,8 +145,6 @@ Alien.prototype.update = function () {
     this.move();
 
     var collideTopDown = false;
-
-
 
     for (var i = 0; i < this.game.platforms.length && !collideTopDown; i++) { // platform detection
         var plat = this.game.platforms[i];
@@ -169,7 +185,7 @@ Alien.prototype.draw = function (ctx, cameraX, cameraY) {
             this.goRight.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 2);
         }
     } else {
-        if (this.isDead && this.dying) {
+        if(this.isDead && this.dying) {
             this.deathLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
             this.dyingCount++;
             if (this.deathLeft.isDone()) {
@@ -177,6 +193,15 @@ Alien.prototype.draw = function (ctx, cameraX, cameraY) {
             }
         } else if (this.isDead) {
             this.deadLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
+        }  else if (this.jumping) {
+            if (this.jumpCount < 10) {
+                this.crouchLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
+            } else if (this.jumpCount < 50) {
+                this.pounceLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
+            } else {
+                this.jumpLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY - 25, 2);
+            }
+            
         } else if (this.attacking) {
             if (this.attackLeft.isDone()) {
 

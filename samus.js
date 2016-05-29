@@ -287,7 +287,7 @@ Samus.prototype.platformCollision = function (hitTest) {
 
     if ((!this.grounded || !isColliding) && !this.jumping) {
         this.velocity.y = this.game.clockTick * this.game.gravity;
-        //this.ground = this.y + this.velocity;
+        this.ground = this.y + this.velocity.y;
     } else {
         this.velocity.y = 0;
     }

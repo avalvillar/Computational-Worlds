@@ -41,7 +41,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 625, 660);//x = 200 // boss testing = 9900 //forest = 625
+    samus = new Samus(gameEngine, 9900, 600);//x = 200 // boss testing = 9900 //forest = 625
                                     //y:660
     bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
 	//bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
@@ -49,7 +49,7 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "forest");
+    gameEngine.init(ctx, samus, bg, "cave");
     gameEngine.start();
 });
 
@@ -210,6 +210,7 @@ var resetWorld = function(game) {
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
+        game.init(ctx, samus, bg = new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 200);
