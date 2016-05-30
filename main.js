@@ -44,10 +44,10 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 100, 670);//x = 200 // boss testing = 9900
+    samus = new Samus(gameEngine, 650, 670);//x = 200 // boss testing = 9900  (x=650 for forest start)
 
-    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/snowBG.jpg"));
-    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG_extended.jpg"));
+    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/snowBG.jpg"));
+    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG_extended.jpg"));
 	//bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"));
 
     var start = new StartScreen(gameEngine);
@@ -60,8 +60,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 
     //setupWorldCave(gameEngine);
-    //setupWorldForest(gameEngine);
-    setupWorldSnow(gameEngine);
+    setupWorldForest(gameEngine);
+    //setupWorldSnow(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
