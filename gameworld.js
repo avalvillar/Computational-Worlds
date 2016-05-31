@@ -308,16 +308,16 @@ var setupWorldForest = function (game) {
         game.addPlatform(underEndPlat);
     }
     //cave ceiling block
-    for (var i = 9660; i < 1300; i += 70) {
-        for (var j = 0; j < 920; j += 70) {
+    for (var i = 9660; i < 10500; i += 70) {
+        for (var j = 0; j < 650; j += 70) {
             var caveRoof = new Platform(game, i, j, "cave");
-            game.addEntity(caveRoof);
+            game.addPlatform(caveRoof);
         }
     }
     //cave ground
-    for (var i = 9550; i < 1300; i += 70) {
-        var caveGround = new Platform(game, i, 820, "cave");
-        game.addEntity(caveGround);
+    for (var i = 9550; i < 10500; i += 70) {
+        var caveGround = new Platform(game, i, 830, "cave");
+        game.addPlatform(caveGround);
     }
 
     bg = new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
