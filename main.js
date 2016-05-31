@@ -12,9 +12,6 @@ ASSET_MANAGER.queueDownload("./img/cave-full.png");
 ASSET_MANAGER.queueDownload("./img/leftLaser.png");
 ASSET_MANAGER.queueDownload("./img/alien.png");
 ASSET_MANAGER.queueDownload("./img/cave_rock.png");
-ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
-ASSET_MANAGER.queueDownload("./img/woodBlock.png");
-ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
 ASSET_MANAGER.queueDownload("./img/ShipPart.png");
 ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 ASSET_MANAGER.queueDownload("./img/alienAttack.png");
@@ -26,6 +23,15 @@ ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
 ASSET_MANAGER.queueDownload("./img/forestBG_extended.jpg");
 ASSET_MANAGER.queueDownload("./img/SpiderSpriteB2.png");
 ASSET_MANAGER.queueDownload("./img/podPlant.png");
+ASSET_MANAGER.queueDownload("./img/mossyBlock.png");
+ASSET_MANAGER.queueDownload("./img/woodBlock.png");
+ASSET_MANAGER.queueDownload("./img/CrashedShip.png");
+
+//Snow stuff
+ASSET_MANAGER.queueDownload("./img/snowBG.jpg");
+ASSET_MANAGER.queueDownload("./img/snowBlock.png");
+ASSET_MANAGER.queueDownload("./img/yeti.png");
+ASSET_MANAGER.queueDownload("./img/smallYeti.png");
 
 var canvas;
 var samus;
@@ -41,19 +47,18 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 200, 660);//x = 200 // boss testing = 9900
+    samus = new Samus(gameEngine, 625, 660); 
+    //cave x = 200 // boss testing x: 9900 //forest x: 625 //snow x: 100
+    //forest y:660 //cave y: 600 //snow y: 670
+    bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
 
-    //bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"));
-	bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900);
 
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg);
+    gameEngine.init(ctx, samus, bg, "forest"); //forest, cave, snow
     gameEngine.start();
 
-    setupWorldCave(gameEngine);
-    //setupWorldForest(gameEngine);
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -129,6 +134,9 @@ Background.prototype.draw = function (ctx, cameraX) {
 //=======
 //  this.x + this.cameraX, this.y, 2100, 900);
 //>>>>>>> origin/Antonio
+//=======
+//                 this.x + this.cameraX, this.y, 2100, 900); /// best setting is (2100, 900)
+//>>>>>>> origin/Antonio
 
     //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
     //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
@@ -203,19 +211,31 @@ var resetWorld = function(game) {
     
     game.entities = [];
     game.addEntity(new Health(game));
+    game.platforms = [];
+    game.decorations = [];
+    game.lasers = [];
 
-// remove current enemies & respawn
-    addCaveEnemies(game);
     if (game.alienBossActive) {
+        console.log("load boss");
         samus.removeFromWorld = true;
-        samus = new Samus(game, 10200, 300);
-    } else {
+        samus = new Samus(game, 10200, 600);
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
+    } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
-        samus = new Samus(game, 205, 200);
+        samus = new Samus(game, 205, 600);
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
+    } else if (game.currentLevel === "forest") {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 625, 660);
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900),"forest")
+    } else if (game.currentLevel === "snow") {
+        samus.removeFromWorld = true;
+        samus = new Samus(game, 100, 670);
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900),"snow");
     }
 
 // put samus back at beginning
-    game.init(ctx, samus, bg);
+    
     if (game.alienBossActive) {
         setupAlienBoss(game);
         game.bossReset = true;
