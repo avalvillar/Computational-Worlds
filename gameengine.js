@@ -333,7 +333,8 @@ GameEngine.prototype.update = function () {
 
 
     //console.log(this.currentLevel);
-    if (this.currentLevel === "forest" && this.samus.x >= 8000) { // transition to cave level
+    if (this.currentLevel === "forest" && this.samus.x >= 9400) { // transition to cave level
+        this.alienBossActive = false;
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
@@ -361,6 +362,7 @@ GameEngine.prototype.update = function () {
     }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
+        console.log(this.samus.x);
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
