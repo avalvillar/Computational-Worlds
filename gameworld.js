@@ -151,19 +151,21 @@ var setupWorldForest = function (game) {
     game.addPlatform(jumpAssist);
     var endPlat = new Platform(game, 8430, 500, "forestMoss");
     game.addPlatform(endPlat);
-    for (var i = 8500; i < 8900; i += 70) {
-        var endPlat = new Platform(game, i, 500, "forestMoss");
-        game.addPlatform(endPlat);
+
+
+    for (var i = 9130; i < 9300; i += 70) {
+        var endPlat2 = new Platform(game, i, 640, "forestMoss");
+        game.addPlatform(endPlat2);
     }
     for (var i = 8920; i < 9100; i += 70) {
         var endPlat2 = new Platform(game, i, 570, "forestMoss");
         game.addPlatform(endPlat2);
     }
-    for (var i = 9130; i < 9300; i += 70) {
-        var endPlat2 = new Platform(game, i, 640, "forestMoss");
-        game.addPlatform(endPlat2);
-    }
 
+    for (var i = 8500; i < 8900; i += 70) {
+        var endPlat = new Platform(game, i, 500, "forestMoss");
+        game.addPlatform(endPlat);
+    }
 
     for (var i = 0; i < 850; i += 70) {
         var initialWall = new Platform(game, -69, i, "wood");
@@ -209,7 +211,7 @@ var setupWorldForest = function (game) {
         var jumptestConnect2 = new Platform(game, 5720, i, "wood");
         game.addPlatform(jumptestConnect2);
     }
-    //
+    
     for (var i = 640; i < 900; i += 70) {
         var underPlat4 = new Platform(game, 6210, i, "wood");
         game.addPlatform(underPlat4);
@@ -282,7 +284,7 @@ var setupWorldForest = function (game) {
         var underEndPlat = new Platform(game, 9270, i, "forestMoss");
         game.addPlatform(underEndPlat);
     }
-    ///  cave transistions.
+    //  cave transistions.
     for (var i = 0; i < 475; i += 70) {
         var underEndPlat = new Platform(game, 9450, i, "cave");
         game.addPlatform(underEndPlat);
@@ -303,22 +305,25 @@ var setupWorldForest = function (game) {
         var underEndPlat = new Platform(game, 9410, i, "wood");
         game.addPlatform(underEndPlat);
     }
-    for (var i = 760; i < 900; i += 70) {
-        var underEndPlat = new Platform(game, 9480, i, "cave");
-        game.addPlatform(underEndPlat);
-    }
-    //cave ceiling block
-    for (var i = 9660; i < 10500; i += 70) {
-        for (var j = 0; j < 650; j += 70) {
-            var caveRoof = new Platform(game, i, j, "cave");
-            game.addPlatform(caveRoof);
-        }
-    }
+
     //cave ground
     for (var i = 9550; i < 10500; i += 70) {
         var caveGround = new Platform(game, i, 830, "cave");
         game.addPlatform(caveGround);
     }
+    for (var i = 760; i < 900; i += 70) {
+        var underEndPlat = new Platform(game, 9480, i, "cave");
+        game.addPlatform(underEndPlat);
+    }
+
+    //cave ceiling block
+    for (var i = 9660; i < 10500; i += 70) {
+        for (var j = 0; j < 620; j += 70) {
+            var caveRoof = new Platform(game, i, j, "cave");
+            game.addPlatform(caveRoof);
+        }
+    }
+
 
     bg = new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
     game.setBackground(bg);

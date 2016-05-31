@@ -218,11 +218,11 @@ var resetWorld = function(game) {
     if (game.alienBossActive) {
         console.log("load boss");
         samus.removeFromWorld = true;
-        samus = new Samus(game, 10200, 300);
+        samus = new Samus(game, 10200, 600);
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
-        samus = new Samus(game, 205, 200);
+        samus = new Samus(game, 205, 600);
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
     } else if (game.currentLevel === "forest") {
         samus.removeFromWorld = true;
