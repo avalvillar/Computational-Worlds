@@ -52,11 +52,13 @@ ASSET_MANAGER.downloadAll(function () {
     //forest y:660 //cave y: 600 //snow y: 670
     bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
 
+
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
     gameEngine.init(ctx, samus, bg, "forest"); //forest, cave, snow
     gameEngine.start();
+
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -214,6 +216,7 @@ var resetWorld = function(game) {
     game.lasers = [];
 
     if (game.alienBossActive) {
+        console.log("load boss");
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 300);
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
