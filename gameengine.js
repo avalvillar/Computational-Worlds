@@ -333,14 +333,14 @@ GameEngine.prototype.update = function () {
 
 
     //console.log(this.currentLevel);
-    if (this.currentLevel === "forest" && this.samus.x >= 9400) { // transition to cave level
+    if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.alienBossActive = false;
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
         this.decorations = [];
         this.addEntity(new Health(this));
-        this.samus.x = 200;
+        this.samus.x = 150;
         this.samus.y = 600;
         setupWorldCave(this);
     }
@@ -489,8 +489,6 @@ GameEngine.prototype.loop = function () {
         this.ctx.strokeStyle = "black";
         this.ctx.strokeText("PAUSED", textX, textY);
         this.ctx.fillText("PAUSED", textX, textY);
-        
-
     }
 }
 
