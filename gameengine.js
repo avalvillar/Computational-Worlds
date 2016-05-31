@@ -118,6 +118,7 @@ function GameEngine() {
     this.camera = null;
     this.debug = false; // set true to make samus not collide with anything
     this.showOutlines = false; // make false to hide collision boxes
+    this.debugBtn = null;
     this.ctx = null;
     this.click = null;
     this.mouse = null;
@@ -135,7 +136,8 @@ function GameEngine() {
     this.startGame = false;
 }
 
-GameEngine.prototype.init = function (ctx, samus, background, level) {
+GameEngine.prototype.init = function (ctx, samus, background, level, btn) {
+    this.debugBtn = btn;
     this.currentLevel = level;
     this.ctx = ctx;
     this.samus = samus;
@@ -177,6 +179,10 @@ GameEngine.prototype.startInput = function () {
     this.shooting = false;
     this.diagonal = false;
     var that = this;
+    this.debugBtn.addEventListener("click", function (e) {
+        that.debug = !that.debug;
+        that.ctx.canvas.focus();
+    });
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (e.which === 27) {
             that.pause();
