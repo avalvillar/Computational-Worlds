@@ -47,7 +47,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
 
-    samus = new Samus(gameEngine, 625, 660); 
+    samus = new Samus(gameEngine, 7500, 660); 
     //cave x = 200 // boss testing x: 9900 //forest x: 625 //snow x: 100
     //forest y:660 //cave y: 600 //snow y: 670
     bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);

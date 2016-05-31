@@ -111,6 +111,9 @@ function GameEngine() {
     this.alienBossHit = false;
     this.settingUpBoss = false;
     this.bossReset = false;
+    // this.levelCompletion = null;
+    this.levelComplete = false;
+    // this.startLevel = false;
     this.bossHitOver = false;
     this.alienBoss = null;
     this.samus = null;
@@ -316,6 +319,7 @@ GameEngine.prototype.draw = function () {
     }
 
 
+    // if (this.levelCompletion !== null) this.levelCompletion == true;
     this.healthBar.draw(this.ctx);
     this.ctx.restore();
 }
@@ -334,6 +338,9 @@ GameEngine.prototype.update = function () {
 
     //console.log(this.currentLevel);
     if (this.currentLevel === "forest" && this.samus.x >= 8000) { // transition to cave level
+
+        // level completion screen
+        this.levelComplete = true;
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
@@ -344,10 +351,16 @@ GameEngine.prototype.update = function () {
         setupWorldCave(this);
     }
     if (this.currentLevel === "cave" && this.alienBossDead) {
+
+        // level completion screen
+        this.levelComplete = true;
         this.platforms = [];
         setupWorldCaveSnowTransition(this);
     }
     if (this.currentLevel === "cave" && this.samus.x >= 11000) {
+
+        // level completion screen
+        this.levelComplete = true;
         this.currentLevel = "snow";
         this.alienBossActive = false;
         this.platforms = [];
@@ -466,7 +479,8 @@ GameEngine.prototype.gamepadInput = function () {
 
 GameEngine.prototype.loop = function () {
     this.gamepadInput();
-    if (!this.paused) {
+
+    if (!this.paused && !this.levelComplete) {
         this.clockTick = this.timer.tick();
         if (this.settingUpBoss) {
             this.camera.update();
@@ -478,6 +492,16 @@ GameEngine.prototype.loop = function () {
         this.shooting = false;
     }
 
+    if (this.levelComplete) {
+        levelOneText(this.ctx);
+        var that = this;
+        this.ctx.canvas.addEventListener("keydown", function (e) {
+            if (String.fromCharCode(e.which) === 'M') {
+                that.levelComplete = false;
+            }
+        }, false);
+    }
+
     if (this.paused) {
         var textX = (this.ctx.canvas.width / 3);
         var textY = (this.ctx.canvas.height / 2);
@@ -486,9 +510,7 @@ GameEngine.prototype.loop = function () {
         this.ctx.fillStyle = "white";
         this.ctx.strokeStyle = "black";
         this.ctx.strokeText("PAUSED", textX, textY);
-        this.ctx.fillText("PAUSED", textX, textY);
-        
-
+        this.ctx.fillText("PAUSED", textX, textY);    
     }
 }
 
