@@ -28,6 +28,7 @@ Plant.prototype.constructor = Plant;
 Plant.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
     Entity.prototype.update.call(this);
 }
@@ -67,6 +68,7 @@ Spider.prototype.constructor = Spider;
 Spider.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
     if (this.up) {
         this.y += this.speed * this.game.clockTick;
@@ -130,6 +132,7 @@ Snake.prototype.constructor = Snake;
 Snake.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
     if (this.right) {
         this.x += this.speed * this.game.clockTick;
@@ -218,6 +221,7 @@ Bat.prototype.update = function () {
     if (!this.game.startGame) return;
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
    /* this.x -= this.game.clockTick * this.speed;
     if (this.x < -50) {
@@ -278,6 +282,7 @@ smallYeti.prototype.constructor = smallYeti;
 smallYeti.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
     Entity.prototype.update.call(this);
 }
@@ -330,6 +335,7 @@ Yeti.prototype.update = function () {
     if (!this.game.startGame) return;
     if (this.health <= 0) {
         this.removeFromWorld = true;
+        killcount++;
     }
     if (this.x < this.leftBound) {
         this.flip = !this.flip;
