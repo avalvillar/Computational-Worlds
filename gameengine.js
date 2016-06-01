@@ -493,7 +493,13 @@ GameEngine.prototype.loop = function () {
     }
 
     if (this.levelComplete) {
-        levelOneText(this.ctx);
+        if (this.currentLevel === "cave") {
+            levelOneText(this.ctx);
+        } else if (this.currentLevel === "snow") {
+            levelTwoText(this.ctx);
+        } else {
+            levelThreeText(this.ctx);
+        }
         var that = this;
         this.ctx.canvas.addEventListener("keydown", function (e) {
             if (String.fromCharCode(e.which) === 'M') {

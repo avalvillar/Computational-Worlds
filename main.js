@@ -37,6 +37,8 @@ var canvas;
 var samus;
 var bg;
 var ctx;
+var killcount = 0;
+var deathcount = 0;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -212,6 +214,8 @@ var resetWorld = function(game) {
     game.platforms = [];
     game.decorations = [];
     game.lasers = [];
+
+    document.getElementById("death count").innerHTML = "Death Count: " + ++killcount;
 
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
