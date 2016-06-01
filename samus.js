@@ -63,6 +63,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.velocity = { x: 0, y: 0 };
     this.collisionHeight = 105;
     this.collisionWidth = 70;
+    this.points = 0;
     this.ground = this.y;
     this.grounded = false;
     this.collisionX = this.x + 150;

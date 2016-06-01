@@ -38,6 +38,8 @@ var debugBtn;
 var samus;
 var bg;
 var ctx;
+var killcount = 0;
+var deathcount = 0;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -59,6 +61,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx, samus, bg, "forest", debugBtn); //forest, cave, snow
     gameEngine.start();
+
 });
 
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
@@ -215,11 +218,14 @@ var resetWorld = function(game) {
     game.decorations = [];
     game.lasers = [];
 
+    document.getElementById("death count").innerHTML = "Death Count: " + ++deathcount;
+
     if (game.alienBossActive) {
         console.log("load boss");
         samus.removeFromWorld = true;
         samus = new Samus(game, 10200, 600);
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn);
+
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 600);
