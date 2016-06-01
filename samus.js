@@ -233,8 +233,9 @@ Samus.prototype.platformCollision = function (hitTest) {
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     //collidingTopDown = false;
-                    //this.y = plat.collisionY - 105;
-                    //this.ground = this.y;
+                    this.y = plat.collisionY - 50;
+                    this.velocity.x = 0;;
+                    this.ground = this.y;
                 }
             }
             if (!hitTest && !collideTopDown && collideBottom(this, plat)) {

@@ -328,7 +328,7 @@ var setupWorldForest = function (game) {
     bg = new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
     game.setBackground(bg);
 
-    addForestEnemies(game);
+    //addForestEnemies(game);
 
 }
 
