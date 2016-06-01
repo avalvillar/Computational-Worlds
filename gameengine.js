@@ -135,6 +135,7 @@ function GameEngine() {
     this.startGame = false;
 }
 
+var bgSoundOGG;  //// the sound variable for background music.
 GameEngine.prototype.init = function (ctx, samus, background, level) {
     this.currentLevel = level;
     this.ctx = ctx;
@@ -184,6 +185,10 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'M') {
             that.startGame = true;
             // e.preventDefault();
+        }
+        if (String.fromCharCode(e.which) === 'N') {
+            this.bgSoundMP3.pause();
+            this.bgSoundOGG.pause();
         }
         if (String.fromCharCode(e.which) === 'Q') {
             that.diagonal = true;
@@ -342,6 +347,10 @@ GameEngine.prototype.update = function () {
         this.addEntity(new Health(this));
         this.samus.x = 150;
         this.samus.y = 600;
+        bgSoundOGG.stop();
+        bgSoundOGG = new Audio("./sounds/cave.ogg");/////Sound  object.
+        bgSoundOGG.loop = true;
+        bgSoundOGG.play();
         setupWorldCave(this);
     }
     if (this.currentLevel === "cave" && this.alienBossDead) {
