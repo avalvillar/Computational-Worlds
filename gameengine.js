@@ -407,6 +407,8 @@ GameEngine.prototype.update = function () {
             this.lasers.splice(i, 1);
         }
     }
+
+    document.getElementById("kill count").innerHTML = "Kill Count: " + killcount;
     
 }
 

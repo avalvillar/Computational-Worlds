@@ -17,3 +17,16 @@ p {
 	margin-top: 20px;
 	margin-left: 20px;
 }
+
+canvas {
+	float:left;
+	display: block;
+}
+
+.buttons {
+	display: inline;
+}
+
+div {
+	clear: both;
+}
