@@ -124,6 +124,9 @@ function GameEngine() {
     this.showOutlines = false; // make false to hide collision boxes
     this.debugBtn = null;
     this.ctx = null;
+    this.muted = false; //muted
+    this.volume = 100;
+    this.prevVol = 100; //previous volume
     this.click = null;
     this.mouse = null;
     this.wheel = null;
@@ -142,8 +145,10 @@ function GameEngine() {
 
 
 
-GameEngine.prototype.init = function (ctx, samus, background, level, btn) {
+GameEngine.prototype.init = function (ctx, samus, background, level, btn, vol, volSlide) {
     this.debugBtn = btn;
+    this.volBtn = vol;
+    this.volSlider = volSlide;
     this.currentLevel = level;
     this.ctx = ctx;
     this.samus = samus;
@@ -187,6 +192,10 @@ GameEngine.prototype.startInput = function () {
     var that = this;
     this.debugBtn.addEventListener("click", function (e) {
         that.debug = !that.debug;
+        that.ctx.canvas.focus();
+    });
+    this.volBtn.addEventListener("click", function (e) {
+        that.mute();
         that.ctx.canvas.focus();
     });
     this.ctx.canvas.addEventListener("keydown", function (e) {
@@ -291,6 +300,16 @@ GameEngine.prototype.pause = function () {
         this.paused = true;
     } else {
         this.paused = false;
+    }
+}
+
+GameEngine.prototype.mute = function () {
+    if (!this.muted) {
+        this.prevVol = this.volSlider.value;
+        this.muted = true;
+    } else {
+        this.muted = false;
+        this.volSlider.value = this.prevVol;
     }
 }
 
@@ -433,8 +452,33 @@ GameEngine.prototype.update = function () {
         }
     }
 
+    if (this.muted) {
+        this.volSlider.value = 0;
+    }
+
+    this.volume = this.volSlider.value;
+    if (this.volume > 66) {
+        this.volBtn.src = "./img/media-volume-3.png";
+    } else if (this.volume <= 66 && this.volume > 33) {
+        this.volBtn.src = "./img/media-volume-2.png";
+    } else if (this.volume <= 33 && this.volume > 0) {
+        this.volBtn.src = "./img/media-volume-1.png";
+    } else {
+        this.volBtn.src = "./img/media-volume-0.png";
+    }
+    this.updateVolume();
     document.getElementById("kill count").innerHTML = "Kill Count: " + killcount;
     
+}
+
+GameEngine.prototype.updateVolume = function () {
+    forestMusic.volume = this.volume / 100;
+    caveMusic.volume = this.volume / 100;
+    snowMusic.volume = this.volume / 100;
+    bossMusic.volume = this.volume / 100;
+    jumpSound.volume = this.volume / 100;
+    shotSound.volume = this.volume / 100;
+    landSound.volume = this.volume / 100;
 }
 
 GameEngine.prototype.gamepadInput = function () {
