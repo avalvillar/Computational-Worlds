@@ -244,6 +244,9 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'W') {
             that.up = false;
         }
+        if (String.fromCharCode(e.which) === ' ') {
+            that.space = false;
+        }
         if (String.fromCharCode(e.which) === 'E') {
             that.diagonal = false;
         }

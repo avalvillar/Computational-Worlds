@@ -40,12 +40,14 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 }
 
 var setupWorldForest = function (game) {
-    shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
     ///world creation
     for (var i = -30; i < 1800; i += 70) {
         var initialGround = new Platform(game, i, 860, "forestMoss");
         game.addPlatform(initialGround);
     }
+    shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
+
+
     for (var i = 1870; i < 2015; i += 70) {
         var plat1 = new Platform(game, i, 700, "forestMoss");
         game.addPlatform(plat1);
