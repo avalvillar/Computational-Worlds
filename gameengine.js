@@ -377,7 +377,6 @@ GameEngine.prototype.update = function () {
     }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
-        console.log(this.samus.x);
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
@@ -510,9 +509,7 @@ GameEngine.prototype.loop = function () {
         var that = this;
         this.ctx.canvas.addEventListener("keydown", function (e) {
             if (that.levelComplete && String.fromCharCode(e.which) === 'M') {
-                console.log("m pressed");
                 if (that.currentLevel === "cave") {
-                    console.log("music start");
                     //bgSoundOGG.pause();
                     bgSoundOGG = new Audio("./sounds/cave.ogg");/////Sound  object.
                     bgSoundOGG.loop = true;
