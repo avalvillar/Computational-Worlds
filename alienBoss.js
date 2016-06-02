@@ -48,7 +48,7 @@ function Alien(game, x, y) {
     this.jumping = true;
     this.jumpCount = 0;
     this.speed = 250;
-    this.health = 3;
+    this.health = 1;
     this.isDead = false;
     this.dying = false;
     this.dyingCount = 0;

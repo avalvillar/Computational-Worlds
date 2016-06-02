@@ -18,6 +18,7 @@ ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 ASSET_MANAGER.queueDownload("./img/alienAttack.png");
 ASSET_MANAGER.queueDownload("./img/Lava.png");
 ASSET_MANAGER.queueDownload("./img/alienJump.png");
+ASSET_MANAGER.queueDownload("./img/snowing.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");
@@ -72,7 +73,7 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "forest", debugBtn); //forest, cave, snow
+    gameEngine.init(ctx, samus, bg, "snow", debugBtn); //forest, cave, snow
     gameEngine.start();
 
 });

@@ -383,7 +383,6 @@ GameEngine.prototype.update = function () {
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
         caveMusic.pause();//// stop cave music
         bossMusic.play();
-        console.log(this.samus.x);
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
