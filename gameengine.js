@@ -121,7 +121,7 @@ function GameEngine() {
     this.background = null;
     this.camera = null;
     this.debug = false; // set true to make samus not collide with anything
-    this.showOutlines = true; // make false to hide collision boxes
+    this.showOutlines = false; // make false to hide collision boxes
     this.debugBtn = null;
     this.ctx = null;
     this.click = null;
