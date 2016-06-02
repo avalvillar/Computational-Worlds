@@ -1,6 +1,7 @@
 /*
  * Red Three - Spring 2016
  * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ * video - https://youtu.be/s_43VZBxWXk
  */
 var ASSET_MANAGER = new AssetManager();
 
@@ -34,14 +35,18 @@ ASSET_MANAGER.queueDownload("./img/yeti.png");
 ASSET_MANAGER.queueDownload("./img/smallYeti.png");
 
 var canvas;
+var debugBtn;
 var samus;
 var bg;
 var ctx;
+var killcount = 0;
+var deathcount = 0;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     //var canvas = document.getElementById('gameWorld');
     canvas = document.getElementById('gameWorld');
+    debugBtn = document.getElementById('debug');
     canvas.focus();
     ctx = canvas.getContext('2d');
 
@@ -52,11 +57,10 @@ ASSET_MANAGER.downloadAll(function () {
     //forest y:660 //cave y: 600 //snow y: 670
     bg = new Background(gameEngine, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900);
 
-
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "forest"); //forest, cave, snow
+    gameEngine.init(ctx, samus, bg, "forest", debugBtn); //forest, cave, snow
     gameEngine.start();
 
 });
@@ -215,23 +219,27 @@ var resetWorld = function(game) {
     game.decorations = [];
     game.lasers = [];
 
+    document.getElementById("death count").innerHTML = "Death Count: " + ++deathcount;
+
     if (game.alienBossActive) {
         console.log("load boss");
         samus.removeFromWorld = true;
+
         samus = new Samus(game, 10200, 600);
-        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn);
+
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 600);
-        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave");
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn);
     } else if (game.currentLevel === "forest") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 625, 660);
-        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900),"forest")
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900), "forest", debugBtn);
     } else if (game.currentLevel === "snow") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 100, 670);
-        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900),"snow");
+        game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900), "snow", debugBtn);
     }
 
 // put samus back at beginning

@@ -120,6 +120,7 @@ Alien.prototype.update = function () {
         this.game.alienBossDead = true;
         this.isDead = true;
         this.dying = true;
+        killcount++;
     }
     if (!this.grounded) {
         this.y += this.game.gravity * this.game.clockTick;
