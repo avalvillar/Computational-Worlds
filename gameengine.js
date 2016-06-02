@@ -103,6 +103,7 @@ Timer.prototype.tick = function () {
 function GameEngine() {
     this.currentLevel = null;
     this.entities = [];
+    this.staticEntities = [];
     this.lasers = [];
     this.platforms = [];
     this.decorations = [];
@@ -120,7 +121,7 @@ function GameEngine() {
     this.background = null;
     this.camera = null;
     this.debug = false; // set true to make samus not collide with anything
-    this.showOutlines = false; // make false to hide collision boxes
+    this.showOutlines = true; // make false to hide collision boxes
     this.debugBtn = null;
     this.ctx = null;
     this.click = null;
@@ -261,6 +262,10 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+//GameEngine.prototype.addStaticEntity = function (entity) {
+//    this.staticEntities.push(entity);
+//}
+
 GameEngine.prototype.addDeco = function (entity) {
     this.decorations.push(entity);
 }
@@ -320,6 +325,11 @@ GameEngine.prototype.draw = function () {
             this.entities[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+    //for (var i = 0; i < this.staticEntities.length; i++) {
+    //    if (this.onCamera(this.staticEntities[i])) {
+    //        this.staticEntities[i].draw(this.ctx, cameraX, cameraY);
+    //    }
+    //}
     for (var i = 0; i < this.lasers.length; i++) {
         if (this.onCamera(this.lasers[i])) {
             this.lasers[i].draw(this.ctx, cameraX, cameraY);
@@ -343,6 +353,7 @@ GameEngine.prototype.update = function () {
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
+        //this.staticEntities = [];
         this.decorations = [];
         this.samus.x = 150;
         this.samus.y = 600;
@@ -361,6 +372,7 @@ GameEngine.prototype.update = function () {
         this.alienBossActive = false;
         this.platforms = [];
         this.entities = [];
+        //this.staticEntities = [];
         this.decorations = [];
         this.samus.x = 100;
         this.samus.y = 670;
@@ -381,6 +393,7 @@ GameEngine.prototype.update = function () {
     this.healthBar.update();
 
     var entitiesCount = this.entities.length;
+    //var staticEntitiesCount = this.staticEntities.length;
     var laserCount = this.lasers.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
@@ -389,6 +402,13 @@ GameEngine.prototype.update = function () {
         }
     }
 
+    //for (var i = 0; i < staticEntitiesCount; i++) {
+    //    var entity = this.staticEntities[i];
+    //    if (!entity.removeFromWorld) {
+    //        entity.update();
+    //    }
+    //}
+ 
     for (var i = 0; i < laserCount; i++) {
         var entity = this.lasers[i];
 
@@ -402,6 +422,11 @@ GameEngine.prototype.update = function () {
             this.entities.splice(i, 1);
         }
     }
+    //for (var i = this.staticEntities.length - 1; i >= 0; --i) {
+    //    if (this.staticEntities[i].removeFromWorld) {
+    //        this.staticEntities.splice(i, 1);
+    //    }
+    //}
     for (var i = this.lasers.length - 1; i >= 0; --i) {
         if (this.lasers[i].removeFromWorld) {
             this.lasers.splice(i, 1);

@@ -181,12 +181,14 @@ Samus.prototype.collisionDetection = function () {
             if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent) && !ent.isDead) {
                 if (ent.x > this.x) {
                     this.hitRight = true;
-                    //this.velocity.x -= 100;
-                    ent.x += 100;
+                    if (!ent.static) {
+                        ent.x += 100;
+                    }
                 } else {
                     this.hitRight = false;
-                    //this.velocity.x += 100;
-                    ent.x -= 100;
+                    if (!ent.static) {
+                        ent.x -= 100;
+                    }
                 }
                 this.platformCollision(true);
                 this.health -= ent.damage;
