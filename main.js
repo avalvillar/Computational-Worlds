@@ -1,6 +1,7 @@
 /*
  * Red Three - Spring 2016
  * Antonio Alvillar - Andy Bleich - Bethany Eastman - Gabriel Houle
+ * video - https://youtu.be/s_43VZBxWXk
  */
 var ASSET_MANAGER = new AssetManager();
 

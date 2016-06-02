@@ -343,9 +343,6 @@ GameEngine.prototype.update = function () {
     this.background.update();
     this.healthBar.update();
 
-
-    //console.log(this.currentLevel);
-
     if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.levelComplete = true;
         this.alienBossActive = false;
@@ -360,8 +357,6 @@ GameEngine.prototype.update = function () {
     }
     if (this.currentLevel === "cave" && this.alienBossDead) {
 
-        // level completion screen
-        this.levelComplete = true;
         this.platforms = [];
         setupWorldCaveSnowTransition(this);
     }
