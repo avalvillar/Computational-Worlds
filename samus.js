@@ -58,7 +58,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.speed = 550;
     this.x = x;
     this.y = y;
-    this.laserCooldown = 20;
+    this.laserCooldown = 40;
     this.laserTimer = 0;
     this.velocity = { x: 0, y: 0 };
     this.collisionHeight = 105;
@@ -181,12 +181,14 @@ Samus.prototype.collisionDetection = function () {
             if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent) && !ent.isDead) {
                 if (ent.x > this.x) {
                     this.hitRight = true;
-                    //this.velocity.x -= 100;
-                    ent.x += 100;
+                    if (!ent.static) {
+                        ent.x += 100;
+                    }
                 } else {
                     this.hitRight = false;
-                    //this.velocity.x += 100;
-                    ent.x -= 100;
+                    if (!ent.static) {
+                        ent.x -= 100;
+                    }
                 }
                 this.platformCollision(true);
                 this.health -= ent.damage;

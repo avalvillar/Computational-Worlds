@@ -172,6 +172,8 @@ Health.prototype.draw = function (ctx) {
     if (!this.game.startGame) return;
     this.game.ctx.beginPath();
     this.game.ctx.lineWidth = "3";
+    this.game.ctx.strokeStyle = "white";
+    this.game.ctx.rect(this.x - 5, this.y - 5, this.maxHealthWidth * 1.5 + 10, this.height + 10);
     this.game.ctx.fillStyle = "black";
     this.game.ctx.fillRect(this.x, this.y, this.maxHealthWidth * 1.5, this.height); // max health
     if (samus.health > 60) {
@@ -184,8 +186,8 @@ Health.prototype.draw = function (ctx) {
     this.game.ctx.fillRect(this.x, this.y, this.currentHealthWidth * 1.5, this.height); // samus health
     this.game.ctx.stroke();
 
-    ctx.font="20px Courier New";
-    ctx.fillText(Math.round(samus.health) + " / 100", 180, 38);
+    //ctx.font="20px Courier New";
+    //ctx.fillText(Math.round(samus.health) + " / 100", 180, 38);
 };
 
 Health.prototype.update = function () {
