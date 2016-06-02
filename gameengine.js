@@ -561,7 +561,7 @@ GameEngine.prototype.onCamera = function (entity) {
         }
     }
     //!!!! No change in y coordinates right now, so no need to check that. 
-    //Will need to be fixed to vertical camera introduced
+    //Will need to be fixed to introduce vertical camera movement
     return visible;
     
 }

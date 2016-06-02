@@ -58,7 +58,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.speed = 550;
     this.x = x;
     this.y = y;
-    this.laserCooldown = 20;
+    this.laserCooldown = 40;
     this.laserTimer = 0;
     this.velocity = { x: 0, y: 0 };
     this.collisionHeight = 105;
