@@ -336,12 +336,6 @@ GameEngine.prototype.update = function () {
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
-    //if (this.alienBossActive) {
-    //    //this.alien.update();
-    //}
-    this.camera.update();
-    this.background.update();
-    this.healthBar.update();
 
     if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.levelComplete = true;
@@ -350,7 +344,6 @@ GameEngine.prototype.update = function () {
         this.platforms = [];
         this.entities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 150;
         this.samus.y = 600;
         setupWorldCave(this);
@@ -369,7 +362,6 @@ GameEngine.prototype.update = function () {
         this.platforms = [];
         this.entities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 100;
         this.samus.y = 670;
         this.camera = new Camera(this);
@@ -381,11 +373,14 @@ GameEngine.prototype.update = function () {
         setupAlienBoss(this);
     }
 
+    this.camera.update();
+    this.background.update();
+    this.healthBar.update();
+
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
-        //console.log(entity);
         if (!entity.removeFromWorld) {
             entity.update();
         }
