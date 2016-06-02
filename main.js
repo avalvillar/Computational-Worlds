@@ -18,6 +18,7 @@ ASSET_MANAGER.queueDownload("./img/alienDeath.png");
 ASSET_MANAGER.queueDownload("./img/alienAttack.png");
 ASSET_MANAGER.queueDownload("./img/Lava.png");
 ASSET_MANAGER.queueDownload("./img/alienJump.png");
+ASSET_MANAGER.queueDownload("./img/snowing.png");
 
 //Forest Stuff
 ASSET_MANAGER.queueDownload("./img/forestBG.jpg");

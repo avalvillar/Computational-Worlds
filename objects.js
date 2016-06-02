@@ -28,6 +28,7 @@ ship.prototype.draw = function (ctx,cameraX, cameraY) {
 
 function shipPart(game, x, y) {
     this.GlowyThingy = new Animation(ASSET_MANAGER.getAsset("./img/ShipPart.png"), 0, 0, 33.5, 57, .2, 4, true, false);
+    this.game = game;
     this.x = x;
     this.y = y;
     this.collisionX = this.x + 50;
@@ -45,6 +46,33 @@ shipPart.prototype.update = function () {
 shipPart.prototype.draw = function (ctx, cameraX, cameraY) {
     this.GlowyThingy.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY, 3);
     Entity.prototype.draw.call(this);
+}
+
+function Snow(game, x, y) {
+    this.snowing = new Animation(ASSET_MANAGER.getAsset("./img/snowing.png"), 0, 0, 495, 300, .1, 15, true, false);
+    this.x = x;
+    this.nonDamage = true;
+    this.static = true;
+    this.game = game;
+    this.y = y;
+    this.collisionX = this.x + 50;
+    this.collisionY = this.y + 85;
+    this.collisionWidth = 0;
+    this.collisionHeight = 0;
+    Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
+}
+Snow.prototype = new Entity();
+Snow.prototype.constructor = Snow;
+
+Snow.prototype.update = function () {
+    if (!this.game.startGame) return;
+    Entity.prototype.update.call(this);
+}
+
+Snow.prototype.draw = function (ctx, cameraX, cameraY) {
+    if (!this.game.startGame) return;
+    this.snowing.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
+    Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
 }
 
 
