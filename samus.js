@@ -86,6 +86,7 @@ Samus.prototype.collide = function (other) {
 
 Samus.prototype.chooseLaser = function() {
     if (this.shoot && !this.jumping && this.laserTimer >= this.laserCooldown) { // spawns laser blasts
+        shotSound.play();
         this.laserTimer = 0;
         if (this.game.right) { // shoot right
             if (this.game.down) {
@@ -140,6 +141,7 @@ Samus.prototype.jump = function () {
         //if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
         //    this.ground = this.y;
         //}
+        jumpSound.play();
         this.grounded = false;
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;

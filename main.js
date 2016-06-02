@@ -42,6 +42,18 @@ var ctx;
 var killcount = 0;
 var deathcount = 0;
 
+var forestMusic = new Audio("./sounds/forest.ogg");/////Sound  object.
+forestMusic.loop = true;
+var caveMusic = new Audio("./sounds/cave.ogg");/////Sound  object.
+caveMusic.loop = true;
+var snowMusic = new Audio("./sounds/snow.ogg");/////Sound  object.
+snowMusic.loop = true;
+var bossMusic = new Audio("./sounds/boss.ogg");/////Sound  object.
+bossMusic.loop = true;
+var shotSound = new Audio("./sounds/shot.ogg");/////Sound  object.
+var jumpSound = new Audio("./sounds/jump.ogg");/////Sound  object.
+var landSound = new Audio("./sounds/land.ogg");/////Sound  object.
+
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     //var canvas = document.getElementById('gameWorld');
