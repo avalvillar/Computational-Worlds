@@ -141,6 +141,7 @@ Samus.prototype.jump = function () {
         //if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
         //    this.ground = this.y;
         //}
+        jumpSound.play();
         this.grounded = false;
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
