@@ -191,8 +191,10 @@ Samus.prototype.collisionDetection = function () {
                     }
                 }
                 this.platformCollision(true);
-                this.health -= ent.damage;
-                this.isDamaged = true;
+                if (!ent.nonDamage) {
+                    this.health -= ent.damage;
+                    this.isDamaged = true;
+                }
             }
         }
     } else {

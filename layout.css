@@ -30,3 +30,12 @@ canvas {
 div {
 	clear: both;
 }
+
+img {
+    padding-top: 8px;
+}
+
+input{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

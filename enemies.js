@@ -266,6 +266,7 @@ function smallYeti(game, x, y) {
     this.down = new Animation(ASSET_MANAGER.getAsset("./img/smallYeti.png"), 20, 384, 118, 115, 1, 4, true, false);
     this.health = 1;
     this.count = 0;
+    this.damage = 40;
     this.flip = false;
     this.x = x;
     this.y = y
