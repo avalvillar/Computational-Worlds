@@ -139,6 +139,8 @@ function GameEngine() {
     this.startGame = false;
 }
 
+
+var bgSoundOGG; // sound variable
 GameEngine.prototype.init = function (ctx, samus, background, level, btn) {
     this.debugBtn = btn;
     this.currentLevel = level;
@@ -341,9 +343,6 @@ GameEngine.prototype.update = function () {
     this.background.update();
     this.healthBar.update();
 
-
-    //console.log(this.currentLevel);
-
     if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.levelComplete = true;
         this.alienBossActive = false;
@@ -358,8 +357,6 @@ GameEngine.prototype.update = function () {
     }
     if (this.currentLevel === "cave" && this.alienBossDead) {
 
-        // level completion screen
-        this.levelComplete = true;
         this.platforms = [];
         setupWorldCaveSnowTransition(this);
     }
@@ -503,6 +500,7 @@ GameEngine.prototype.loop = function () {
 
     if (this.levelComplete) {
         if (this.currentLevel === "cave") {
+            bgSoundOGG.pause();
             levelOneText(this.ctx);
         } else if (this.currentLevel === "snow") {
             levelTwoText(this.ctx);
@@ -511,7 +509,20 @@ GameEngine.prototype.loop = function () {
         }
         var that = this;
         this.ctx.canvas.addEventListener("keydown", function (e) {
-            if (String.fromCharCode(e.which) === 'M') {
+            if (that.levelComplete && String.fromCharCode(e.which) === 'M') {
+                console.log("m pressed");
+                if (that.currentLevel === "cave") {
+                    console.log("music start");
+                    //bgSoundOGG.pause();
+                    bgSoundOGG = new Audio("./sounds/cave.ogg");/////Sound  object.
+                    bgSoundOGG.loop = true;
+                    bgSoundOGG.play();
+                } else if (that.currentLevel === "snow") {
+                    //bgSoundOGG.pause();
+                    //bgSoundOGG = new Audio("./sounds/snow.ogg");/////Sound  object.
+                    //bgSoundOGG.loop = true;
+                    //bgSoundOGG.play();
+                }
                 that.levelComplete = false;
             }
         }, false);
