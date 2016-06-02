@@ -266,7 +266,9 @@ Samus.prototype.platformCollision = function (hitTest) {
                 }, plat))) && ((hitTest || this.velocity.x < 0) || this.jumping)) {
 
                 //console.log("hit right");
-                this.x = plat.collisionX + plat.collisionWidth - 30;
+                if (!collideTopDown) {
+                    this.x = plat.collisionX + plat.collisionWidth - 30;
+                }
                 this.velocity.x = 0;
                 collideSide = true;
                 if (this.jumping) {
@@ -281,7 +283,9 @@ Samus.prototype.platformCollision = function (hitTest) {
             }, plat))) && ((hitTest || this.velocity.x > 0) || this.jumping)) {
 
                 //console.log("hit left");
-                this.x = plat.collisionX - this.collisionWidth - 30;
+                if (!collideTopDown) {
+                    this.x = plat.collisionX - this.collisionWidth - 30;
+                }
                 this.velocity.x = 0;
                 collideSide = true;
                 if (this.jumping) {
