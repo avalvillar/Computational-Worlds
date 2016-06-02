@@ -103,6 +103,7 @@ Timer.prototype.tick = function () {
 function GameEngine() {
     this.currentLevel = null;
     this.entities = [];
+    this.staticEntities = [];
     this.lasers = [];
     this.platforms = [];
     this.decorations = [];
@@ -140,7 +141,7 @@ function GameEngine() {
 }
 
 
-var bgSoundOGG; // sound variable
+
 GameEngine.prototype.init = function (ctx, samus, background, level, btn) {
     this.debugBtn = btn;
     this.currentLevel = level;
@@ -261,6 +262,10 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+//GameEngine.prototype.addStaticEntity = function (entity) {
+//    this.staticEntities.push(entity);
+//}
+
 GameEngine.prototype.addDeco = function (entity) {
     this.decorations.push(entity);
 }
@@ -320,6 +325,11 @@ GameEngine.prototype.draw = function () {
             this.entities[i].draw(this.ctx, cameraX, cameraY);
         }
     }
+    //for (var i = 0; i < this.staticEntities.length; i++) {
+    //    if (this.onCamera(this.staticEntities[i])) {
+    //        this.staticEntities[i].draw(this.ctx, cameraX, cameraY);
+    //    }
+    //}
     for (var i = 0; i < this.lasers.length; i++) {
         if (this.onCamera(this.lasers[i])) {
             this.lasers[i].draw(this.ctx, cameraX, cameraY);
@@ -336,12 +346,6 @@ GameEngine.prototype.update = function () {
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
-    //if (this.alienBossActive) {
-    //    //this.alien.update();
-    //}
-    this.camera.update();
-    this.background.update();
-    this.healthBar.update();
 
     if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.levelComplete = true;
@@ -349,8 +353,8 @@ GameEngine.prototype.update = function () {
         this.currentLevel = "cave";
         this.platforms = [];
         this.entities = [];
+        //this.staticEntities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 150;
         this.samus.y = 600;
         setupWorldCave(this);
@@ -368,8 +372,8 @@ GameEngine.prototype.update = function () {
         this.alienBossActive = false;
         this.platforms = [];
         this.entities = [];
+        //this.staticEntities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 100;
         this.samus.y = 670;
         this.camera = new Camera(this);
@@ -377,20 +381,34 @@ GameEngine.prototype.update = function () {
     }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
+        caveMusic.pause();//// stop cave music
+        bossMusic.play();
+        console.log(this.samus.x);
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
 
+    this.camera.update();
+    this.background.update();
+    this.healthBar.update();
+
     var entitiesCount = this.entities.length;
+    //var staticEntitiesCount = this.staticEntities.length;
     var laserCount = this.lasers.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
-        //console.log(entity);
         if (!entity.removeFromWorld) {
             entity.update();
         }
     }
 
+    //for (var i = 0; i < staticEntitiesCount; i++) {
+    //    var entity = this.staticEntities[i];
+    //    if (!entity.removeFromWorld) {
+    //        entity.update();
+    //    }
+    //}
+ 
     for (var i = 0; i < laserCount; i++) {
         var entity = this.lasers[i];
 
@@ -404,6 +422,11 @@ GameEngine.prototype.update = function () {
             this.entities.splice(i, 1);
         }
     }
+    //for (var i = this.staticEntities.length - 1; i >= 0; --i) {
+    //    if (this.staticEntities[i].removeFromWorld) {
+    //        this.staticEntities.splice(i, 1);
+    //    }
+    //}
     for (var i = this.lasers.length - 1; i >= 0; --i) {
         if (this.lasers[i].removeFromWorld) {
             this.lasers.splice(i, 1);
@@ -499,9 +522,11 @@ GameEngine.prototype.loop = function () {
 
     if (this.levelComplete) {
         if (this.currentLevel === "cave") {
-            bgSoundOGG.pause();
+            //bgSoundOGG.pause();
+            forestMusic.pause();
             levelOneText(this.ctx);
         } else if (this.currentLevel === "snow") {
+            bossMusic.pause();
             levelTwoText(this.ctx);
         } else {
             levelThreeText(this.ctx);
@@ -510,15 +535,9 @@ GameEngine.prototype.loop = function () {
         this.ctx.canvas.addEventListener("keydown", function (e) {
             if (that.levelComplete && String.fromCharCode(e.which) === 'M') {
                 if (that.currentLevel === "cave") {
-                    //bgSoundOGG.pause();
-                    bgSoundOGG = new Audio("./sounds/cave.ogg");/////Sound  object.
-                    bgSoundOGG.loop = true;
-                    bgSoundOGG.play();
+                    caveMusic.play();
                 } else if (that.currentLevel === "snow") {
-                    //bgSoundOGG.pause();
-                    //bgSoundOGG = new Audio("./sounds/snow.ogg");/////Sound  object.
-                    //bgSoundOGG.loop = true;
-                    //bgSoundOGG.play();
+                    snowMusic.play();
                 }
                 that.levelComplete = false;
             }
@@ -567,7 +586,7 @@ GameEngine.prototype.onCamera = function (entity) {
         }
     }
     //!!!! No change in y coordinates right now, so no need to check that. 
-    //Will need to be fixed to vertical camera introduced
+    //Will need to be fixed to introduce vertical camera movement
     return visible;
     
 }
