@@ -166,7 +166,7 @@ Samus.prototype.jump = function () {
         if (jumpDistance > 0.5) {
             jumpDistance = 1 - jumpDistance;
         }
-        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        var height = totalHeight * (-3 * (jumpDistance * jumpDistance - jumpDistance));
         //this.velocityY = this.ground - totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance)) - 15;
         this.y = this.ground - height - 15;
         //this.velocity.y = this.ground - height - 15;
@@ -240,8 +240,8 @@ Samus.prototype.platformCollision = function (hitTest) {
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     //collidingTopDown = false;
-                    this.y = plat.collisionY - 50;
-                    this.velocity.x = 0;;
+                    this.y = plat.collisionY;// - (this.collisionHeight - 40);
+                    this.velocity.x = 0;
                     this.ground = this.y;
                 }
             }
@@ -356,7 +356,6 @@ Samus.prototype.update = function () {
         }
         this.x += this.velocity.x;
         this.y += this.velocity.y;
-        this.grounded = true;
     }
     
 
