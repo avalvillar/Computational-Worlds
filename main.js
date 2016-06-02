@@ -42,6 +42,18 @@ var ctx;
 var killcount = 0;
 var deathcount = 0;
 
+var forestMusic = new Audio("./sounds/forest.ogg");/////Sound  object.
+forestMusic.loop = true;
+var caveMusic = new Audio("./sounds/cave.ogg");/////Sound  object.
+caveMusic.loop = true;
+var snowMusic = new Audio("./sounds/snow.ogg");/////Sound  object.
+snowMusic.loop = true;
+var bossMusic = new Audio("./sounds/boss.ogg");/////Sound  object.
+bossMusic.loop = true;
+var shotSound = new Audio("./sounds/shot.ogg");/////Sound  object.
+var jumpSound = new Audio("./sounds/jump.ogg");/////Sound  object.
+var landSound = new Audio("./sounds/land.ogg");/////Sound  object.
+
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     //var canvas = document.getElementById('gameWorld');
@@ -135,23 +147,6 @@ Background.prototype.draw = function (ctx, cameraX) {
     this.cameraX = cameraX / 10; //makes background scroll at 1/10th the speed of samus
     this.game.ctx.drawImage(this.spritesheet,
     this.x + this.cameraX, this.y, this.width, this.height);
-//=======
-//  this.x + this.cameraX, this.y, 2100, 900);
-//>>>>>>> origin/Antonio
-//=======
-//                 this.x + this.cameraX, this.y, 2100, 900); /// best setting is (2100, 900)
-//>>>>>>> origin/Antonio
-
-    //ctx.setTransform(1, 0, 0, 1, 0, 0);//reset the transform matrix as it is cumulative
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-    //ctx.drawImage(this.spritesheet, this.x, this.y, 9000, 900);
-
-    ////Clamp the camera position to the world bounds while centering the camera around the player                                             
-    //var camX = clamp(-this.game.samus.x + canvas.width / 7, canvas.minX, canvas.maxX - canvas.width);
-    //var camY = clamp(-(this.game.samus.y + 200) + canvas.height / 1.4, canvas.minY, canvas.maxY - canvas.height);
-
-
-    //ctx.translate(camX, camY);
 };
 
 Background.prototype.update = function () {
@@ -190,7 +185,7 @@ Health.prototype.draw = function (ctx) {
     this.game.ctx.stroke();
 
     ctx.font="20px Courier New";
-    ctx.fillText(Math.round(samus.health) + " / 100", 180 , 38);
+    ctx.fillText(Math.round(samus.health) + " / 100", 180, 38);
 };
 
 Health.prototype.update = function () {
@@ -199,22 +194,14 @@ Health.prototype.update = function () {
     this.currentHealthWidth = samus.health;
 };
 
-function clamp(value, min, max) {
-    if (value < min) return min;
-    else if (value > max) return max;
-    return value;
-} 
-
 /************************************************************
     Reset world - if samus dies, set samus back at the
     beginning of the game
  */
 
 var resetWorld = function(game) {
-// set camera back at beginning
     
     game.entities = [];
-    game.addEntity(new Health(game));
     game.platforms = [];
     game.decorations = [];
     game.lasers = [];

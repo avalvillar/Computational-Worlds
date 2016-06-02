@@ -140,7 +140,7 @@ function GameEngine() {
 }
 
 
-var bgSoundOGG; // sound variable
+
 GameEngine.prototype.init = function (ctx, samus, background, level, btn) {
     this.debugBtn = btn;
     this.currentLevel = level;
@@ -336,12 +336,6 @@ GameEngine.prototype.update = function () {
     if (!this.samus.removeFromWorld) {
         this.samus.update();
     }
-    //if (this.alienBossActive) {
-    //    //this.alien.update();
-    //}
-    this.camera.update();
-    this.background.update();
-    this.healthBar.update();
 
     if (this.currentLevel === "forest" && this.samus.x >= 9800) { // transition to cave level
         this.levelComplete = true;
@@ -350,7 +344,6 @@ GameEngine.prototype.update = function () {
         this.platforms = [];
         this.entities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 150;
         this.samus.y = 600;
         setupWorldCave(this);
@@ -369,7 +362,6 @@ GameEngine.prototype.update = function () {
         this.platforms = [];
         this.entities = [];
         this.decorations = [];
-        this.addEntity(new Health(this));
         this.samus.x = 100;
         this.samus.y = 670;
         this.camera = new Camera(this);
@@ -377,15 +369,21 @@ GameEngine.prototype.update = function () {
     }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
+        caveMusic.pause();//// stop cave music
+        bossMusic.play();
+        console.log(this.samus.x);
         this.alienBossActive = true;
         setupAlienBoss(this);
     }
+
+    this.camera.update();
+    this.background.update();
+    this.healthBar.update();
 
     var entitiesCount = this.entities.length;
     var laserCount = this.lasers.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
-        //console.log(entity);
         if (!entity.removeFromWorld) {
             entity.update();
         }
@@ -499,9 +497,11 @@ GameEngine.prototype.loop = function () {
 
     if (this.levelComplete) {
         if (this.currentLevel === "cave") {
-            bgSoundOGG.pause();
+            //bgSoundOGG.pause();
+            forestMusic.pause();
             levelOneText(this.ctx);
         } else if (this.currentLevel === "snow") {
+            bossMusic.pause();
             levelTwoText(this.ctx);
         } else {
             levelThreeText(this.ctx);
@@ -510,15 +510,9 @@ GameEngine.prototype.loop = function () {
         this.ctx.canvas.addEventListener("keydown", function (e) {
             if (that.levelComplete && String.fromCharCode(e.which) === 'M') {
                 if (that.currentLevel === "cave") {
-                    //bgSoundOGG.pause();
-                    bgSoundOGG = new Audio("./sounds/cave.ogg");/////Sound  object.
-                    bgSoundOGG.loop = true;
-                    bgSoundOGG.play();
+                    caveMusic.play();
                 } else if (that.currentLevel === "snow") {
-                    //bgSoundOGG.pause();
-                    //bgSoundOGG = new Audio("./sounds/snow.ogg");/////Sound  object.
-                    //bgSoundOGG.loop = true;
-                    //bgSoundOGG.play();
+                    snowMusic.play();
                 }
                 that.levelComplete = false;
             }
