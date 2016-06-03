@@ -40,12 +40,14 @@ Platform.prototype.draw = function (ctx, cameraX, cameraY) {
 }
 
 var setupWorldForest = function (game) {
-    shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
     ///world creation
     for (var i = -30; i < 1800; i += 70) {
         var initialGround = new Platform(game, i, 860, "forestMoss");
         game.addPlatform(initialGround);
     }
+    shipAndPlatforms(game);  //// add the ship and its platforms it sits on. 
+
+
     for (var i = 1870; i < 2015; i += 70) {
         var plat1 = new Platform(game, i, 700, "forestMoss");
         game.addPlatform(plat1);
@@ -704,6 +706,9 @@ var shipAndPlatforms = function (game) {
 
 var setupWorldCaveSnowTransition = function (game) {
 
+    //var openingSnow = new Snow(game, 10930, 700);
+    //game.addEntity(openingSnow);
+
     for (var i = 9500; i < 10930; i += 70) {
         var ground3 = new Platform(game, i, 830, "cave");
         game.addPlatform(ground3);
@@ -744,6 +749,14 @@ var setupWorldCaveSnowTransition = function (game) {
 }
 
 var setupWorldSnow = function (game) {
+
+    for (var i = 0; i < 500; i+=495) {
+        for (var j = 0; j < 900; j+=300) {
+            var snowFX = new Snow(game, i, j);
+            game.addEntity(snowFX);
+        }
+    }
+
     for (var i = 0; i < 900; i += 50) {
         var initialWall = new Platform(game, -69, i, "snow");
         game.addPlatform(initialWall);

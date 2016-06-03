@@ -28,13 +28,17 @@
 </head>
 <body>
     <div id="game">
-	   <h4 class="noSelect">'A' to walk left, 'D' to walk right, 'S' to crouch, 'W' to look up, 'Q or 'E' to aim diagonally, 'SPACE' to jump, 'ENTER' to shoot</h4>
         <canvas id="gameWorld" tabindex="1" width="1000" height="900" style="border: 1px solid brown; background: slategrey"></canvas>
     </div>
     <div id="buttons">
         <button type="button" id="debug">Debug</button>
         <p id="kill count">Kill Count: 0</p>
         <p id="death count">Death Count: 0</p>
+        <img id="volume button" src="img/media-volume-3.png" height="50" />
+        <input id="volume slider"type="range" min="0" max="100" value="40" />
+    </div>
+    <div id="controls">
+        <h4 class="noSelect">'A' to walk left, 'D' to walk right, 'S' to crouch, 'W' to look up, 'Q or 'E' to aim diagonally, 'SPACE' to jump, 'ENTER' to shoot</h4>
     </div>
 </body>
 </html>

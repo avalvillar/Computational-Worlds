@@ -10,6 +10,7 @@
 function Plant(game, x, y) {
     this.movement = new Animation(ASSET_MANAGER.getAsset("./img/podPlant.png"), 112, 0, 56, 80, 1, 4, true, false);
     this.health = 1;
+    this.static = true;
     this.damage = 30;
     this.x = x;
     this.y = y
@@ -46,6 +47,7 @@ Plant.prototype.draw = function (ctx, cameraX, cameraY) {
 function Spider(game, x, y, topBound, bottomBound) {
     this.movement = new Animation(ASSET_MANAGER.getAsset("./img/SpiderSpriteB2.png"), 0, 0, 40, 30, .1, 3, true, false);
     this.health = 1;
+    this.static = true;
     this.damage = 30;
     this.speed = 150;
     this.x = x;
@@ -264,6 +266,7 @@ function smallYeti(game, x, y) {
     this.down = new Animation(ASSET_MANAGER.getAsset("./img/smallYeti.png"), 20, 384, 118, 115, 1, 4, true, false);
     this.health = 1;
     this.count = 0;
+    this.damage = 40;
     this.flip = false;
     this.x = x;
     this.y = y

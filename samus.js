@@ -58,7 +58,7 @@ function Samus(game, x, y) {//add count for turns instead of boolean so we can d
     this.speed = 550;
     this.x = x;
     this.y = y;
-    this.laserCooldown = 20;
+    this.laserCooldown = 40;
     this.laserTimer = 0;
     this.velocity = { x: 0, y: 0 };
     this.collisionHeight = 105;
@@ -86,6 +86,7 @@ Samus.prototype.collide = function (other) {
 
 Samus.prototype.chooseLaser = function() {
     if (this.shoot && !this.jumping && this.laserTimer >= this.laserCooldown) { // spawns laser blasts
+        shotSound.play();
         this.laserTimer = 0;
         if (this.game.right) { // shoot right
             if (this.game.down) {
@@ -140,6 +141,7 @@ Samus.prototype.jump = function () {
         //if (this.jumpRight.elapsedTime === 0 && this.jumpLeft.elapsedTime === 0) {
         //    this.ground = this.y;
         //}
+        jumpSound.play();
         this.grounded = false;
         if (this.jumpRight.isDone() || this.jumpLeft.isDone()) {
             this.jumpRight.elapsedTime = 0;
@@ -164,7 +166,7 @@ Samus.prototype.jump = function () {
         if (jumpDistance > 0.5) {
             jumpDistance = 1 - jumpDistance;
         }
-        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        var height = totalHeight * (-3 * (jumpDistance * jumpDistance - jumpDistance));
         //this.velocityY = this.ground - totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance)) - 15;
         this.y = this.ground - height - 15;
         //this.velocity.y = this.ground - height - 15;
@@ -179,16 +181,20 @@ Samus.prototype.collisionDetection = function () {
             if (Math.abs(this.x - ent.x) < 400 && detectCollision(this, ent) && !ent.isDead) {
                 if (ent.x > this.x) {
                     this.hitRight = true;
-                    //this.velocity.x -= 100;
-                    ent.x += 100;
+                    if (!ent.static) {
+                        ent.x += 100;
+                    }
                 } else {
                     this.hitRight = false;
-                    //this.velocity.x += 100;
-                    ent.x -= 100;
+                    if (!ent.static) {
+                        ent.x -= 100;
+                    }
                 }
                 this.platformCollision(true);
-                this.health -= ent.damage;
-                this.isDamaged = true;
+                if (!ent.nonDamage) {
+                    this.health -= ent.damage;
+                    this.isDamaged = true;
+                }
             }
         }
     } else {
@@ -234,8 +240,9 @@ Samus.prototype.platformCollision = function (hitTest) {
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     //collidingTopDown = false;
-                    //this.y = plat.collisionY - 105;
-                    //this.ground = this.y;
+                    this.y = plat.collisionY;// - (this.collisionHeight - 40);
+                    this.velocity.x = 0;
+                    this.ground = this.y;
                 }
             }
             if (!hitTest && !collideTopDown && collideBottom(this, plat)) {
@@ -259,7 +266,9 @@ Samus.prototype.platformCollision = function (hitTest) {
                 }, plat))) && ((hitTest || this.velocity.x < 0) || this.jumping)) {
 
                 //console.log("hit right");
-                this.x = plat.collisionX + plat.collisionWidth - 30;
+                if (!collideTopDown) {
+                    this.x = plat.collisionX + plat.collisionWidth - 30;
+                }
                 this.velocity.x = 0;
                 collideSide = true;
                 if (this.jumping) {
@@ -274,7 +283,9 @@ Samus.prototype.platformCollision = function (hitTest) {
             }, plat))) && ((hitTest || this.velocity.x > 0) || this.jumping)) {
 
                 //console.log("hit left");
-                this.x = plat.collisionX - this.collisionWidth - 30;
+                if (!collideTopDown) {
+                    this.x = plat.collisionX - this.collisionWidth - 30;
+                }
                 this.velocity.x = 0;
                 collideSide = true;
                 if (this.jumping) {
@@ -345,7 +356,6 @@ Samus.prototype.update = function () {
         }
         this.x += this.velocity.x;
         this.y += this.velocity.y;
-        this.grounded = true;
     }
     
 

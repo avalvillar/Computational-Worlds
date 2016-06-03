@@ -23,7 +23,8 @@ StartScreen.prototype.draw = function(ctx) {
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, width, height);
 	if (this.game.startGame) {
-        // start game, remove start screen
+	    // start game, remove start screen
+	    forestMusic.play();
 		this.titleScreen = false;
 		this.removeFromWorld = true;
 	} else if (this.titleScreen) {
