@@ -487,7 +487,7 @@ var setupWorldCave = function (game) {
         game.addPlatform(midLong2);
     }
 
-    for (var i = 350; i < 860; i += 70) {
+    for (var i = 420; i < 860; i += 70) {
         var wall1 = new Platform(game, 2670, i, "cave");
         game.addPlatform(wall1);
     }
@@ -749,7 +749,6 @@ var setupWorldCaveSnowTransition = function (game) {
 }
 
 var setupWorldSnow = function (game) {
-
     for (var i = 0; i < 500; i+=495) {
         for (var j = 0; j < 900; j+=300) {
             var snowFX = new Snow(game, i, j);
@@ -758,18 +757,79 @@ var setupWorldSnow = function (game) {
     }
 
     for (var i = 0; i < 900; i += 50) {
-        var initialWall = new Platform(game, -69, i, "snow");
+        var initialWall = new Platform(game, -68, i, "cave");
         game.addPlatform(initialWall);
     }
-    for (var i = 0; i < 1100; i += 70) {
+    for (var i = 0; i < 150; i += 70) {
+        var startPlat = new Platform(game, i, 200, "snow");
+        game.addPlatform(startPlat);
+    }
+    for (var i = 0; i < 150; i += 70) {
         var ground1 = new Platform(game, i, 830, "snow");
         game.addPlatform(ground1);
     }
+    for (var i = 300; i < 450; i += 70) {
+        var plat1 = new Platform(game, i, 600, "snow");
+        game.addPlatform(plat1);
+    }
+    for (var i = 700; i < 850; i += 70) {
+        var plat2 = new Platform(game, i, 450, "snow");
+        game.addPlatform(plat2);
+    }
+    for (var i = 1000; i < 1150; i += 70) {
+        var plat3 = new Platform(game, i, 300, "snow");
+        game.addPlatform(plat3);
+    }
+    for (var i = 1500; i < 1650; i += 70) {
+        var plat4 = new Platform(game, i, 260, "snow");
+        game.addPlatform(plat4);
+    }
+    for (var i = 2000; i < 3200; i += 70) {
+        var plat5 = new Platform(game, i, 600, "snow");
+        game.addPlatform(plat5);
+    }
+    for (var i = 2350; i < 2700; i += 70) {
+        var plat6 = new Platform(game, i, 550, "snow");
+        game.addPlatform(plat6);
+    }
+    for (var i = 2490; i < 2700; i += 70) {
+        var plat7 = new Platform(game, i, 490, "snow");
+        game.addPlatform(plat7);
+    }
 
-    bg = new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900)
+    var plat8 = new Platform(game, 3400, 400, "snow");
+    game.addPlatform(plat8);
+    var plat9 = new Platform(game, 3700, 300, "snow");
+    game.addPlatform(plat9);
+    for (var i = 4400; i < 5000; i += 70) {
+        var walkway = new Platform(game, i, 425, "snow");
+        game.addPlatform(walkway);
+    }
+    for (var i = 3600; i < 5610; i += 400) {
+        var hidden = new Platform(game, i, 897, "snow");
+        game.addPlatform(hidden);
+    }
+    var singleStep = new Platform(game, 5750, 897, "snow");
+    game.addPlatform(singleStep);
+    for (var i = 5300; i < 5650; i += 70) {
+        var backTrack1 = new Platform(game, i, 500, "snow");
+        game.addPlatform(backTrack1);
+    }
+    for (var i = 5300; i < 6800; i += 70) {
+        var largeWalk = new Platform(game, i, 250, "snow");
+        game.addPlatform(largeWalk);
+    }
+    var backSingle = new Platform(game, 5950, 650, "snow");
+    game.addPlatform(backSingle);
+
+    
+
+
+
+    bg = new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 9000, 900)
     game.setBackground(bg);
 
-    addSnowEnemies(game);
+    //addSnowEnemies(game);
 }
 
 var addSnowEnemies = function (game) {
