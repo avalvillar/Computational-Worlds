@@ -234,13 +234,12 @@ Samus.prototype.platformCollision = function (hitTest) {
 
                 this.grounded = true;
                 this.y = this.ground;
-                if (this.jumping && (this.jumpRight.elapsedTime > 1 || this.jumpLeft.elapsedTime > 1)) {
-
+                if (this.jumping && (this.jumpRight.elapsedTime > 0 || this.jumpLeft.elapsedTime > 0)) {
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     //collidingTopDown = false;
-                    this.y = plat.collisionY;// - (this.collisionHeight - 40);
+                    this.y = plat.collisionY - 140;//(this.collisionHeight + 80);
                     this.velocity.x = 0;
                     this.ground = this.y;
                 }
@@ -314,7 +313,7 @@ Samus.prototype.update = function () {
     if (!this.game.startGame) return;
     this.laserTimer++;
     
-    if (this.game.space && this.jumpCount === 0) {
+    if (this.game.space && this.jumpCount === 0 && !this.game.debug) {
         this.jumping = true;
     }
     if (this.jumping && !this.grounded) {
@@ -370,13 +369,13 @@ Samus.prototype.update = function () {
             this.running = false;
         } else {
             if (this.game.right) {
-                if (this.grounded || this.jumping) {
+                if (this.grounded || this.jumping || this.game.debug) {
                     this.velocity.x = this.game.clockTick * this.speed;
                 } else {
                     this.velocity.x = this.game.clockTick * this.speed / 2;
                 } 
             } else if (!this.game.right) {
-                if (this.grounded || this.jumping) {
+                if (this.grounded || this.jumping || this.game.debug) {
                     this.velocity.x = -(this.game.clockTick * this.speed);
                 } else {
                     this.velocity.x = -(this.game.clockTick * this.speed / 2);

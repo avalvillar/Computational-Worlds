@@ -361,6 +361,11 @@ GameEngine.prototype.draw = function () {
 
     // if (this.levelCompletion !== null) this.levelCompletion == true;
     this.healthBar.draw(this.ctx);
+    if (this.debug) {
+        this.ctx.font = "30px Courier New";
+        this.ctx.fillStyle = "red";
+        this.ctx.fillText("DEBUG MODE", 700, 38);
+    }
     this.ctx.restore();
 }
 
@@ -397,7 +402,7 @@ GameEngine.prototype.update = function () {
         //this.staticEntities = [];
         this.decorations = [];
         this.samus.x = 100;
-        this.samus.y = 670;
+        this.samus.y = 50;
         this.camera = new Camera(this);
         setupWorldSnow(this);
     }
