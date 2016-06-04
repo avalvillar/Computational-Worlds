@@ -83,7 +83,7 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "fprest", debugBtn, volBtn, volSlider); //forest, cave, snow
+    gameEngine.init(ctx, samus, bg, "forest", debugBtn, volBtn, volSlider); //forest, cave, snow
     gameEngine.start();
 
 });

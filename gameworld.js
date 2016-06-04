@@ -831,6 +831,12 @@ var addSnowEnemies = function (game) {
     game.addEntity(smallYeti1);
     var smallYeti1 = new smallYeti(game, 1600, 170);
     game.addEntity(smallYeti1);
+    var smallYeti1 = new smallYeti(game, 2345, 470);
+    game.addEntity(smallYeti1);
+    var smallYeti1 = new smallYeti(game, 5480, 410);
+    game.addEntity(smallYeti1);
+    var smallYeti1 = new smallYeti(game, 5300, 410);
+    game.addEntity(smallYeti1);
 
     //var yeti1 = new Yeti(game, 400, 628, 150, 700);
     //game.addEntity(yeti1);
