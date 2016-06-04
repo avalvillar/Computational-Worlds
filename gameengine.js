@@ -402,7 +402,7 @@ GameEngine.prototype.update = function () {
         //this.staticEntities = [];
         this.decorations = [];
         this.samus.x = 100;
-        this.samus.y = 670;
+        this.samus.y = 50;
         this.camera = new Camera(this);
         setupWorldSnow(this);
     }
