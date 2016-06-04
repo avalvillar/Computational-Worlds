@@ -83,7 +83,7 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "forest", debugBtn, volBtn, volSlider); //forest, cave, snow
+    gameEngine.init(ctx, samus, bg, "snow", debugBtn, volBtn, volSlider); //forest, cave, snow
     gameEngine.start();
 
 });
@@ -231,14 +231,17 @@ var resetWorld = function(game) {
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 205, 600);
+        game.setSamusIdle();
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn, volBtn, volSlider);
     } else if (game.currentLevel === "forest") {
         samus.removeFromWorld = true;
         samus = new Samus(game, 625, 660);
+        game.setSamusIdle();
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900), "forest", debugBtn, volBtn, volSlider);
     } else if (game.currentLevel === "snow") {
         samus.removeFromWorld = true;
-        samus = new Samus(game, 100, 670);
+        samus = new Samus(game, 100, 50);
+        game.setSamusIdle();
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 2100, 900), "snow", debugBtn, volBtn, volSlider);
     }
 
