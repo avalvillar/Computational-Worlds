@@ -764,14 +764,6 @@ var setupWorldSnow = function (game) {
         var startPlat = new Platform(game, i, 200, "snow");
         game.addPlatform(startPlat);
     }
-    for (var i = 0; i < 150; i += 70) {
-        var ground1 = new Platform(game, i, 830, "snow");
-        game.addPlatform(ground1);
-    }
-    for (var i = 300; i < 450; i += 70) {
-        var plat1 = new Platform(game, i, 600, "snow");
-        game.addPlatform(plat1);
-    }
     for (var i = 700; i < 850; i += 70) {
         var plat2 = new Platform(game, i, 450, "snow");
         game.addPlatform(plat2);
@@ -801,6 +793,8 @@ var setupWorldSnow = function (game) {
     game.addPlatform(plat8);
     var plat9 = new Platform(game, 3700, 300, "snow");
     game.addPlatform(plat9);
+    var decoy = new Platform(game, 4150, 150, "snow");
+    game.addPlatform(decoy);
     for (var i = 4400; i < 5000; i += 70) {
         var walkway = new Platform(game, i, 425, "snow");
         game.addPlatform(walkway);
@@ -824,19 +818,21 @@ var setupWorldSnow = function (game) {
 
     
 
-
+    
 
     bg = new Background(game, ASSET_MANAGER.getAsset("./img/snowBG.jpg"), 9000, 900)
     game.setBackground(bg);
 
-    //addSnowEnemies(game);
+    addSnowEnemies(game);
 }
 
 var addSnowEnemies = function (game) {
-    var smallYeti1 = new smallYeti(game, 400, 745);
+    var smallYeti1 = new smallYeti(game, 1100, 210);
+    game.addEntity(smallYeti1);
+    var smallYeti1 = new smallYeti(game, 1600, 170);
     game.addEntity(smallYeti1);
 
-    var yeti1 = new Yeti(game, 400, 628, 150, 700);
-    game.addEntity(yeti1);
+    //var yeti1 = new Yeti(game, 400, 628, 150, 700);
+    //game.addEntity(yeti1);
 
 }

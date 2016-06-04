@@ -271,9 +271,9 @@ function smallYeti(game, x, y) {
     this.x = x;
     this.y = y
     this.collisionWidth = 65;
-    this.collisionHeight = 50;
-    this.collisionX = this.x + 25;
-    this.collisionY = this.y + 105;
+    this.collisionHeight = 40;
+    this.collisionX = this.x + 30;
+    this.collisionY = this.y + 60;
     this.game = game;
 
     Entity.call(this, game, this.x, this.y, this.collisionX, this.collisionY);
