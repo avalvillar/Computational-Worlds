@@ -361,6 +361,11 @@ GameEngine.prototype.draw = function () {
 
     // if (this.levelCompletion !== null) this.levelCompletion == true;
     this.healthBar.draw(this.ctx);
+    if (this.debug) {
+        this.ctx.font = "30px Courier New";
+        this.ctx.fillStyle = "red";
+        this.ctx.fillText("DEBUG MODE", 700, 38);
+    }
     this.ctx.restore();
 }
 

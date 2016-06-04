@@ -314,7 +314,7 @@ Samus.prototype.update = function () {
     if (!this.game.startGame) return;
     this.laserTimer++;
     
-    if (this.game.space && this.jumpCount === 0) {
+    if (this.game.space && this.jumpCount === 0 && !this.game.debug) {
         this.jumping = true;
     }
     if (this.jumping && !this.grounded) {
@@ -370,13 +370,13 @@ Samus.prototype.update = function () {
             this.running = false;
         } else {
             if (this.game.right) {
-                if (this.grounded || this.jumping) {
+                if (this.grounded || this.jumping || this.game.debug) {
                     this.velocity.x = this.game.clockTick * this.speed;
                 } else {
                     this.velocity.x = this.game.clockTick * this.speed / 2;
                 } 
             } else if (!this.game.right) {
-                if (this.grounded || this.jumping) {
+                if (this.grounded || this.jumping || this.game.debug) {
                     this.velocity.x = -(this.game.clockTick * this.speed);
                 } else {
                     this.velocity.x = -(this.game.clockTick * this.speed / 2);
