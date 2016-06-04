@@ -234,13 +234,13 @@ Samus.prototype.platformCollision = function (hitTest) {
 
                 this.grounded = true;
                 this.y = this.ground;
-                if (this.jumping && (this.jumpRight.elapsedTime > 1 || this.jumpLeft.elapsedTime > 1)) {
-
+                if (this.jumping && (this.jumpRight.elapsedTime > 0 || this.jumpLeft.elapsedTime > 0)) {
+                    console.log("collide with top");
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;
                     //collidingTopDown = false;
-                    this.y = plat.collisionY;// - (this.collisionHeight - 40);
+                    this.y = plat.collisionY - 140;//(this.collisionHeight + 80);
                     this.velocity.x = 0;
                     this.ground = this.y;
                 }
