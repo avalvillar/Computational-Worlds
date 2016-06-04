@@ -235,7 +235,6 @@ Samus.prototype.platformCollision = function (hitTest) {
                 this.grounded = true;
                 this.y = this.ground;
                 if (this.jumping && (this.jumpRight.elapsedTime > 0 || this.jumpLeft.elapsedTime > 0)) {
-                    console.log("collide with top");
                     this.jumpRight.elapsedTime = 0;
                     this.jumpLeft.elapsedTime = 0;
                     this.jumping = false;

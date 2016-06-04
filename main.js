@@ -83,7 +83,7 @@ ASSET_MANAGER.downloadAll(function () {
     var start = new StartScreen(gameEngine);
     gameEngine.addEntity(start);
 
-    gameEngine.init(ctx, samus, bg, "snow", debugBtn, volBtn, volSlider); //forest, cave, snow
+    gameEngine.init(ctx, samus, bg, "forest", debugBtn, volBtn, volSlider); //forest, cave, snow
     gameEngine.start();
 
 });
@@ -222,7 +222,6 @@ var resetWorld = function(game) {
     document.getElementById("death count").innerHTML = "Death Count: " + ++deathcount;
 
     if (game.alienBossActive) {
-        console.log("load boss");
         samus.removeFromWorld = true;
 
         samus = new Samus(game, 10200, 600);
