@@ -27,6 +27,7 @@ StartScreen.prototype.draw = function(ctx) {
 	    forestMusic.play();
 		this.titleScreen = false;
 		this.removeFromWorld = true;
+        startTime = new Date()
 	} else if (this.titleScreen) {
         // game not started, draw start screen
         centerText(ctx, width, height);
