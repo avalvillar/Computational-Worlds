@@ -208,11 +208,11 @@ GameEngine.prototype.startInput = function () {
                 snowMusic.play();
             }
             that.levelComplete = false;
+            that.pause()
         }
 
-        if (String.fromCharCode(e.which) === 'M') {
+        if (that.startGame === false && String.fromCharCode(e.which) === 'M') {
             that.startGame = true;
-            // e.preventDefault();
         }
         if (String.fromCharCode(e.which) === 'Q') {
             that.diagonal = true;
@@ -305,8 +305,10 @@ GameEngine.prototype.addAlienBoss = function (entity) {
 GameEngine.prototype.pause = function () {
     if (!this.paused) {
         this.paused = true;
+        pauseStart = new Date()
     } else {
         this.paused = false;
+        timePaused += (new Date().getTime() - pauseStart.getTime())
     }
 }
 
@@ -379,6 +381,7 @@ GameEngine.prototype.update = function () {
         this.samus.x = 150;
         this.samus.y = 600;
         setupWorldCave(this);
+        this.pause()
     }
     if (this.currentLevel === "cave" && this.alienBossDead) {
 
@@ -398,6 +401,7 @@ GameEngine.prototype.update = function () {
         this.samus.y = 50;
         this.camera = new Camera(this);
         setupWorldSnow(this);
+        this.pause()
     }
 
     if (this.currentLevel === "cave" && this.samus.x >= 10070 && !this.alienBossActive) { // activate boss!
@@ -444,20 +448,9 @@ GameEngine.prototype.update = function () {
         this.volSlider.value = 0;
     }
 
-    //this.volume = this.volSlider.value;
-    //if (this.volume > 66) {
-    //    this.volBtn.src = "./img/media-volume-3.png";
-    //} else if (this.volume <= 66 && this.volume > 33) {
-    //    this.volBtn.src = "./img/media-volume-2.png";
-    //} else if (this.volume <= 33 && this.volume > 0) {
-    //    this.volBtn.src = "./img/media-volume-1.png";
-    //} else {
-    //    this.volBtn.src = "./img/media-volume-0.png";
-    //}
-    //this.updateVolume();
     document.getElementById("kill count").innerHTML = "Kill Count: " + killcount;
     document.getElementById("score").innerHTML = "Score: " + score;
-    currTime = (new Date().getTime() - startTime.getTime() - timePaused) / 1000
+    currTime = ((new Date().getTime() - startTime.getTime() - timePaused) / 1000).toFixed(2)
     if (!this.startGame) {
         currTime = 0
     }
@@ -599,10 +592,6 @@ GameEngine.prototype.loop = function () {
         this.ctx.strokeStyle = "black";
         this.ctx.strokeText("PAUSED", textX, textY);
         this.ctx.fillText("PAUSED", textX, textY);    
-    }
-
-    if (this.paused) {
-
     }
 }
 

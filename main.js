@@ -52,6 +52,7 @@ var killcount = 0;
 var deathcount = 0;
 var score = 0;
 var startTime = new Date()
+var pauseStart = new Date()
 var timePaused = 0
 
 var deathPenalty = 20;
