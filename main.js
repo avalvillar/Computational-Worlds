@@ -50,6 +50,12 @@ var bg;
 var ctx;
 var killcount = 0;
 var deathcount = 0;
+var score = 0;
+var startTime = new Date()
+var pauseStart = new Date()
+var timePaused = 0
+
+var deathPenalty = 20;
 
 var forestMusic = new Audio("./sounds/forest.ogg");/////Sound  object.
 forestMusic.loop = true;
@@ -220,21 +226,24 @@ var resetWorld = function(game) {
     game.lasers = [];
 
     document.getElementById("death count").innerHTML = "Death Count: " + ++deathcount;
+    score -= deathPenalty
+    document.getElementById("score").innerHTML = "Score: " + score;
+    
 
     if (game.alienBossActive) {
         samus.removeFromWorld = true;
 
-        samus = new Samus(game, 10200, 600);
+        samus = new Samus(game, 10200, 625);
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn, volBtn, volSlider);
 
     } else if (game.currentLevel === "cave") {
         samus.removeFromWorld = true;
-        samus = new Samus(game, 205, 600);
+        samus = new Samus(game, 205, 680);
         game.setSamusIdle();
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/cave-full.png"), 12000, 900), "cave", debugBtn, volBtn, volSlider);
     } else if (game.currentLevel === "forest") {
         samus.removeFromWorld = true;
-        samus = new Samus(game, 625, 660);
+        samus = new Samus(game, 625, 720);
         game.setSamusIdle();
         game.init(ctx, samus, new Background(game, ASSET_MANAGER.getAsset("./img/forestBG.jpg"), 2100, 900), "forest", debugBtn, volBtn, volSlider);
     } else if (game.currentLevel === "snow") {

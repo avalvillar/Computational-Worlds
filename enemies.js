@@ -14,6 +14,7 @@ function Plant(game, x, y) {
     this.damage = 30;
     this.x = x;
     this.y = y
+    this.scoreValue = 2
     this.collisionWidth = 65;
     this.collisionHeight = 50;
     this.collisionX = this.x + 25;
@@ -30,6 +31,7 @@ Plant.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
         killcount++;
+        score += this.scoreValue
     }
     Entity.prototype.update.call(this);
 }
@@ -52,6 +54,7 @@ function Spider(game, x, y, topBound, bottomBound) {
     this.speed = 150;
     this.x = x;
     this.y = y
+    this.scoreValue = 5
     this.up = false;
     this.topBound = topBound;
     this.bottomBound = bottomBound;
@@ -71,6 +74,7 @@ Spider.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
         killcount++;
+        score += this.scoreValue;
     }
     if (this.up) {
         this.y += this.speed * this.game.clockTick;
@@ -115,6 +119,7 @@ function Snake(game, x, y, leftBound, rightBound) {
     this.speed = 150;
     this.x = x;
     this.y = y
+    this.scoreValue = 10
     this.right = false;
     this.grounded = false;
     this.leftBound = leftBound;
@@ -135,6 +140,7 @@ Snake.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
         killcount++;
+        score += this.scoreValue
     }
     if (this.right) {
         this.x += this.speed * this.game.clockTick;
@@ -181,14 +187,7 @@ Snake.prototype.draw = function (ctx, cameraX, cameraY) {
         this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
     }
     Entity.prototype.draw.call(this, ctx, cameraX, cameraY);
-//=======
-//Snake.prototype.draw = function (ctx, cameraX, cameraY) {
-
-//    Entity.prototype.draw.call(this, cameraX, cameraY);
-//    this.goLeft.drawFrame(this.game.clockTick, ctx, this.x + cameraX, this.y - cameraY);
-//>>>>>>> origin/andyLaptop
 }
-
 
 /*************************************************************************************
 	BAT
@@ -204,6 +203,7 @@ function Bat(game, x, y, leftBound, rightBound) {
     this.speed = 150;
     this.x = x;
     this.y = y;
+    this.scoreValue = 15
     this.rightBound = rightBound;
     this.leftBound = leftBound;
     this.collisionHeight = 40;
@@ -224,6 +224,7 @@ Bat.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
         killcount++;
+        score += this.scoreValue
     }
    /* this.x -= this.game.clockTick * this.speed;
     if (this.x < -50) {
@@ -271,6 +272,7 @@ function smallYeti(game, x, y) {
     this.flip = false;
     this.x = x;
     this.y = y
+    this.scoreValue = 20
     this.collisionWidth = 65;
     this.collisionHeight = 40;
     this.collisionX = this.x + 30;
@@ -287,6 +289,7 @@ smallYeti.prototype.update = function () {
     if (this.health <= 0) {
         this.removeFromWorld = true;
         killcount++;
+        score += this.scoreValue
     }
     Entity.prototype.update.call(this);
 }
